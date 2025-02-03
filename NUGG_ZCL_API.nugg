@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="ZCL_API">
+ <CLAS CLSNAME="ZCL_API" VERSION="1" LANGU="E" DESCRIPT="API Handler" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <implementing CLSNAME="ZCL_API" REFCLSNAME="IF_HTTP_EXTENSION" VERSION="1" EXPOSURE="2" STATE="1" RELTYPE="1" EDITORDER="1 "/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <typeUsage CLSNAME="ZCL_API" TYPEGROUP="ABAP" VERSION="1" TPUTYPE="0" EXPLICIT="X"/>
+  <typeUsage CLSNAME="ZCL_API" TYPEGROUP="JS" VERSION="1" TPUTYPE="0" EXPLICIT="X"/>
+  <forwardDeclaration>ABAP</forwardDeclaration>
+  <forwardDeclaration>JS</forwardDeclaration>
+  <attribute CLSNAME="ZCL_API" CMPNAME="MY_SERVICE" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="3 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="STRING" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_API" CMPNAME="MY_URL" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="4 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="STRING" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_API" CMPNAME="XCRLF" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " ATTDECLTYP="2" ATTVALUE="%_CR_LF" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ABAP_CR_LF" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_API" CMPNAME="XNL" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="%_NEWLINE" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ABAP_CHAR1" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <interfaceMethod CLSNAME="ZCL_API" CPDNAME="IF_HTTP_EXTENSION~HANDLE_REQUEST">
+   <source>METHOD if_http_extension~handle_request.
+    TYPE-POOLS abap.
+
+    DATA: show_import_params TYPE abap_bool VALUE abap_false,
+          lowercase          TYPE abap_bool VALUE abap_false,
+          camelcase          TYPE abap_bool VALUE abap_false,
+          path_info          TYPE string,
+          p_info_tab         TYPE TABLE OF string,
+          format             TYPE string,
+          accept             TYPE string,
+          action             TYPE string,
+          request_method     TYPE string,
+          jsonp_callback     TYPE string,
+          i_content_type     TYPE string,
+          i_cdata            TYPE string,
+          o_cdata            TYPE string,
+          exceptheader       TYPE string,
+          etext              TYPE string,
+          etext2             TYPE string,
+          str_item           TYPE string,
+          host               TYPE string,
+          port               TYPE string,
+          proto              TYPE string,
+          http_code          TYPE i,
+          http_status        TYPE string,
+
+          funcname           TYPE rs38l_fnam,
+          funcname2          TYPE string,
+          dparam             TYPE abap_parmname,
+          t_params_p         TYPE STANDARD TABLE OF rfc_fint_p,
+          paramtab           TYPE abap_func_parmbind_tab,
+          exceptab           TYPE abap_func_excpbind_tab,
+          exception          TYPE LINE OF abap_func_excpbind_tab,
+          funcrc             TYPE sy-subrc,
+          oexcp              TYPE REF TO cx_root,
+          qs_nvp             TYPE tihttpnvp,
+          l_lines            TYPE i,
+          l_idx              TYPE i.
+
+    FIELD-SYMBOLS &lt;qs_nvp&gt; TYPE ihttpnvp.
+    FIELD-SYMBOLS &lt;fm_param&gt; TYPE abap_func_parmbind.
+    FIELD-SYMBOLS &lt;fm_value_str&gt; TYPE string.
+    FIELD-SYMBOLS &lt;fm_value_i&gt; TYPE i.
+    FIELD-SYMBOLS &lt;fm_int_handler&gt; TYPE zicf_api_handler_data.
+
+    DEFINE http_error.
+      server-&gt;response-&gt;set_header_field( name = &apos;Content-Type&apos;  value = &apos;application/json&apos; ).
+      http_code = &amp;1.
+      server-&gt;response-&gt;set_status( code = http_code  reason = &amp;2 ).
+      CONCATENATE &apos;{&quot;ERROR_CODE&quot;:&quot;&apos; &amp;1 &apos;&quot;,&quot;ERROR_MESSAGE&quot;:&quot;&apos; &amp;3 &apos;&quot;,&quot;INFO_LINK&quot;:&quot;&apos; me-&gt;my_url me-&gt;my_service &apos;?action=notes&quot;}&apos; INTO etext.
+      server-&gt;response-&gt;set_cdata( etext ).
+      EXIT.
+    END-OF-DEFINITION.
+
+* Get Server Info:
+    server-&gt;get_location( IMPORTING host = host  port = port  out_protocol = proto ).
+    CONCATENATE proto &apos;://&apos; host &apos;:&apos; port INTO me-&gt;my_url.
+
+** Get all client Info:
+    DATA clnt_hfields TYPE tihttpnvp.
+    server-&gt;request-&gt;get_header_fields( CHANGING fields = clnt_hfields ).
+
+    me-&gt;my_service       = server-&gt;request-&gt;get_header_field( name = &apos;~script_name&apos; ).
+    request_method       = server-&gt;request-&gt;get_header_field( name = &apos;~request_method&apos; ).
+    i_content_type       = server-&gt;request-&gt;get_header_field( name = &apos;content-type&apos; ).
+    show_import_params   = server-&gt;request-&gt;get_form_field( &apos;show_import_params&apos; ).
+    action               = server-&gt;request-&gt;get_form_field( &apos;action&apos; ).
+    jsonp_callback       = server-&gt;request-&gt;get_form_field( &apos;callback&apos; ).
+    lowercase            = server-&gt;request-&gt;get_form_field( &apos;lowercase&apos; ).
+    camelcase            = server-&gt;request-&gt;get_form_field( &apos;camelcase&apos; ).
+    format               = server-&gt;request-&gt;get_form_field( &apos;format&apos; ).
+    accept               = server-&gt;request-&gt;get_header_field( name = &apos;Accept&apos; ).
+
+    IF format IS INITIAL.
+      format = server-&gt;request-&gt;get_form_field( &apos;$format&apos; ).
+    ENDIF.
+    IF jsonp_callback IS INITIAL.
+      jsonp_callback = server-&gt;request-&gt;get_form_field( &apos;$callback&apos; ).
+    ENDIF.
+
+* Get function name from PATH_INFO
+    path_info = server-&gt;request-&gt;get_header_field( name = &apos;~path_info&apos; ).
+    SPLIT path_info AT &apos;/&apos; INTO TABLE p_info_tab.
+    READ TABLE p_info_tab INDEX 2 INTO funcname.
+    READ TABLE p_info_tab INDEX 3 INTO funcname2.
+    IF sy-subrc EQ 0.
+      CONCATENATE &apos;//&apos; funcname &apos;/&apos; funcname2 INTO funcname.
+      CONDENSE funcname.
+    ENDIF.
+    TRANSLATE funcname TO UPPER CASE.
+    IF funcname IS INITIAL AND action IS INITIAL.
+      http_error &apos;404&apos; &apos;Not Found&apos; &apos;Empty request.&apos; .
+    ENDIF.
+
+    IF accept IS NOT INITIAL AND format IS INITIAL.
+      TRANSLATE accept TO LOWER CASE.
+      IF accept CS &apos;/json&apos;.
+        format = &apos;json&apos;.
+      ELSEIF accept CS &apos;*/*&apos;.
+        CLEAR format.
+      ELSE.
+        http_error &apos;406&apos; &apos;Not Acceptable&apos; &apos;The server cannot send a response which is acceptable according to the combined Accept field value&apos;.
+      ENDIF.
+    ENDIF.
+
+    TRANSLATE format TO UPPER CASE.
+    TRANSLATE action TO UPPER CASE.
+    IF show_import_params IS NOT INITIAL.
+      show_import_params = abap_true.
+    ENDIF.
+
+
+***************************
+    CASE action.
+      WHEN &apos;NOTES&apos;.
+        server-&gt;response-&gt;set_header_field( name = &apos;Content-Type&apos;  value = &apos;text/html&apos; ).
+        server-&gt;response-&gt;set_status( code = 200 reason = &apos;OK&apos; ).
+        o_cdata = me-&gt;notes( ).
+        server-&gt;response-&gt;set_cdata( o_cdata ).
+        EXIT.
+      WHEN &apos;START_SESSION&apos;.
+        server-&gt;set_session_stateful( stateful = server-&gt;co_enabled ).
+      WHEN &apos;END_SESSION&apos;.
+        server-&gt;set_session_stateful( stateful = server-&gt;co_disabled ).
+      WHEN OTHERS.
+    ENDCASE.
+
+******************
+* get input data *
+******************
+    CLEAR i_cdata.
+    i_cdata = server-&gt;request-&gt;get_cdata( ).
+    server-&gt;request-&gt;get_form_fields_cs( CHANGING fields = qs_nvp ).
+
+    IF ( qs_nvp IS NOT INITIAL AND i_cdata IS INITIAL ) .&quot; or
+      l_lines = lines( qs_nvp ).
+      CLEAR l_idx.
+      MOVE &apos;{&apos; TO i_cdata.
+      LOOP AT qs_nvp ASSIGNING &lt;qs_nvp&gt;.
+        ADD 1 TO l_idx.
+        TRANSLATE &lt;qs_nvp&gt;-name TO UPPER CASE. &quot; ABAP is upper case internally anyway.
+        CONCATENATE i_cdata &apos;&quot;&apos; &lt;qs_nvp&gt;-name &apos;&quot;:&quot;&apos; &lt;qs_nvp&gt;-value &apos;&quot;&apos; INTO i_cdata
+          RESPECTING BLANKS.
+        IF l_idx &lt; l_lines.
+          CONCATENATE i_cdata &apos;,&apos; INTO i_cdata RESPECTING BLANKS.
+        ENDIF.
+      ENDLOOP.
+      CONCATENATE i_cdata &apos;}&apos; INTO i_cdata.
+    ENDIF.
+
+    CALL METHOD zcl_api=&gt;build_params
+      EXPORTING
+        function_name = funcname
+      IMPORTING
+        params        = t_params_p
+        paramtab      = paramtab
+        exceptab      = exceptab
+      EXCEPTIONS
+        OTHERS        = 2.
+
+    IF sy-subrc &lt;&gt; 0.
+      CONCATENATE &apos;Invalid Function. &apos; sy-msgid sy-msgty sy-msgno &apos;: &apos;
+              sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4
+              INTO etext SEPARATED BY &apos;-&apos;.
+      http_error &apos;500&apos; &apos;Server Error&apos; etext.
+    ENDIF.
+
+
+    TRY.
+        CALL METHOD me-&gt;json_deserialize
+          EXPORTING
+            json     = i_cdata
+          CHANGING
+            paramtab = paramtab.
+
+      CATCH cx_root INTO oexcp.
+
+        etext = oexcp-&gt;if_message~get_text( ).
+
+        http_error &apos;500&apos; &apos;Internal Server Error&apos; etext.
+
+    ENDTRY.
+*/**********************************/*
+
+    READ TABLE paramtab WITH KEY name = &apos;_ICF_DATA&apos; ASSIGNING &lt;fm_param&gt;.
+    IF sy-subrc EQ 0.
+      CREATE DATA &lt;fm_param&gt;-value TYPE zicf_api_handler_data.
+      ASSIGN &lt;fm_param&gt;-value-&gt;* TO &lt;fm_int_handler&gt;.
+      &lt;fm_int_handler&gt;-request_method = request_method.
+      &lt;fm_int_handler&gt;-icf_url = me-&gt;my_url.
+      &lt;fm_int_handler&gt;-icf_service = me-&gt;my_service.
+      &lt;fm_int_handler&gt;-path_info = path_info.
+      &lt;fm_int_handler&gt;-qs_tab = qs_nvp.
+      &lt;fm_int_handler&gt;-i_json_data = i_cdata.
+      APPEND &apos;_ICF_DATA&apos; TO &lt;fm_int_handler&gt;-delete_params.
+      &lt;fm_int_handler&gt;-server = server. &quot; Beware!
+    ENDIF.
+
+****************************
+* Call the function module *
+****************************
+    TRY.
+
+        CALL FUNCTION funcname
+          PARAMETER-TABLE
+          paramtab
+          EXCEPTION-TABLE
+          exceptab.
+
+      CATCH cx_root INTO oexcp.
+
+        etext = oexcp-&gt;if_message~get_longtext(  preserve_newlines = abap_true ).
+
+        http_error &apos;500&apos; &apos;Internal Server Error&apos; etext.
+
+    ENDTRY.
+
+
+* Remove unused exceptions
+    funcrc = sy-subrc.
+    DELETE exceptab WHERE value NE funcrc.
+    READ TABLE exceptab INTO exception WITH KEY value = funcrc.
+    IF sy-subrc EQ 0.
+      exceptheader = exception-name.
+      CALL METHOD server-&gt;response-&gt;set_header_field(
+          name  = &apos;X-SAPRFC-Exception&apos;
+          value = exceptheader ).
+    ENDIF.
+
+
+    IF &lt;fm_int_handler&gt; IS ASSIGNED.
+      IF &lt;fm_int_handler&gt;-http_code IS NOT INITIAL.
+        server-&gt;response-&gt;set_status( code = &lt;fm_int_handler&gt;-http_code  reason = &lt;fm_int_handler&gt;-http_status ).
+        CASE &lt;fm_int_handler&gt;-http_code.
+          WHEN 204 OR 205.
+            EXIT.
+          WHEN OTHERS. &quot; many to add?
+        ENDCASE.
+      ENDIF.
+      IF &lt;fm_int_handler&gt;-error_message IS NOT INITIAL.
+        str_item = &lt;fm_int_handler&gt;-http_code. CONDENSE str_item.
+        http_error str_item &lt;fm_int_handler&gt;-http_status &lt;fm_int_handler&gt;-error_message.
+      ENDIF.
+* Delete indicated params for not showing them in the response
+      LOOP AT &lt;fm_int_handler&gt;-delete_params INTO dparam.
+        DELETE paramtab WHERE name EQ dparam.
+      ENDLOOP.
+    ENDIF.
+
+
+    CASE format.
+
+      WHEN &apos;PERL&apos;.
+        server-&gt;response-&gt;set_header_field( name = &apos;Content-Type&apos; value = &apos;text/plain&apos; ).
+
+      WHEN OTHERS.
+
+        format = &apos;JSON&apos;.
+        CALL METHOD me-&gt;serialize_json
+          EXPORTING
+            paramtab  = paramtab
+            exceptab  = exceptab
+            params    = t_params_p
+            jsonp     = jsonp_callback
+            show_impp = show_import_params
+            lowercase = lowercase
+            camelcase = camelcase
+          IMPORTING
+            o_string  = o_cdata.
+
+        server-&gt;response-&gt;set_header_field( name = &apos;Content-Type&apos; value = &apos;application/json&apos; ).
+        IF jsonp_callback IS NOT INITIAL.
+          server-&gt;response-&gt;set_header_field( name = &apos;Content-Type&apos; value = &apos;application/javascript&apos; ).
+        ENDIF.
+
+    ENDCASE.
+
+    CALL METHOD server-&gt;response-&gt;set_header_field( name = &apos;Access-Control-Allow-Origin&apos; value = &apos;*&apos; ).
+
+    server-&gt;response-&gt;set_header_field( name = &apos;X-Data-Format&apos; value = format ). &quot;
+    server-&gt;response-&gt;set_compression( ).
+    server-&gt;response-&gt;set_cdata( data = o_cdata ).
+  ENDMETHOD.</source>
+  </interfaceMethod>
+  <method CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" SCONAME="ABAP_DATA" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DATA"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" SCONAME="NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" SCONAME="UPCASE" VERSION="1" LANGU="E" DESCRIPT="Checkbox" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="XFELD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" SCONAME="CAMELCASE" VERSION="1" LANGU="E" DESCRIPT="Checkbox" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="XFELD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="ABAP2JSON" SCONAME="JSON_STRING" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="3" PARPASSTYP="0" TYPTYPE="1" TYPE="STRING"/>
+   <source>METHOD abap2json.
+    TYPE-POOLS: abap.
+
+    CONSTANTS:
+      c_comma TYPE c VALUE &apos;,&apos;,
+      c_colon TYPE c VALUE &apos;:&apos;,
+      c_quote TYPE c VALUE &apos;&quot;&apos;.
+
+    DATA:
+      dont_quote      TYPE xfeld,
+      json_fragments  TYPE TABLE OF string,
+      rec_json_string TYPE string,
+      l_type          TYPE c,
+      s_type          TYPE c,
+      l_comps         TYPE i,
+      l_lines         TYPE i,
+      l_index         TYPE i,
+      l_value         TYPE string,
+      l_name          TYPE string,
+      l_strudescr     TYPE REF TO cl_abap_structdescr.
+
+    FIELD-SYMBOLS:
+      &lt;abap_data&gt; TYPE any,
+      &lt;itab&gt;      TYPE ANY TABLE,
+      &lt;stru&gt;      TYPE ANY TABLE,
+      &lt;comp&gt;      TYPE any,
+      &lt;abapcomp&gt;  TYPE abap_compdescr.
+
+
+    DEFINE get_scalar_value.
+      &quot; &amp;1 : assigned var
+      &quot; &amp;2 : abap data
+      &quot; &amp;3 : abap type
+      &amp;1 = &amp;2.
+****************************************************
+* Adapt some basic ABAP types (pending inclusion of all basic abap types?)
+* Feel free to customize this for your needs
+      CASE &amp;3.
+*       1. ABAP numeric types
+        WHEN &apos;I&apos;. &quot; Integer
+          CONDENSE &amp;1.
+          IF sign( &amp;1 ) &lt; 0.
+            SHIFT &amp;1 BY 1 PLACES RIGHT CIRCULAR.
+          ENDIF.
+          dont_quote = &apos;X&apos;.
+
+        WHEN &apos;F&apos;. &quot; Float
+          CONDENSE &amp;1.
+          dont_quote = &apos;X&apos;.
+
+        WHEN &apos;P&apos;. &quot; Packed number (used in quantities or currency, for example)
+          CONDENSE &amp;1.
+          IF sign( &amp;1 ) &lt; 0.
+            SHIFT &amp;1 BY 1 PLACES RIGHT CIRCULAR.
+          ENDIF.
+          dont_quote = &apos;X&apos;.
+
+        WHEN &apos;X&apos;. &quot; Hexadecimal
+          CONDENSE &amp;1.
+          CONCATENATE &apos;0x&apos; &amp;1 INTO &amp;1.
+*        dont_quote = &apos;X&apos;.
+*        &quot;Quote it, as JSON doesn&apos;t support Hex or Octal as native types.
+
+*       2. ABAP char types
+        WHEN &apos;D&apos;. &quot; Date type
+          CONCATENATE &amp;1(4) &apos;-&apos; &amp;1+4(2) &apos;-&apos; &amp;1+6(2) INTO &amp;1.
+
+        WHEN &apos;T&apos;. &quot; Time representation
+          CONCATENATE &amp;1(2) &apos;:&apos; &amp;1+2(2) &apos;:&apos; &amp;1+4(2) INTO &amp;1.
+
+        WHEN &apos;N&apos;. &quot; Numeric text field
+*           condense &amp;1.
+
+        WHEN &apos;C&apos; OR &apos;g&apos;. &quot; Char sequences and Strings
+* Put safe chars
+          REPLACE ALL OCCURRENCES OF &apos;\&apos; IN &amp;1 WITH &apos;\\&apos; .
+          REPLACE ALL OCCURRENCES OF &apos;&quot;&apos; IN &amp;1 WITH &apos;\&quot;&apos; .
+          REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=&gt;cr_lf IN &amp;1 WITH &apos;\r\n&apos; .
+          REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=&gt;newline IN &amp;1 WITH &apos;\n&apos; .
+          REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=&gt;horizontal_tab IN &amp;1 WITH &apos;\t&apos; .
+          REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=&gt;backspace IN &amp;1 WITH &apos;\b&apos; .
+          REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=&gt;form_feed IN &amp;1 WITH &apos;\f&apos; .
+
+        WHEN &apos;y&apos;.  &quot; XSTRING
+* Put the XSTRING in Base64
+          &amp;1 = cl_http_utility=&gt;encode_x_base64( &amp;2 ).
+
+        WHEN OTHERS.
+* Don&apos;t hesitate to add and modify scalar abap types to suit your taste.
+
+      ENDCASE.
+** End of scalar data preparing.
+
+* Enclose value in quotes (or not)
+      IF dont_quote NE &apos;X&apos;.
+        CONCATENATE c_quote &amp;1 c_quote INTO &amp;1.
+      ENDIF.
+
+      CLEAR dont_quote.
+
+    END-OF-DEFINITION.
+
+
+***************************************************
+*  Prepare field names, JSON does quote names!!   *
+*  You must be strict in what you produce.        *
+***************************************************
+    IF name IS NOT INITIAL.
+      CONCATENATE c_quote name c_quote c_colon INTO rec_json_string.
+      APPEND rec_json_string TO json_fragments.
+      CLEAR rec_json_string.
+    ENDIF.
+
+**
+* Get ABAP data type
+    DESCRIBE FIELD abap_data TYPE l_type COMPONENTS l_comps.
+
+***************************************************
+*  Get rid of data references
+***************************************************
+    IF l_type EQ cl_abap_typedescr=&gt;typekind_dref.
+      ASSIGN abap_data-&gt;* TO &lt;abap_data&gt;.
+      IF sy-subrc NE 0.
+        APPEND &apos;{}&apos; TO json_fragments.
+        CONCATENATE LINES OF json_fragments INTO json_string.
+        EXIT.
+      ENDIF.
+    ELSE.
+      ASSIGN abap_data TO &lt;abap_data&gt;.
+    ENDIF.
+
+* Get ABAP data type again and start
+    DESCRIBE FIELD &lt;abap_data&gt; TYPE l_type COMPONENTS l_comps.
+
+***************************************************
+*  Tables
+***************************************************
+    IF l_type EQ cl_abap_typedescr=&gt;typekind_table.
+* &apos;[&apos; JSON table opening bracket
+      APPEND &apos;[&apos; TO json_fragments.
+      ASSIGN &lt;abap_data&gt; TO &lt;itab&gt;.
+      l_lines = lines( &lt;itab&gt; ).
+      LOOP AT &lt;itab&gt; ASSIGNING &lt;comp&gt;.
+        ADD 1 TO l_index.
+*&gt; Recursive call for each table row:
+        rec_json_string = abap2json( abap_data = &lt;comp&gt; upcase = upcase camelcase = camelcase ).
+        APPEND rec_json_string TO json_fragments.
+        CLEAR rec_json_string.
+        IF l_index &lt; l_lines.
+          APPEND c_comma TO json_fragments.
+        ENDIF.
+      ENDLOOP.
+      APPEND &apos;]&apos; TO json_fragments.
+* &apos;]&apos; JSON table closing bracket
+
+
+***************************************************
+*  Structures
+***************************************************
+    ELSE.
+      IF l_comps IS NOT INITIAL.
+* &apos;{&apos; JSON object opening curly brace
+        APPEND &apos;{&apos; TO json_fragments.
+        l_strudescr ?= cl_abap_typedescr=&gt;describe_by_data( &lt;abap_data&gt; ).
+        LOOP AT l_strudescr-&gt;components ASSIGNING &lt;abapcomp&gt;.
+          l_index = sy-tabix .
+          ASSIGN COMPONENT &lt;abapcomp&gt;-name OF STRUCTURE &lt;abap_data&gt; TO &lt;comp&gt;.
+          l_name = &lt;abapcomp&gt;-name.
+** ABAP names are usually in caps, set upcase to avoid the conversion to lower case.
+          IF upcase NE &apos;X&apos;.
+            &quot; translate l_name to lower case.
+            l_name = to_lower( l_name ).
+          ENDIF.
+          IF camelcase EQ &apos;X&apos;.
+            l_name = to_mixed( val = l_name  case = &apos;a&apos; ).
+          ENDIF.
+          DESCRIBE FIELD &lt;comp&gt; TYPE s_type.
+          IF s_type EQ cl_abap_typedescr=&gt;typekind_table OR s_type EQ cl_abap_typedescr=&gt;typekind_dref OR
+             s_type EQ cl_abap_typedescr=&gt;typekind_struct1 OR s_type EQ cl_abap_typedescr=&gt;typekind_struct2.
+*&gt; Recursive call for non-scalars:
+            rec_json_string = abap2json( abap_data = &lt;comp&gt; name = l_name upcase = upcase camelcase = camelcase ).
+          ELSE.
+            IF s_type EQ cl_abap_typedescr=&gt;typekind_oref OR s_type EQ cl_abap_typedescr=&gt;typekind_iref.
+              rec_json_string = &apos;&quot;REF UNSUPPORTED&quot;&apos;.
+            ELSE.
+              get_scalar_value rec_json_string &lt;comp&gt; s_type.
+            ENDIF.
+            CONCATENATE c_quote l_name c_quote c_colon rec_json_string INTO rec_json_string.
+          ENDIF.
+          APPEND rec_json_string TO json_fragments.
+          CLEAR rec_json_string. CLEAR l_name.
+          IF l_index &lt; l_comps.
+            APPEND c_comma TO json_fragments.
+          ENDIF.
+        ENDLOOP.
+        APPEND &apos;}&apos; TO json_fragments.
+* &apos;}&apos; JSON object closing curly brace
+
+
+****************************************************
+*                  - Scalars -                     *
+****************************************************
+      ELSE.
+        get_scalar_value l_value &lt;abap_data&gt; l_type.
+        APPEND l_value TO json_fragments.
+
+      ENDIF.
+* End of structure/scalar IF block.
+***********************************
+
+    ENDIF.
+* End of main IF block.
+**********************
+
+* Use a loop in older releases that don&apos;t support concatenate lines.
+    CONCATENATE LINES OF json_fragments INTO json_string.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="BUILD_PARAMS" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="BUILD_PARAMS" SCONAME="FUNCTION_NAME" VERSION="1" LANGU="E" DESCRIPT="Name of Function Module" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="RS38L_FNAM"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="BUILD_PARAMS" SCONAME="PARAMTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_PARMBIND_TAB"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="BUILD_PARAMS" SCONAME="EXCEPTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_EXCPBIND_TAB"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="BUILD_PARAMS" SCONAME="PARAMS" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY"/>
+   <source>METHOD build_params.
+    TYPE-POOLS: abap.
+
+    DATA defval TYPE rs38l_defo.
+    DATA dataname TYPE string.
+    DATA waref TYPE REF TO data.
+
+    FIELD-SYMBOLS:
+      &lt;wa&gt;   TYPE any,
+      &lt;temp&gt; TYPE any.
+
+    DATA len TYPE i.
+    DATA excnt TYPE i VALUE 1.
+
+    DATA paramline  TYPE LINE  OF abap_func_parmbind_tab.
+    DATA exceptline TYPE LINE  OF abap_func_excpbind_tab.
+    DATA t_params_p TYPE TABLE OF rfc_fint_p.
+    DATA params_p   TYPE rfc_fint_p.
+
+    DEFINE remove_enclosing_quotes.
+      &quot; Remove enclosing single quotes
+      IF &amp;2 GT 1.
+        SUBTRACT 1 FROM &amp;2.
+        IF &amp;1+&amp;2 EQ &apos;&apos;&apos;&apos;.
+          &amp;1+&amp;2 = space.
+        ENDIF.
+        IF &amp;1(1) EQ &apos;&apos;&apos;&apos;.
+          SHIFT &amp;1 LEFT.
+        ENDIF.
+        &amp;2 = strlen( &amp;1 ).
+      ENDIF.
+    END-OF-DEFINITION.
+
+
+* do we have the rfc name?
+    CALL FUNCTION &apos;RFC_GET_FUNCTION_INTERFACE_P&apos;
+      EXPORTING
+        funcname      = function_name
+        language      = &apos;E&apos;       &quot;&apos;D&apos;  &quot;sy-langu
+      TABLES
+        params_p      = t_params_p
+      EXCEPTIONS
+        fu_not_found  = 1
+        nametab_fault = 2
+        OTHERS        = 3.
+
+    IF sy-subrc &lt;&gt; 0.
+*    raise 1
+*    RAISE &apos;Not Found&apos;.
+    ENDIF.
+
+
+* Build params table
+    LOOP AT t_params_p INTO params_p.
+
+      UNASSIGN &lt;wa&gt;.
+      UNASSIGN &lt;temp&gt;.
+      CLEAR paramline.
+
+      CASE params_p-paramclass.
+
+        WHEN &apos;I&apos; OR &apos;E&apos; OR &apos;C&apos;.
+
+          paramline-name = params_p-parameter.
+
+          IF params_p-paramclass = &apos;E&apos;.
+            paramline-kind = abap_func_importing.
+          ELSEIF params_p-paramclass = &apos;I&apos;.
+            paramline-kind = abap_func_exporting.
+          ELSE.
+            paramline-kind = abap_func_changing.
+          ENDIF.
+
+          IF params_p-fieldname IS INITIAL.
+            dataname = params_p-tabname.
+          ELSE.
+            CONCATENATE params_p-tabname params_p-fieldname INTO
+                dataname SEPARATED BY &apos;-&apos;.
+          ENDIF.
+
+* Assign default values
+          defval = params_p-default.
+          IF dataname IS INITIAL.
+            dataname = &apos;STRING&apos;.  &quot; use a STRING for this cases (see CONVERT_DATE_TO_EXTERNAL).
+          ENDIF.
+          CREATE DATA waref TYPE (dataname).
+          ASSIGN waref-&gt;* TO &lt;wa&gt;.
+          len = strlen( defval ).
+          remove_enclosing_quotes defval len.
+          IF defval = &apos;SPACE&apos;.
+            &lt;wa&gt; = space.
+          ELSEIF len &gt; 3 AND defval+0(3) = &apos;SY-&apos;.
+            ASSIGN (defval) TO &lt;temp&gt;.
+            &lt;wa&gt; = &lt;temp&gt;.
+            UNASSIGN &lt;temp&gt;.
+          ELSE.
+            IF defval IS NOT INITIAL.
+              &lt;wa&gt; = defval.
+            ENDIF.
+          ENDIF.
+          UNASSIGN &lt;wa&gt;.
+          paramline-value = waref.
+          INSERT paramline INTO TABLE paramtab.
+
+        WHEN &apos;T&apos;.
+          paramline-name = params_p-parameter.
+          paramline-kind = abap_func_tables.
+          IF params_p-exid EQ &apos;h&apos;.
+            CREATE DATA waref TYPE (params_p-tabname).
+          ELSE.
+            CREATE DATA waref TYPE STANDARD TABLE OF (params_p-tabname).
+          ENDIF.
+          paramline-value = waref.
+          INSERT paramline INTO TABLE paramtab.
+
+        WHEN &apos;X&apos;.
+          exceptline-name = params_p-parameter.
+          exceptline-value = excnt.
+          DATA messg TYPE REF TO data.
+          CREATE DATA messg TYPE string.
+          ASSIGN messg-&gt;* TO &lt;temp&gt;.
+          &lt;temp&gt; = params_p-paramtext.
+          exceptline-message = messg.
+          INSERT exceptline INTO TABLE exceptab.
+          ADD 1 TO excnt.
+
+*      when others.
+*        raise unsupported_param_type.
+
+      ENDCASE.
+
+    ENDLOOP.
+
+
+* add in the catch all exception
+    exceptline-name = &apos;OTHERS&apos;.
+    exceptline-value = excnt.
+    INSERT exceptline INTO TABLE exceptab.
+
+
+* return
+    params = t_params_p.
+
+*********************************
+******* Remaining from 2006 *****
+******* end of build_params *****
+*********************************
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="DESERIALIZE_ID" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="DESERIALIZE_ID" SCONAME="JSON" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="DESERIALIZE_ID" SCONAME="PARAMTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_PARMBIND_TAB"/>
+   <source>METHOD deserialize_id.
+    TYPE-POOLS: abap.
+
+** Remember function parameter types
+**constants:
+**  abap_func_exporting type abap_func_parmbind-kind value 10,
+**  abap_func_importing type abap_func_parmbind-kind value 20,
+**  abap_func_tables    type abap_func_parmbind-kind value 30,
+**  abap_func_changing  type abap_func_parmbind-kind value 40.
+
+    DATA:
+      rtab       TYPE abap_trans_resbind_tab,
+      rlin       TYPE abap_trans_resbind,
+      oexcp      TYPE REF TO cx_root,
+      etext      TYPE string,
+      json_xtext TYPE xstring.
+
+    FIELD-SYMBOLS &lt;parm&gt; TYPE abap_func_parmbind.
+
+    IF json IS INITIAL. EXIT. ENDIF.  &quot; exit method if there is nothing to parse
+
+    &quot; build rtab table for transformation id
+
+    LOOP AT paramtab ASSIGNING &lt;parm&gt;.
+      IF &lt;parm&gt;-kind EQ abap_func_importing. &quot;&quot; va al revés, cuidado!!!
+        CONTINUE.
+      ENDIF.
+      rlin-name  = &lt;parm&gt;-name.
+      rlin-value = &lt;parm&gt;-value.
+      APPEND rlin TO rtab.
+    ENDLOOP.
+
+    &quot; Convert input JSON variable names to uppercase
+    DATA :
+      reader TYPE REF TO if_sxml_reader,
+      writer TYPE REF TO if_sxml_writer,
+      node   TYPE REF TO if_sxml_node.
+
+*  get reference of cl_sxml_reader=&gt;if_sxml_reader into reader.
+
+    json_xtext   = cl_abap_codepage=&gt;convert_to( json ).
+    reader       = cl_sxml_string_reader=&gt;create( json_xtext ).
+    writer       = cl_sxml_string_writer=&gt;create( type = if_sxml=&gt;co_xt_json ).
+    DO.
+      node = reader-&gt;read_next_node( ).
+      IF node IS INITIAL.
+        EXIT.
+      ENDIF.
+      IF node-&gt;type = if_sxml_node=&gt;co_nt_element_open.
+*      data(attributes)  = if_sxml_open_element( node )-&gt;get_attributes( ).
+*      data attributes type if_sxml_attribute=&gt;attributes.
+*      loop at attributes assigning field-symbol(&lt;attribute&gt;).
+*        if &lt;attribute&gt;-&gt;qname-name = &apos;name&apos;.
+*          &lt;attribute&gt;-&gt;set_value(
+*            to_upper( &lt;attribute&gt;-&gt;get_value( ) ) ).
+*        endif.
+*      endloop.
+      ENDIF.
+      writer-&gt;write_node( node ).
+    ENDDO.
+*  json_xtext = writer-&gt;get_output( ) .
+
+    TRY.
+
+        CALL TRANSFORMATION id SOURCE XML json_xtext
+                               RESULT (rtab).
+
+      CATCH cx_root INTO oexcp.
+
+        etext = oexcp-&gt;if_message~get_text( ).
+        RAISE EXCEPTION TYPE zcx_api
+          EXPORTING
+            message = etext.
+
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="JSON_STRING" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="VAR_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="PROPERTY_PATH" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PARVALUE="&apos;json_obj&apos;"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="PROPERTY_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="JS_PROPERTY_TAB"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="JS_OBJECT" VERSION="1" LANGU="E" DESCRIPT="Integrated Java Script Engine" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_JAVA_SCRIPT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON2ABAP" SCONAME="ABAP_DATA" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="0" TYPTYPE="1" TYPE="ANY" PAROPTIONL="X"/>
+   <source>METHOD json2abap.
+    TYPE-POOLS: abap, js.
+
+    DATA:
+      js_script         TYPE string,
+      js_started        TYPE i VALUE 0,
+      l_json_string     TYPE string,
+      js_property_table TYPE   js_property_tab,
+      js_property       TYPE LINE OF js_property_tab,
+      l_property_path   TYPE string,
+      compname          TYPE string,
+      item_path         TYPE string.
+
+    DATA:
+      l_type   TYPE c,
+      l_value  TYPE string,
+      linetype TYPE string,
+      l_comp   TYPE LINE OF abap_compdescr_tab.
+
+    DATA:
+      datadesc TYPE REF TO cl_abap_typedescr,
+      drefdesc TYPE REF TO cl_abap_typedescr,
+      linedesc TYPE REF TO cl_abap_typedescr,
+      strudesc TYPE REF TO cl_abap_structdescr,
+      tabldesc TYPE REF TO cl_abap_tabledescr.
+
+    DATA newline TYPE REF TO data.
+
+    FIELD-SYMBOLS:
+      &lt;abap_data&gt; TYPE any,
+      &lt;itab&gt;      TYPE ANY TABLE,
+      &lt;comp&gt;      TYPE any,
+      &lt;jsprop&gt;    TYPE LINE OF js_property_tab,
+      &lt;abapcomp&gt;  TYPE abap_compdescr.
+
+
+    DEFINE assign_scalar_value.
+      &quot;   &amp;1   &lt;abap_data&gt;
+      &quot;   &amp;2   js_property-value
+      DESCRIBE FIELD &amp;1 TYPE l_type.
+      l_value = &amp;2.
+* convert or adapt scalar values to ABAP.
+      CASE l_type.
+        WHEN &apos;D&apos;. &quot; date type
+          IF l_value CS &apos;-&apos;.
+            REPLACE ALL OCCURRENCES OF &apos;-&apos; IN l_value WITH space.
+            CONDENSE l_value NO-GAPS.
+          ENDIF.
+        WHEN &apos;T&apos;. &quot; time type
+          IF l_value CS &apos;:&apos;.
+            REPLACE ALL OCCURRENCES OF &apos;:&apos; IN l_value WITH space.
+            CONDENSE l_value NO-GAPS.
+          ENDIF.
+        WHEN OTHERS.
+          &quot; may be other conversions or checks could be implemented here.
+      ENDCASE.
+      &amp;1 = l_value.
+    END-OF-DEFINITION.
+
+
+    IF js_object IS NOT BOUND.
+
+      IF json_string IS INITIAL. EXIT. ENDIF. &quot; exit method if there is nothing to parse
+
+      l_json_string = json_string.
+      &quot; js_object = cl_java_script=&gt;create( STACKSIZE = 16384 ).
+      js_object = cl_java_script=&gt;create( stacksize = 16384 heapsize = 960000 ).
+
+***************************************************
+*  Parse JSON using JavaScript                    *
+***************************************************
+      js_object-&gt;bind( EXPORTING name_obj = &apos;abap_data&apos; name_prop = &apos;json_string&apos;    CHANGING data = l_json_string ).
+      js_object-&gt;bind( EXPORTING name_obj = &apos;abap_data&apos; name_prop = &apos;script_started&apos; CHANGING data = js_started ).
+
+* We use the JavaScript engine included in ABAP to read the JSON string.
+* We simply use the recommended way to eval a JSON string as specified
+* in RFC 4627 (http://www.ietf.org/rfc/rfc4627.txt).
+*
+* Security considerations:
+*
+*   Generally there are security issues with scripting languages.  JSON
+*   is a subset of JavaScript, but it is a safe subset that excludes
+*   assignment and invocation.
+*
+*   A JSON text can be safely passed into JavaScript&apos;s eval() function
+*   (which compiles and executes a string) if all the characters not
+*   enclosed in strings are in the set of characters that form JSON
+*   tokens.  This can be quickly determined in JavaScript with two
+*   regular expressions and calls to the test and replace methods.
+*
+*      var my_JSON_object = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(
+*             text.replace(/&quot;(\\.|[^&quot;\\])*&quot;/g, &apos;&apos;))) &amp;&amp;
+*         eval(&apos;(&apos; + text + &apos;)&apos;);
+
+      CONCATENATE
+
+           &apos;var json_obj; &apos;
+           &apos;var json_text; &apos;
+
+           &apos;function start() { &apos;
+           &apos;  if(abap_data.script_started) { return; } &apos;
+           &apos;  json_text = abap_data.json_string;&apos;
+           &apos;  json_obj = !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test( &apos;
+           &apos;      json_text.replace(/&quot;(\\.|[^&quot;\\])*&quot;/g, &apos;&apos;&apos;&apos;))) &amp;&amp; &apos;
+           &apos;    eval(&apos;&apos;(&apos;&apos; + json_text + &apos;&apos;)&apos;&apos;); &apos;
+           &apos;  abap_data.script_started = 1; &apos;
+           &apos;} &apos;
+
+           &apos;if(!abap_data.script_started) start(); &apos;
+
+
+         INTO js_script RESPECTING BLANKS SEPARATED BY xnl.
+
+      js_object-&gt;compile( script_name = &apos;json_parser&apos;     script = js_script ).
+      js_object-&gt;execute( script_name = &apos;json_parser&apos; ).
+
+      IF js_object-&gt;last_error_message IS NOT INITIAL.
+        RAISE EXCEPTION TYPE ZCX_API
+          EXPORTING
+            message = js_object-&gt;last_error_message.
+      ENDIF.
+
+    ENDIF.
+** End of JS processing.
+
+**
+    IF var_name IS NOT INITIAL.
+      CONCATENATE property_path var_name INTO l_property_path SEPARATED BY &apos;.&apos;.
+    ELSE.
+      l_property_path = property_path.
+    ENDIF.
+**
+**
+    js_property_table = js_object-&gt;get_properties_scope_global( property_path = l_property_path ).
+    property_table = js_property_table.
+
+* Exit if abap_data is not supplied, normally when called
+* from json_deserialize to get top level properties
+    IF abap_data IS NOT SUPPLIED.
+      EXIT.
+    ENDIF. &quot;***
+
+*
+* Get ABAP data type, dereference if necessary and start
+    datadesc = cl_abap_typedescr=&gt;describe_by_data( abap_data ).
+    IF datadesc-&gt;kind EQ cl_abap_typedescr=&gt;kind_ref.
+      ASSIGN abap_data-&gt;* TO &lt;abap_data&gt;.
+    ELSE.
+      ASSIGN abap_data TO &lt;abap_data&gt;.
+    ENDIF.
+    datadesc = cl_abap_typedescr=&gt;describe_by_data( &lt;abap_data&gt; ).
+
+
+    CASE datadesc-&gt;kind.
+
+      WHEN cl_abap_typedescr=&gt;kind_elem.
+* Scalar: process ABAP elements. Assume no type conversions for the moment.
+        IF var_name IS INITIAL.
+          RAISE EXCEPTION TYPE ZCX_API
+            EXPORTING
+              message = &apos;VAR_NAME is required for scalar values.&apos;.
+        ENDIF.
+        js_property_table = js_object-&gt;get_properties_scope_global( property_path = property_path ).
+        READ TABLE js_property_table WITH KEY name = var_name INTO js_property.
+        IF sy-subrc EQ 0.
+          assign_scalar_value &lt;abap_data&gt; js_property-value.
+        ENDIF.
+
+
+      WHEN cl_abap_typedescr=&gt;kind_struct.
+* Process ABAP structures
+        strudesc ?= datadesc.
+        LOOP AT js_property_table ASSIGNING &lt;jsprop&gt;.
+          compname = &lt;jsprop&gt;-name.
+          TRANSLATE compname TO UPPER CASE.
+          READ TABLE strudesc-&gt;components WITH KEY name = compname INTO l_comp.
+          IF sy-subrc EQ 0.
+            ASSIGN COMPONENT l_comp-name OF STRUCTURE &lt;abap_data&gt; TO &lt;comp&gt;.
+            CASE l_comp-type_kind.
+              WHEN    cl_abap_typedescr=&gt;typekind_struct1  &quot; &apos;v&apos;
+                   OR cl_abap_typedescr=&gt;typekind_struct2  &quot; &apos;u&apos;
+                   OR cl_abap_typedescr=&gt;typekind_table.   &quot; &apos;h&apos; (may need a different treatment one day)
+                CONCATENATE l_property_path &lt;jsprop&gt;-name INTO item_path SEPARATED BY &apos;.&apos;.
+*&gt; Recursive call here
+                json2abap( EXPORTING property_path = item_path CHANGING abap_data = &lt;comp&gt; js_object = js_object ).
+
+              WHEN OTHERS.
+* Process scalars in structures (same as the kind_elem above)
+                assign_scalar_value &lt;comp&gt; &lt;jsprop&gt;-value.
+
+            ENDCASE.
+          ENDIF.
+        ENDLOOP.
+
+      WHEN cl_abap_typedescr=&gt;kind_table.
+* Process ABAP tables
+        IF js_property_table IS NOT INITIAL.
+          tabldesc ?= datadesc.
+          linedesc = tabldesc-&gt;get_table_line_type( ).
+          linetype = linedesc-&gt;get_relative_name( ).
+          ASSIGN &lt;abap_data&gt; TO &lt;itab&gt;.
+          LOOP AT js_property_table INTO js_property WHERE name NE &apos;length&apos;. &quot; the JS object length
+            CREATE DATA newline TYPE (linetype).
+            ASSIGN newline-&gt;* TO &lt;comp&gt;.
+            CASE js_property-kind.
+              WHEN &apos;O&apos;.
+                CONCATENATE l_property_path js_property-name INTO item_path SEPARATED BY &apos;.&apos;.
+                CONDENSE item_path.
+*&gt; Recursive call here
+                json2abap( EXPORTING property_path = item_path CHANGING abap_data = newline js_object = js_object ).
+              WHEN OTHERS. &quot; Assume scalars, &apos;S&apos;, &apos;I&apos;, or other JS types
+                &quot; Process scalars in plain table components(same as the kind_elem above)
+                assign_scalar_value &lt;comp&gt; js_property-value.
+            ENDCASE.
+            INSERT &lt;comp&gt; INTO TABLE &lt;itab&gt;.
+            FREE newline.
+          ENDLOOP.
+        ENDIF.
+
+      WHEN OTHERS. &quot; kind_class, kind_intf
+        &quot; forget it.
+
+    ENDCASE.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="JSON_DESERIALIZE" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON_DESERIALIZE" SCONAME="JSON" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="JSON_DESERIALIZE" SCONAME="PARAMTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_PARMBIND_TAB"/>
+   <source>METHOD json_deserialize.
+    TYPE-POOLS: abap, js.
+
+** Remember function parameter types
+**constants:
+**  abap_func_exporting type abap_func_parmbind-kind value 10,
+**  abap_func_importing type abap_func_parmbind-kind value 20,
+**  abap_func_tables    type abap_func_parmbind-kind value 30,
+**  abap_func_changing  type abap_func_parmbind-kind value 40.
+
+    DATA paramname   TYPE string.
+    DATA js_obj      TYPE REF TO cl_java_script.
+    DATA js_prop_tab TYPE js_property_tab.
+
+    FIELD-SYMBOLS &lt;js_prop&gt; TYPE LINE OF js_property_tab.
+    FIELD-SYMBOLS &lt;parm&gt;    TYPE abap_func_parmbind.
+
+    IF json IS INITIAL. EXIT. ENDIF.
+
+    json2abap( EXPORTING json_string = json  IMPORTING property_table = js_prop_tab  CHANGING js_object = js_obj ).
+
+    LOOP AT js_prop_tab ASSIGNING &lt;js_prop&gt;.
+      paramname = &lt;js_prop&gt;-name.
+      TRANSLATE paramname TO UPPER CASE.
+      READ TABLE paramtab WITH KEY name = paramname ASSIGNING &lt;parm&gt;.
+      IF sy-subrc EQ 0.
+        IF &lt;parm&gt;-kind NE abap_func_importing. &quot;&quot; va al revés, cuidado!!!
+          json2abap( EXPORTING var_name = &lt;js_prop&gt;-name  CHANGING abap_data = &lt;parm&gt;-value js_object = js_obj ).
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="NOTES" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="NOTES" SCONAME="TEXT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="3" PARPASSTYP="0" TYPTYPE="1" TYPE="STRING"/>
+   <source>METHOD notes.
+    DATA location TYPE string.
+
+    CONCATENATE me-&gt;my_url me-&gt;my_service &apos;/RFC_SYSTEM_INFO&apos; INTO location.
+
+    CONCATENATE
+
+    &apos;&lt;html&gt;&lt;head&gt;&lt;title&gt;JSON (NEW) handler notes&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&apos;
+
+    &apos;&lt;h4&gt;About this service...&lt;/h4&gt;&apos;
+    &apos;This is the ABAP implementation of a conversion program that&apos;
+    &apos; tranforms ABAP data into a &lt;a href=&quot;http://www.json.org&quot;&gt;JSON&lt;/a&gt; representation.&apos;
+    &apos;&lt;p&gt;&apos;
+    &apos;It provides a user interface in the form of a ICF service that &apos;
+    &apos;allows web invocation of ABAP function modules. It doesn&apos;&apos;t matter if they are RFC enabled or not.&apos;
+    &apos;&lt;p&gt;In this system this service has &apos;
+    &apos;been assigned to ICF service &lt;a href=&quot;&apos; me-&gt;my_url me-&gt;my_service &apos;&quot;&gt;&apos; me-&gt;my_service &apos;&lt;/a&gt;.&apos;
+    &apos;&lt;p&gt;&apos;
+    &apos;In order to invoke a function module, just put its name in the PATH_INFO &apos;
+    &apos;of the service URL, as is shown in the following examples.&apos;
+
+    &apos;&lt;p&gt;Try the following link to do the default call in JSON format:&lt;pre&gt;&lt;a href=&quot;&apos; location &apos;?format=json&quot;&gt;&apos;
+    location
+    &apos;?format=json&lt;/a&gt;&lt;/pre&gt;&apos;
+
+    &apos;&lt;p&gt;A simple syntax allows to get the output in different formats.&lt;p&gt;&apos;
+
+    &apos;The following gets the output in &lt;a href=&quot;http://yaml.org&quot;&gt;YAML&lt;/a&gt; format:&apos;
+    &apos;&lt;pre&gt;&lt;a href=&quot;&apos; location &apos;?format=yaml&quot;&gt;&apos;
+    location
+    &apos;?format=yaml&lt;/a&gt;&lt;/pre&gt;&apos;
+    &apos;&apos;
+    &apos;&lt;p&gt;And this will get the output in a basic XML representation: &lt;pre&gt;&lt;a href=&quot;&apos; location &apos;?format=xml&quot;&gt;&apos;
+    location
+    &apos;?format=xml&lt;/a&gt;&lt;/pre&gt;&apos;
+
+    &apos;&lt;p&gt;And, just for fun, getting it into Perl format could be handy: &lt;pre&gt;&lt;a href=&quot;&apos; location &apos;?format=perl&quot;&gt;&apos;
+    location
+    &apos;?format=perl&lt;/a&gt;&lt;/pre&gt;&apos;
+
+    &apos;&lt;p&gt;Finnally, you can add a callback to get the JSON response enclosed in a javascript function call,&apos;
+    &apos; in order to allow a &lt;a href=&quot;http://en.wikipedia.org/wiki/JSONP&quot;&gt;JSONP&lt;/a&gt; style response: &apos;
+    &apos;&lt;pre&gt;&lt;a href=&quot;&apos;
+    location &apos;?format=json&amp;callback=callMe&quot;&gt;&apos;
+    location &apos;?format=json&amp;callback=callMe&lt;/a&gt;&lt;/pre&gt;&apos;
+
+    &apos;&lt;hr&gt;&lt;h4&gt;WARNING&lt;/h4&gt;This is work in progress and may not be suitable for use in productive &apos;
+    &apos;systems. The interface is somewhat unstable. Please feel free to test it and report  &apos;
+    &apos;any bug and improvement you may find.&apos;
+    &apos;&lt;p&gt;Use it at your own risk!&apos;
+    &apos;&lt;p&gt;For more information: &lt;a href=&quot;https://cw.sdn.sap.com/cw/groups/json-adapter-for-abap-function-modules&quot;&gt;&apos;
+    &apos;https://cw.sdn.sap.com/cw/groups/json-adapter-for-abap-function-modules&lt;/a&gt;&apos;
+    &apos;&lt;p&gt;&apos;
+    &apos;If you have any questions, please contact me at &lt;a href=&quot;mailto:cesar.martin@sap.com&quot;&gt;&apos;
+    &apos;cesar.martin@sap.com&lt;/a&gt;&apos;
+    &apos;&lt;p&gt;&apos;
+
+
+    &apos;&lt;hr&gt;&lt;/body&gt;&lt;/html&gt;&apos;
+
+
+    INTO text RESPECTING BLANKS.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="PARAMTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_PARMBIND_TAB"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="PARAMS" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="EXCEPTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_EXCPBIND_TAB" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="SHOW_IMPP" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="JSONP" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="LOWERCASE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PARVALUE="ABAP_FALSE"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="FORMAT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PARVALUE="&apos;JSON&apos;"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="FUNCNAME" VERSION="1" LANGU="E" DESCRIPT="Name of Function Module" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="RS38L_FNAM" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="CAMELCASE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PARVALUE="ABAP_FALSE"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_ID" SCONAME="O_STRING" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <source>METHOD serialize_id.
+    TYPE-POOLS: abap.
+
+    DATA:
+      stab        TYPE abap_trans_srcbind_tab,
+      slin        TYPE abap_trans_srcbind,
+      oexcp       TYPE REF TO cx_root,
+      etext       TYPE string,
+      adata       TYPE REF TO data,
+      json_writer TYPE REF TO cl_sxml_string_writer.
+
+    FIELD-SYMBOLS &lt;parm&gt; TYPE abap_func_parmbind.
+*  field-symbols &lt;excep&gt; type abap_func_excpbind.
+
+
+    LOOP AT paramtab ASSIGNING &lt;parm&gt;.
+      IF show_impp NE &apos;X&apos;
+            AND &lt;parm&gt;-kind EQ abap_func_exporting. &quot;&quot; va al revés, cuidado!!!
+        CONTINUE.
+      ENDIF.
+      slin-name  = &lt;parm&gt;-name.
+      slin-value = &lt;parm&gt;-value.
+      APPEND slin TO stab. CLEAR slin.
+    ENDLOOP.
+
+    IF exceptab IS NOT INITIAL.
+      slin-name  = &apos;EXCEPTION&apos;.
+      GET REFERENCE OF exceptab INTO adata.
+      slin-value = adata.
+      APPEND slin TO stab. CLEAR slin.
+    ENDIF.
+
+
+    json_writer = cl_sxml_string_writer=&gt;create( type = if_sxml=&gt;co_xt_json ).
+
+    TRY.
+
+        CASE format.
+
+          WHEN &apos;XML&apos;.
+
+            CALL TRANSFORMATION id OPTIONS data_refs = &apos;embedded&apos;
+                                           initial_components = &apos;include&apos;
+                                   SOURCE (stab)
+                                   RESULT XML o_string.
+
+
+          WHEN OTHERS.
+
+            CALL TRANSFORMATION id OPTIONS data_refs = &apos;embedded&apos;
+                                           initial_components = &apos;include&apos;
+                                   SOURCE (stab)
+                                   RESULT XML json_writer.
+
+            o_string = cl_abap_codepage=&gt;convert_from( json_writer-&gt;get_output( ) ).
+*  json_string = json_writer-&gt;get_output( ).
+
+            IF jsonp IS NOT INITIAL.
+              CONCATENATE jsonp &apos;(&apos; o_string &apos;);&apos; INTO o_string.
+            ENDIF.
+
+        ENDCASE.
+
+
+      CATCH cx_root INTO oexcp.
+
+        etext = oexcp-&gt;if_message~get_text( ).
+        RAISE EXCEPTION TYPE zcx_api
+          EXPORTING
+            message = etext.
+
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="PARAMTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_PARMBIND_TAB"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="PARAMS" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="EXCEPTAB" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_FUNC_EXCPBIND_TAB" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="SHOW_IMPP" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="JSONP" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="LOWERCASE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PARVALUE="ABAP_FALSE"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="CAMELCASE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PARVALUE="ABAP_FALSE"/>
+   <parameter CLSNAME="ZCL_API" CMPNAME="SERIALIZE_JSON" SCONAME="O_STRING" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <source>METHOD serialize_json.
+    TYPE-POOLS: abap.
+
+** Remember function parameter types
+**constants:
+**  abap_func_exporting type abap_func_parmbind-kind value 10,
+**  abap_func_importing type abap_func_parmbind-kind value 20,
+**  abap_func_tables    type abap_func_parmbind-kind value 30,
+**  abap_func_changing  type abap_func_parmbind-kind value 40.
+
+    DATA json_fragments TYPE TABLE OF string.
+    DATA rec_json_string TYPE string.
+    DATA paramname TYPE string.
+    DATA l_lines TYPE i.
+    DATA l_index TYPE i.
+    DATA upcase TYPE xfeld VALUE &apos;X&apos;.
+    FIELD-SYMBOLS &lt;parm&gt; TYPE abap_func_parmbind.
+    FIELD-SYMBOLS &lt;excep&gt; TYPE abap_func_excpbind.
+
+    IF jsonp IS NOT INITIAL.
+      APPEND jsonp TO json_fragments.
+      APPEND &apos;(&apos; TO json_fragments.
+    ENDIF.
+
+    rec_json_string = &apos;{&apos;.
+    APPEND rec_json_string TO json_fragments.
+    CLEAR rec_json_string.
+
+    CLEAR l_index.
+    l_lines = lines( paramtab ).
+
+    LOOP AT paramtab ASSIGNING &lt;parm&gt;.
+      IF show_impp NE &apos;X&apos;
+            AND &lt;parm&gt;-kind EQ abap_func_exporting. &quot;&quot; va al revés, cuidado!!!
+        SUBTRACT 1 FROM l_lines.
+        CONTINUE.
+      ENDIF.
+      ADD 1 TO l_index.
+      paramname = &lt;parm&gt;-name.
+      IF lowercase EQ abap_true.
+        TRANSLATE paramname TO LOWER CASE.
+        &quot; paramname = to_lower( paramname ).
+        upcase = space.
+      ENDIF.
+      IF camelcase EQ abap_true.
+        paramname = to_mixed( val = paramname  case = &apos;a&apos;).
+      ENDIF.
+      rec_json_string = abap2json( abap_data = &lt;parm&gt;-value  name = paramname  upcase = upcase camelcase = camelcase ).
+      APPEND rec_json_string TO json_fragments.
+      CLEAR rec_json_string.
+      IF l_index &lt; l_lines.
+        APPEND &apos;,&apos; TO json_fragments .
+      ENDIF .
+    ENDLOOP.
+
+    IF exceptab IS NOT INITIAL.
+      IF l_lines GT 0.
+        APPEND &apos;,&apos; TO json_fragments.
+      ENDIF.
+      rec_json_string = abap2json( abap_data = exceptab upcase = &apos;X&apos; name = &apos;EXCEPTION&apos;).
+      APPEND rec_json_string TO json_fragments.
+      CLEAR rec_json_string.
+    ENDIF.
+
+    rec_json_string = &apos;}&apos;.
+    APPEND rec_json_string TO json_fragments.
+    CLEAR rec_json_string.
+
+    IF jsonp IS NOT INITIAL.
+      APPEND &apos;);&apos; TO json_fragments.
+    ENDIF.
+
+    CONCATENATE LINES OF json_fragments INTO o_string.
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCX_API" VERSION="1" LANGU="E" DESCRIPT="JSON handler errors" CATEGORY="40" EXPOSURE="2" STATE="1" RELEASE="0" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk" REFCLSNAME="CX_STATIC_CHECK">
+  <implementing CLSNAME="ZCX_API" REFCLSNAME="IF_T100_DYN_MSG" VERSION="1" EXPOSURE="2" STATE="1" RELTYPE="1" EDITORDER="0 "/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <attribute CLSNAME="ZCX_API" CMPNAME="MESSAGE" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " ATTDECLTYP="0" ATTVALUE="&apos;undefined&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="STRING" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCX_API" CMPNAME="ZCX_JSON" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;000C293CED061EE2A2D7BA5F40F0C8DE&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="SOTR_CONC" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <inheritance CLSNAME="ZCX_API" REFCLSNAME="CX_STATIC_CHECK" VERSION="1" STATE="1"/>
+ </CLAS>
+ <TABL TABNAME="ZICF_API_HANDLER_DATA" DDLANGUAGE="E" TABCLASS="INTTAB" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" DDTEXT="JSON HANDLER Interchange Data" AUTHCLASS="00" PROZPUFF="000" EXCLASS="0" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l AS4VERS="0000" SCHFELDANZ="000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="REQUEST_METHOD" DDLANGUAGE="E" POSITION="0001" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="HTTP_CODE" DDLANGUAGE="E" POSITION="0002" ADMINFIELD="0" INTTYPE="X" INTLEN="000004" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="INT4" LENG="000010" OUTPUTLEN="000000" DECIMALS="000000" MASK="  INT4" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="HTTP_STATUS" DDLANGUAGE="E" POSITION="0003" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="ERROR_MESSAGE" DDLANGUAGE="E" POSITION="0004" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="LOCATION_HEADER" DDLANGUAGE="E" POSITION="0005" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="ICF_URL" DDLANGUAGE="E" POSITION="0006" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="ICF_SERVICE" DDLANGUAGE="E" POSITION="0007" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="PATH_INFO" DDLANGUAGE="E" POSITION="0008" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="DELETE_PARAMS" DDLANGUAGE="E" POSITION="0009" ROLLNAME="STRINGTAB" ADMINFIELD="0" INTLEN="000000" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="TTYP" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  TTYPL" MASKLEN="0000" DDTEXT="Table with Strings" DEPTH="00" COMPTYPE="L" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="I_JSON_DATA" DDLANGUAGE="E" POSITION="0010" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="QS_TAB" DDLANGUAGE="E" POSITION="0011" ROLLNAME="TIHTTPNVP" ADMINFIELD="0" INTLEN="000000" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="TTYP" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  TTYPL" MASKLEN="0000" DDTEXT="HTTP Framework (iHTTP) Table Name/Value Pairs" DEPTH="00" COMPTYPE="L" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="ALT_RESPONSE" DDLANGUAGE="E" POSITION="0012" ADMINFIELD="0" INTTYPE="g" INTLEN="000008" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="STRG" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  STRG" MASKLEN="0000" DEPTH="00" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="SERVER" DDLANGUAGE="E" POSITION="0013" ROLLNAME="IF_HTTP_SERVER" ADMINFIELD="0" INTLEN="000000" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="REF" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  REF RI" MASKLEN="0000" DDTEXT="HTTP Framework (iHTTP) HTTP Server" DEPTH="00" COMPTYPE="R" REFTYPE="I" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZICF_API_HANDLER_DATA" FIELDNAME="CAMELCASE_NAMES" DDLANGUAGE="E" POSITION="0014" ROLLNAME="STRINGTAB" ADMINFIELD="0" INTLEN="000000" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="TTYP" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  TTYPL" MASKLEN="0000" DDTEXT="Table with Strings" DEPTH="00" COMPTYPE="L" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+</nugget>

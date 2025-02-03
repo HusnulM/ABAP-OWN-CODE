@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="NUGG_APPROVAL_CLASS">
+ <CLAS CLSNAME="ZCL_FI_REVERSALDOC" VERSION="1" LANGU="E" DESCRIPT="Approval Class for Reversal Doc" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <attribute CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="GC_TRANS" VERSION="1" LANGU="E" DESCRIPT="Transaction Type" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;FI_00001&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ZDE_TRANSTYPE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="APPROVED" VERSION="1" LANGU="E" DESCRIPT="Approved" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="APPROVED" SCONAME="IW_WFDAT" VERSION="1" LANGU="E" DESCRIPT="Structure for Workflow Approval" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZCA_ST_WFAPRV"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="APPROVED" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD approved.
+    CLEAR et_return.
+
+    SELECT bukrs, belnr, gjahr, stgrd, budat, monat, vatdate, voidr
+      FROM zfidt002
+      INTO TABLE @DATA(lt_data)
+      WHERE reqno EQ @iw_wfdat-objky.
+
+    IF lt_data IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    LOOP AT lt_data INTO DATA(ls_data).
+      bdc_fb08(
+        EXPORTING
+          iv_belnr  = ls_data-belnr
+          iv_bukrs  = ls_data-bukrs
+          iv_gjahr  = ls_data-gjahr
+          iv_stgrd  = ls_data-stgrd
+          iv_budat  = ls_data-budat
+          iv_vatdt  = ls_data-vatdate
+          iv_monat  = ls_data-monat
+          iv_voidr  = ls_data-voidr
+        IMPORTING
+          et_return = DATA(lt_return)
+      ).
+
+      APPEND LINES OF lt_return TO et_return.
+    ENDLOOP.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" VERSION="1" LANGU="E" DESCRIPT="Call Transaction FB08" EXPOSURE="0" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_BELNR" VERSION="1" LANGU="E" DESCRIPT="Document Number of an Accounting Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BELNR_D"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_BUKRS" VERSION="1" LANGU="E" DESCRIPT="Company Code" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BUKRS"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_GJAHR" VERSION="1" LANGU="E" DESCRIPT="Fiscal Year" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="GJAHR"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_STGRD" VERSION="1" LANGU="E" DESCRIPT="Reason for Reversal or Inverse Posting" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="STGRD"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_BUDAT" VERSION="1" LANGU="E" DESCRIPT="Posting Date in the Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BUDAT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_VATDT" VERSION="1" LANGU="E" DESCRIPT="Tax Reporting Date" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="VATDATE" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_MONAT" VERSION="1" LANGU="E" DESCRIPT="Fiscal period" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="MONAT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="IV_VOIDR" VERSION="1" LANGU="E" DESCRIPT="Check void reason code" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="VOIDR" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="BDC_FB08" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD bdc_fb08.
+    DATA:
+      lv_mode    TYPE char1,
+      lv_budat   TYPE char10,
+      lv_vatdt   TYPE char10,
+      lv_voidr   TYPE char2,
+      lt_bdcdata TYPE bdcdata_tab,
+      lt_bdcmsg  TYPE tab_bdcmsgcoll.
+
+    IF iv_budat EQ &apos;00000000&apos;.
+      lv_budat = &apos;&apos;.
+    ELSE.
+      WRITE iv_budat TO lv_budat.
+    ENDIF.
+
+    IF iv_vatdt EQ &apos;00000000&apos;.
+      lv_vatdt = &apos;&apos;.
+    ELSE.
+      WRITE iv_vatdt TO lv_vatdt.
+    ENDIF.
+
+    IF iv_voidr IS INITIAL.
+      lv_voidr = &apos;&apos;.
+    ELSE.
+      lv_voidr = iv_voidr.
+    ENDIF.
+
+    lt_bdcdata = VALUE #(
+      ( program = &apos;SAPMF05A&apos; dynpro = &apos;0105&apos; dynbegin = &apos;X&apos; )
+          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;=BU&apos; )
+          ( fnam = &apos;RF05A-BELNS&apos;    fval = iv_belnr )
+          ( fnam = &apos;BKPF-BUKRS&apos;     fval = iv_bukrs )
+          ( fnam = &apos;RF05A-GJAHS&apos;    fval = iv_gjahr )
+          ( fnam = &apos;UF05A-STGRD&apos;    fval = iv_stgrd )
+          ( fnam = &apos;BSIS-BUDAT&apos;     fval = lv_budat )
+          ( fnam = &apos;VBKPF-VATDATE&apos;  fval = lv_vatdt )
+          ( fnam = &apos;BSIS-MONAT&apos;     fval = iv_monat )
+          ( fnam = &apos;RF05A-VOIDR&apos;    fval = lv_voidr )
+    ).
+
+    lv_mode = &apos;N&apos;.
+    CALL TRANSACTION &apos;FB08&apos; USING lt_bdcdata
+                            MODE lv_mode
+                            MESSAGES INTO lt_bdcmsg.
+
+    CLEAR et_return.
+
+    LOOP AT lt_bdcmsg INTO DATA(ls_bdcmsg).
+      APPEND INITIAL LINE TO et_return ASSIGNING FIELD-SYMBOL(&lt;fs_return&gt;).
+      &lt;fs_return&gt;-type       = ls_bdcmsg-msgtyp.
+      &lt;fs_return&gt;-id         = ls_bdcmsg-msgid.
+      &lt;fs_return&gt;-number     = ls_bdcmsg-msgnr.
+      &lt;fs_return&gt;-message_v1 = ls_bdcmsg-msgv1.
+      &lt;fs_return&gt;-message_v2 = ls_bdcmsg-msgv2.
+      &lt;fs_return&gt;-message_v3 = ls_bdcmsg-msgv3.
+      &lt;fs_return&gt;-message_v4 = ls_bdcmsg-msgv4.
+      MESSAGE ID &lt;fs_return&gt;-id TYPE &lt;fs_return&gt;-type NUMBER &lt;fs_return&gt;-number
+      WITH &lt;fs_return&gt;-message_v1 &lt;fs_return&gt;-message_v2 &lt;fs_return&gt;-message_v3 &lt;fs_return&gt;-message_v4 INTO &lt;fs_return&gt;-message.
+    ENDLOOP.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_CDS" VERSION="1" LANGU="E" DESCRIPT="Define CDS Name" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_CDS" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_CDS_NAME" VERSION="1" LANGU="E" DESCRIPT="CDS Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_CDS_NAME"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_VAN_NAME" VERSION="1" LANGU="E" DESCRIPT="VAN Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VAN_NAME"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_ENTITY_NAME" VERSION="1" LANGU="E" DESCRIPT="Entity Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_ENTITY_NAME"/>
+   <source>METHOD define_cds.
+    ev_cds_name    = |ZC_VFI_REQ_REVERSE_CDS|.
+    ev_van_name    = |ZC_VFI_REQ_REVERSE_CDS_VAN|.
+    ev_entity_name = |ZC_VFI_REQ_REVERSE(&apos;{ iv_objky }&apos;)|.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Define Variant" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI1" VERSION="1" LANGU="E" DESCRIPT="Variant 1" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT1"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI2" VERSION="1" LANGU="E" DESCRIPT="Variant 2" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT2"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI3" VERSION="1" LANGU="E" DESCRIPT="Variant 3" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT3"/>
+   <parameter CLSNAME="ZCL_FI_REVERSALDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_BRCKT" VERSION="1" LANGU="E" DESCRIPT="Bracket Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_BRACKET"/>
+   <source>METHOD define_variant.
+    &quot;no variant needed
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_FI_RESETCLRDOC" VERSION="1" LANGU="E" DESCRIPT="Approval Class for Reset Cleared Doc" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <attribute CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="GC_TRANS" VERSION="1" LANGU="E" DESCRIPT="Transaction Type" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;FI_00002&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ZDE_TRANSTYPE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="APPROVED" VERSION="1" LANGU="E" DESCRIPT="Approved event handler" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="APPROVED" SCONAME="IW_WFDAT" VERSION="1" LANGU="E" DESCRIPT="Structure for Workflow Approval" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZCA_ST_WFAPRV"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="APPROVED" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>method APPROVED.
+     DATA: lv_bukrs TYPE zfidt001-bukrs
+           , lv_augbl TYPE zfidt001-augbl
+           , lv_auggj TYPE zfidt001-auggj.
+    CLEAR et_return.
+
+    lv_bukrs = iw_wfdat-objky+0(4).
+    lv_augbl = iw_wfdat-objky+4(10).
+    lv_auggj = iw_wfdat-objky+14(4).
+    SELECT bukrs, augbl, auggj
+      FROM zfidt001
+      INTO TABLE @DATA(lt_data)
+      WHERE bukrs = @lv_bukrs
+      AND augbl = @lv_augbl
+      AND auggj = @lv_auggj.
+
+    IF lt_data IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    LOOP AT lt_data INTO DATA(ls_data).
+      do_fbra(
+        EXPORTING
+          iv_bukrs  = ls_data-bukrs
+          iv_augbl  = ls_data-augbl
+          iv_auggj  = ls_data-auggj
+
+        IMPORTING
+          et_return = DATA(lt_return)
+      ).
+
+      APPEND LINES OF lt_return TO et_return.
+    ENDLOOP.
+  endmethod.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_CDS" VERSION="1" LANGU="E" DESCRIPT="Define CDS Name" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_CDS" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_CDS_NAME" VERSION="1" LANGU="E" DESCRIPT="CDS Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_CDS_NAME"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_VAN_NAME" VERSION="1" LANGU="E" DESCRIPT="VAN Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VAN_NAME"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_ENTITY_NAME" VERSION="1" LANGU="E" DESCRIPT="Entity Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_ENTITY_NAME"/>
+   <source>method DEFINE_CDS.
+    DATA:
+       lv_bukrs TYPE zfidt001-bukrs
+       , lv_augbl TYPE zfidt001-augbl
+       , lv_auggj TYPE zfidt001-auggj.
+    ev_cds_name = &apos;ZC_VFI_RESETCLRDOC_CDS&apos;.
+    ev_van_name = &apos;ZC_VFI_RESETCLRDOC_CDS_VAN&apos;.
+    lv_bukrs = iv_objky+0(4).
+    lv_augbl = iv_objky+4(10).
+    lv_auggj = iv_objky+14(4).
+    ev_entity_name = |ZC_VFI_RESETCLRDOC(bukrs=&apos;{ lv_bukrs }&apos;,augbl=&apos;{ lv_augbl }&apos;,auggj=&apos;{ lv_auggj }&apos;)|.
+  endmethod.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Define Variant" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI1" VERSION="1" LANGU="E" DESCRIPT="Variant 1" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT1"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI2" VERSION="1" LANGU="E" DESCRIPT="Variant 2" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT2"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI3" VERSION="1" LANGU="E" DESCRIPT="Variant 3" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT3"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_BRCKT" VERSION="1" LANGU="E" DESCRIPT="Bracket Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_BRACKET"/>
+   <source>method DEFINE_VARIANT.
+    &quot;no variant needed
+  endmethod.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DO_FBRA" VERSION="1" LANGU="E" DESCRIPT="Call Transaction FBRA BDC" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DO_FBRA" SCONAME="IV_BUKRS" VERSION="1" LANGU="E" DESCRIPT="Company Code" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BUKRS"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DO_FBRA" SCONAME="IV_AUGBL" VERSION="1" LANGU="E" DESCRIPT="Document Number of the Clearing Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="AUGBL"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DO_FBRA" SCONAME="IV_AUGGJ" VERSION="1" LANGU="E" DESCRIPT="Fiscal Year of Clearing Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="AUGGJ"/>
+   <parameter CLSNAME="ZCL_FI_RESETCLRDOC" CMPNAME="DO_FBRA" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>method DO_FBRA.
+    DATA: lv_reversal_reason TYPE BKPF-STGRD
+          , lv_budat TYPE BKPF-BUDAT
+          , lv_monat TYPE BKPF-MONAT
+          , lv_xsofo.
+    lv_reversal_reason = &apos;01&apos;. &quot;reversal reason wrong posting.
+
+    CLEAR: lv_budat, lv_monat, lv_xsofo.
+*    do simulation first
+*    reference code from FBRA (include MF05RFR0, line 250-335
+    CALL FUNCTION &apos;CALL_FB08&apos;
+      EXPORTING
+        i_bukrs            = iv_bukrs
+        i_belnr            = iv_augbl
+        i_gjahr            = iv_auggj
+*       I_BVORG            = &apos; &apos;
+        i_stgrd            = lv_reversal_reason
+*       I_VOIDR            =
+*       I_BUDAT            =
+*       I_MONAT            =
+       I_XSIMU            = &apos;X&apos;
+*       I_UPDATE           = &apos;A&apos;
+*       I_MODE             = &apos;N&apos;
+*       I_NO_AUTH          = &apos; &apos;
+*       I_BLDAT            =
+*       I_VATDATE          =
+*       I_PRCHECK          = &apos; &apos;
+     IMPORTING
+       E_BUDAT            = lv_budat
+       E_MONAT            = lv_monat
+       E_XSOFO            = lv_xsofo
+     EXCEPTIONS
+       NOT_POSSIBLE       = 1
+       OTHERS             = 2
+              .
+    IF sy-subrc &lt;&gt; 0.
+* Implement suitable error handling here
+
+      APPEND INITIAL LINE TO et_return ASSIGNING FIELD-SYMBOL(&lt;fs_return&gt;).
+      &lt;fs_return&gt;-type       = sy-msgty.
+      &lt;fs_return&gt;-id         = sy-msgid.
+      &lt;fs_return&gt;-number     = sy-msgno.
+      &lt;fs_return&gt;-message_v1 = sy-msgv1.
+      &lt;fs_return&gt;-message_v2 = sy-msgv2.
+      &lt;fs_return&gt;-message_v3 = sy-msgv3.
+      &lt;fs_return&gt;-message_v4 = sy-msgv4.
+      MESSAGE ID &lt;fs_return&gt;-id TYPE &lt;fs_return&gt;-type NUMBER &lt;fs_return&gt;-number
+      WITH &lt;fs_return&gt;-message_v1 &lt;fs_return&gt;-message_v2 &lt;fs_return&gt;-message_v3 &lt;fs_return&gt;-message_v4 INTO &lt;fs_return&gt;-message.
+    ELSE.
+
+      CALL FUNCTION &apos;CALL_FBRA&apos;
+        EXPORTING
+          i_bukrs                       = iv_bukrs
+          i_augbl                       = iv_augbl
+          i_gjahr                       = iv_auggj
+*         I_XSIMU                       = &apos; &apos;
+*         I_XERLK                       = &apos;X&apos;
+*         I_AUGDT                       = &apos;00000000&apos;
+*         I_STODT                       = &apos;00000000&apos;
+*         I_STOMO                       =
+*         I_RFZEI                       =
+*         I_UPDATE                      = &apos;S&apos;
+*         I_MODE                        = &apos;N&apos;
+*         I_NO_AUTH                     = &apos; &apos;
+*       IMPORTING
+*         E_XSTOR                       =
+*         EV_REVERSE_NEEDED_TEXT1       =
+*         EV_REVERSE_NEEDED_TEXT2       =
+*         EV_REVERSE_NEEDED_TEXT3       =
+*       TABLES
+*         T_ACCNT                       =
+       EXCEPTIONS
+         NOT_POSSIBLE                  = 1
+         OTHERS                        = 2
+                .
+      IF sy-subrc &lt;&gt; 0.
+* Implement suitable error handling here
+
+      ENDIF.
+      APPEND INITIAL LINE TO et_return ASSIGNING &lt;fs_return&gt;.
+      &lt;fs_return&gt;-type       = sy-msgty.
+      &lt;fs_return&gt;-id         = sy-msgid.
+      &lt;fs_return&gt;-number     = sy-msgno.
+      &lt;fs_return&gt;-message_v1 = sy-msgv1.
+      &lt;fs_return&gt;-message_v2 = sy-msgv2.
+      &lt;fs_return&gt;-message_v3 = sy-msgv3.
+      &lt;fs_return&gt;-message_v4 = sy-msgv4.
+      MESSAGE ID &lt;fs_return&gt;-id TYPE &lt;fs_return&gt;-type NUMBER &lt;fs_return&gt;-number
+      WITH &lt;fs_return&gt;-message_v1 &lt;fs_return&gt;-message_v2 &lt;fs_return&gt;-message_v3 &lt;fs_return&gt;-message_v4 INTO &lt;fs_return&gt;-message.
+
+      CALL FUNCTION &apos;CALL_FB08&apos;
+        EXPORTING
+          i_bukrs            = iv_bukrs
+          i_belnr            = iv_augbl
+          i_gjahr            = iv_auggj
+*         I_BVORG            = &apos; &apos;
+          i_stgrd            = lv_reversal_reason
+*         I_VOIDR            =
+*         I_BUDAT            =
+*         I_MONAT            =
+*         I_XSIMU            = &apos; &apos;
+*         I_UPDATE           = &apos;A&apos;
+*         I_MODE             = &apos;N&apos;
+*         I_NO_AUTH          = &apos; &apos;
+*         I_BLDAT            =
+*         I_VATDATE          =
+*         I_PRCHECK          = &apos; &apos;
+*       IMPORTING
+*         E_BUDAT            =
+*         E_MONAT            =
+*         E_XSOFO            =
+       EXCEPTIONS
+         NOT_POSSIBLE       = 1
+         OTHERS             = 2
+                .
+      IF sy-subrc &lt;&gt; 0.
+* Implement suitable error handling here
+      ENDIF.
+      APPEND INITIAL LINE TO et_return ASSIGNING &lt;fs_return&gt;.
+      &lt;fs_return&gt;-type       = sy-msgty.
+      &lt;fs_return&gt;-id         = sy-msgid.
+      &lt;fs_return&gt;-number     = sy-msgno.
+      &lt;fs_return&gt;-message_v1 = sy-msgv1.
+      &lt;fs_return&gt;-message_v2 = sy-msgv2.
+      &lt;fs_return&gt;-message_v3 = sy-msgv3.
+      &lt;fs_return&gt;-message_v4 = sy-msgv4.
+      MESSAGE ID &lt;fs_return&gt;-id TYPE &lt;fs_return&gt;-type NUMBER &lt;fs_return&gt;-number
+      WITH &lt;fs_return&gt;-message_v1 &lt;fs_return&gt;-message_v2 &lt;fs_return&gt;-message_v3 &lt;fs_return&gt;-message_v4 INTO &lt;fs_return&gt;-message.
+
+    ENDIF.
+
+
+
+*    DATA:
+*      lv_mode    TYPE char1,
+*      lt_bdcdata TYPE bdcdata_tab,
+*      lt_bdcmsg  TYPE tab_bdcmsgcoll.
+*
+*    lt_bdcdata = VALUE #(
+*      ( program = &apos;SAPMF05R&apos; dynpro = &apos;0100&apos; dynbegin = &apos;X&apos; )
+*
+*          ( fnam = &apos;RF05R-AUGBL&apos;    fval = iv_augbl )
+*          ( fnam = &apos;RF05R-BUKRS&apos;     fval = iv_bukrs )
+*          ( fnam = &apos;RF05R-GJAHR&apos;    fval = iv_auggj )
+*          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;=RAGL&apos; )
+*
+*      ( program = &apos;SAPLSPO2&apos; dynpro = &apos;0100&apos; dynbegin = &apos;X&apos; )
+*
+*          ( fnam = &apos;BDC_CURSOR&apos;    fval = &apos;SPOP-VAROPTION2&apos; ) &quot;reset and reverse
+*          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;OPT2&apos; )
+*          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;=RAGL&apos; )
+*
+*    ).
+*
+*    lv_mode = &apos;N&apos;.
+*    CALL TRANSACTION &apos;FBRA&apos; USING lt_bdcdata
+*                            MODE lv_mode
+*                            MESSAGES INTO lt_bdcmsg.
+*
+*    CLEAR et_return.
+*
+*    LOOP AT lt_bdcmsg INTO DATA(ls_bdcmsg).
+*      APPEND INITIAL LINE TO et_return ASSIGNING FIELD-SYMBOL(&lt;fs_return&gt;).
+*      &lt;fs_return&gt;-type       = ls_bdcmsg-msgtyp.
+*      &lt;fs_return&gt;-id         = ls_bdcmsg-msgid.
+*      &lt;fs_return&gt;-number     = ls_bdcmsg-msgnr.
+*      &lt;fs_return&gt;-message_v1 = ls_bdcmsg-msgv1.
+*      &lt;fs_return&gt;-message_v2 = ls_bdcmsg-msgv2.
+*      &lt;fs_return&gt;-message_v3 = ls_bdcmsg-msgv3.
+*      &lt;fs_return&gt;-message_v4 = ls_bdcmsg-msgv4.
+*      MESSAGE ID &lt;fs_return&gt;-id TYPE &lt;fs_return&gt;-type NUMBER &lt;fs_return&gt;-number
+*      WITH &lt;fs_return&gt;-message_v1 &lt;fs_return&gt;-message_v2 &lt;fs_return&gt;-message_v3 &lt;fs_return&gt;-message_v4 INTO &lt;fs_return&gt;-message.
+*    ENDLOOP.
+  endmethod.</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_FI_CANCELIVDOC" VERSION="1" LANGU="E" DESCRIPT="Approval Class for Cancel Invoice Document" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <attribute CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="GC_TRANS" VERSION="1" LANGU="E" DESCRIPT="Transaction Type" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;FI_00003&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ZDE_TRANSTYPE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="APPROVED" VERSION="1" LANGU="E" DESCRIPT="Approved" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="APPROVED" SCONAME="IW_WFDAT" VERSION="1" LANGU="E" DESCRIPT="Structure for Workflow Approval" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZCA_ST_WFAPRV"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="APPROVED" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD APPROVED.
+    DATA: lt_data TYPE STANDARD TABLE OF zfidt003,
+          lw_data TYPE zfidt003,
+          lv_belnr  TYPE zfidt003-belnr,
+          lv_gjahr  TYPE zfidt003-gjahr.
+
+    lv_belnr = iw_wfdat-objky+0(10).
+    lv_gjahr = iw_wfdat-objky+10(4).
+
+    CLEAR:  lt_data[],
+            et_return[].
+    SELECT *
+      FROM zfidt003
+      INTO TABLE lt_data
+***      WHERE reqno EQ iw_wfdat-objky.
+      WHERE belnr EQ lv_belnr
+        AND gjahr EQ lv_gjahr.
+
+    IF lt_data[] IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    LOOP AT lt_data INTO lw_data.
+      bdc_mr8m(
+        EXPORTING
+          iv_belnr  = lw_data-belnr
+          iv_gjahr  = lw_data-gjahr
+          iv_stgrd  = lw_data-stgrd
+          iv_budat  = lw_data-budat
+          iv_test   = lw_data-test_mode
+        IMPORTING
+          et_return = DATA(lt_return)
+      ).
+
+      APPEND LINES OF lt_return TO et_return.
+    ENDLOOP.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" VERSION="1" LANGU="E" DESCRIPT="Call Transaction MR8M" EXPOSURE="0" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="IV_BELNR" VERSION="1" LANGU="E" DESCRIPT="Document Number of an Invoice Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="RE_BELNR"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="IV_GJAHR" VERSION="1" LANGU="E" DESCRIPT="Fiscal Year" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="GJAHR"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="IV_STGRD" VERSION="1" LANGU="E" DESCRIPT="Reason for Reversal or Inverse Posting" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="STGRD"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="IV_BUDAT" VERSION="1" LANGU="E" DESCRIPT="Posting Date in the Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BUDAT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="IV_TEST" VERSION="1" LANGU="E" DESCRIPT="Test Mode" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="/AIF/IFTESTRUN" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="BDC_MR8M" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD BDC_MR8M.
+    DATA:
+***      lv_mode    TYPE char1,
+***      lt_bdcdata TYPE bdcdata_tab,
+***      lt_bdcmsg  TYPE tab_bdcmsgcoll.
+***      lt_return     TYPE STANDARD TABLE OF bapiret2,
+      lw_return     TYPE bapiret2,
+      lv_belnr_rev  TYPE bapi_incinv_fld-inv_doc_no.
+
+
+***    lt_bdcdata = VALUE #(
+***      ( program  = &apos;SAPLMR1M&apos;
+***        dynpro   = &apos;0300&apos;
+***        dynbegin = &apos;X&apos; )
+***          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;=RBAN&apos; )
+***          ( fnam = &apos;RBKPV-BELNR&apos;    fval = &apos;&apos; )
+***          ( fnam = &apos;RBKPV-GJAHR&apos;    fval = &apos;&apos; )
+***          ( fnam = &apos;UF05A-STGRD&apos;    fval = &apos;&apos; )
+***          ( fnam = &apos;G_BUDAT&apos;        fval = &apos;&apos; )
+***
+***      ( program  = &apos;SAPLMR1M&apos;
+***        dynpro   = &apos;6000&apos;
+***        dynbegin = &apos;X&apos; )
+***          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;/EPPCH&apos; )
+***
+***      ( program  = &apos;SAPLMR1M&apos;
+***        dynpro   = &apos;6000&apos;
+***        dynbegin = &apos;X&apos; )
+***          ( fnam = &apos;BDC_OKCODE&apos;     fval = &apos;/EDELE&apos; )
+***    ).
+***
+***    lv_mode = &apos;N&apos;.
+***    CALL TRANSACTION &apos;MR8M&apos; USING lt_bdcdata
+***                            MODE lv_mode
+***                            MESSAGES INTO lt_bdcmsg.
+***
+***    CLEAR et_return.
+***    LOOP AT lt_bdcmsg INTO DATA(ls_bdcmsg).
+***      APPEND INITIAL LINE TO et_return ASSIGNING FIELD-SYMBOL(&lt;fs_return&gt;).
+***      &lt;fs_return&gt;-type       = ls_bdcmsg-msgtyp.
+***      &lt;fs_return&gt;-id         = ls_bdcmsg-msgid.
+***      &lt;fs_return&gt;-number     = ls_bdcmsg-msgnr.
+***      &lt;fs_return&gt;-message_v1 = ls_bdcmsg-msgv1.
+***      &lt;fs_return&gt;-message_v2 = ls_bdcmsg-msgv2.
+***      &lt;fs_return&gt;-message_v3 = ls_bdcmsg-msgv3.
+***      &lt;fs_return&gt;-message_v4 = ls_bdcmsg-msgv4.
+***
+***      MESSAGE ID &lt;fs_return&gt;-id
+***        TYPE &lt;fs_return&gt;-type
+***        NUMBER &lt;fs_return&gt;-number
+***        WITH &lt;fs_return&gt;-message_v1
+***              &lt;fs_return&gt;-message_v2
+***              &lt;fs_return&gt;-message_v3
+***              &lt;fs_return&gt;-message_v4
+***        INTO &lt;fs_return&gt;-message.
+***    ENDLOOP.
+
+    CLEAR et_return[].
+    IF iv_test EQ abap_true.
+*     test/simulation mode
+      CLEAR lw_return.
+      lw_return-type    = &apos;S&apos;.
+      lw_return-message = &apos;This Simulation of Invoice Cancelling request has been fully approved&apos;.
+      APPEND lw_return TO et_return.
+
+    ELSE.
+*     actual processing mode
+      CLEAR lv_belnr_rev.
+      CALL FUNCTION &apos;BAPI_INCOMINGINVOICE_CANCEL&apos;
+        EXPORTING
+          invoicedocnumber          = iv_belnr
+          fiscalyear                = iv_gjahr
+          reasonreversal            = iv_stgrd
+          postingdate               = iv_budat
+        IMPORTING
+          invoicedocnumber_reversal = lv_belnr_rev
+        TABLES
+          return                    = et_return.
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_CDS" VERSION="1" LANGU="E" DESCRIPT="Define CDS Name" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_CDS" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_CDS_NAME" VERSION="1" LANGU="E" DESCRIPT="CDS Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_CDS_NAME"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_VAN_NAME" VERSION="1" LANGU="E" DESCRIPT="VAN Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VAN_NAME"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_CDS" SCONAME="EV_ENTITY_NAME" VERSION="1" LANGU="E" DESCRIPT="Entity Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_ENTITY_NAME"/>
+   <source>METHOD DEFINE_CDS.
+    DATA:
+***          lv_reqno  TYPE zfidt003-reqno,
+          lv_belnr  TYPE zfidt003-belnr,
+          lv_gjahr  TYPE zfidt003-gjahr.
+
+    ev_cds_name    = |ZC_VFI_CNCLINVDOC_CDS|.
+    ev_van_name    = |ZC_VFI_CNCLINVDOC_CDS_VAN|.
+
+***    ev_entity_name = |ZC_VFI_CNCLINVDOC(&apos;{ iv_objky }&apos;)|.
+******    lv_reqno = iv_objky+0(14).
+******    lv_belnr = iv_objky+14(10).
+******    lv_gjahr = iv_objky+24(4).
+
+    lv_belnr = iv_objky+0(10).
+    lv_gjahr = iv_objky+10(4).
+******    ev_entity_name = |ZC_VFI_RESETCLRDOC(reqno=&apos;{ lv_reqno }&apos;,belnr=&apos;{ lv_belnr }&apos;,gjahr=&apos;{ lv_gjahr }&apos;)|.
+    ev_entity_name = |ZC_VFI_CNCLINVDOC(belnr=&apos;{ lv_belnr }&apos;,gjahr=&apos;{ lv_gjahr }&apos;)|.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Define Variant" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI1" VERSION="1" LANGU="E" DESCRIPT="Variant 1" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT1"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI2" VERSION="1" LANGU="E" DESCRIPT="Variant 2" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT2"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI3" VERSION="1" LANGU="E" DESCRIPT="Variant 3" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT3"/>
+   <parameter CLSNAME="ZCL_FI_CANCELIVDOC" CMPNAME="DEFINE_VARIANT" SCONAME="EV_BRCKT" VERSION="1" LANGU="E" DESCRIPT="Bracket Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_BRACKET"/>
+   <source>METHOD DEFINE_VARIANT.
+    &quot;no variant needed
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_FI_PAYMENT_PROP" VERSION="1" LANGU="E" DESCRIPT="Approval Class for Payment Proposal" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <attribute CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="GC_TRANS" VERSION="1" LANGU="E" DESCRIPT="Transaction Type" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;FI_00004&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ZDE_TRANSTYPE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="APPROVED" VERSION="1" LANGU="E" DESCRIPT="Approved" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="APPROVED" SCONAME="IW_WFDAT" VERSION="1" LANGU="E" DESCRIPT="Structure for Workflow Approval" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZCA_ST_WFAPRV"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="APPROVED" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD APPROVED.
+    DATA: lt_data TYPE STANDARD TABLE OF zfidt004,
+          lw_data TYPE zfidt004,
+          lv_belnr  TYPE zfidt004-belnr,
+          lv_gjahr  TYPE zfidt004-gjahr,
+          lv_bukrs  TYPE zfidt004-bukrs.
+
+    lv_bukrs = iw_wfdat-objky+0(4).
+    lv_belnr = iw_wfdat-objky+4(10).
+    lv_gjahr = iw_wfdat-objky+14(4).
+
+    CLEAR:  lt_data[],
+            et_return[].
+    SELECT *
+      FROM zfidt004
+      INTO TABLE lt_data
+      WHERE bukrs EQ lv_bukrs
+        AND belnr EQ lv_belnr
+        AND gjahr EQ lv_gjahr.
+
+    IF lt_data[] IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    LOOP AT lt_data INTO lw_data.
+      bdc(
+        EXPORTING
+          iv_belnr  = lw_data-belnr
+          iv_gjahr  = lw_data-gjahr
+          iv_bukrs  = lw_data-bukrs
+        IMPORTING
+          et_return = DATA(lt_return)
+      ).
+
+      APPEND LINES OF lt_return TO et_return.
+    ENDLOOP.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="BDC" VERSION="1" LANGU="E" DESCRIPT="Call Transaction" EXPOSURE="0" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="BDC" SCONAME="IV_BELNR" VERSION="1" LANGU="E" DESCRIPT="Document Number of an Invoice Document" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BELNR_D"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="BDC" SCONAME="IV_GJAHR" VERSION="1" LANGU="E" DESCRIPT="Fiscal Year" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="GJAHR"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="BDC" SCONAME="IV_BUKRS" VERSION="1" LANGU="E" DESCRIPT="Reason for Reversal or Inverse Posting" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="BUKRS"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="BDC" SCONAME="ET_RETURN" VERSION="1" LANGU="E" DESCRIPT="Return table" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="BAPIRET2_T"/>
+   <source>METHOD BDC.
+    DATA: lw_return     TYPE bapiret2.
+      CLEAR lw_return.
+      lw_return-type    = &apos;S&apos;.
+      lw_return-message = &apos;Payment Proposal event request has been fully approved&apos;.
+      APPEND lw_return TO et_return.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_CDS" VERSION="1" LANGU="E" DESCRIPT="Define CDS Name" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_CDS" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_CDS" SCONAME="EV_CDS_NAME" VERSION="1" LANGU="E" DESCRIPT="CDS Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_CDS_NAME"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_CDS" SCONAME="EV_VAN_NAME" VERSION="1" LANGU="E" DESCRIPT="VAN Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VAN_NAME"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_CDS" SCONAME="EV_ENTITY_NAME" VERSION="1" LANGU="E" DESCRIPT="Entity Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_ENTITY_NAME"/>
+   <source>METHOD DEFINE_CDS.
+
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Define Variant" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" SCONAME="IV_OBJKY" VERSION="1" LANGU="E" DESCRIPT="Object Key" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_OBJECT_KEY"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI1" VERSION="1" LANGU="E" DESCRIPT="Variant 1" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT1"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI2" VERSION="1" LANGU="E" DESCRIPT="Variant 2" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT2"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" SCONAME="EV_VARI3" VERSION="1" LANGU="E" DESCRIPT="Variant 3" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_VARIANT3"/>
+   <parameter CLSNAME="ZCL_FI_PAYMENT_PROP" CMPNAME="DEFINE_VARIANT" SCONAME="EV_BRCKT" VERSION="1" LANGU="E" DESCRIPT="Bracket Name" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="ZDE_BRACKET"/>
+   <source>METHOD DEFINE_VARIANT.
+    &quot;no variant needed
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <TABL TABNAME="ZFIDT002" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Request Reversal FI Document" AUTHCLASS="00" MAINFLAG="X" CONTFLAG="A" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l TABNAME="ZFIDT002" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N" ROWORCOLST="C"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="REQNO" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="ZFIDE001" ADMINFIELD="0" INTTYPE="C" INTLEN="000024" NOTNULL="X" DOMNAME="CHAR12" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="10" SCRLEN3="28" DTELMASTER="E" DATATYPE="CHAR" LENG="000012" OUTPUTLEN="000012" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Request No Reversal Document" REPTEXT="Request No" SCRTEXT_S="Request No" SCRTEXT_M="Request No" SCRTEXT_L="Request No Reversal Document" DOMNAME3L="CHAR12" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="BUKRS" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="BUKRS" ADMINFIELD="0" INTTYPE="C" INTLEN="000008" NOTNULL="X" DOMNAME="BUKRS" ROUTPUTLEN="000000" MEMORYID="BUK" LOGFLAG="X" HEADLEN="04" SCRLEN1="06" SCRLEN2="15" SCRLEN3="15" DTELMASTER="D" DATATYPE="CHAR" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" ENTITYTAB="T001" MASK="  CHARE" MASKLEN="0000" DDTEXT="Company Code" REPTEXT="CoCd" SCRTEXT_S="CoCode" SCRTEXT_M="Company Code" SCRTEXT_L="Company Code" DOMNAME3L="BUKRS" SHLPORIGIN="D" SHLPNAME="C_T001" SHLPFIELD="BUKRS" DEPTH="00" COMPTYPE="E" DEFFDNAME="COMP_CODE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="BELNR" DDLANGUAGE="E" POSITION="0004" KEYFLAG="X" ROLLNAME="BELNR_D" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="BELNR" ROUTPUTLEN="000000" MEMORYID="BLN" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Document Number of an Accounting Document" REPTEXT="DocumentNo" SCRTEXT_S="DocumentNo" SCRTEXT_M="Document Number" SCRTEXT_L="Document Number" DOMNAME3L="BELNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="AC_DOC_NO" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="GJAHR" DDLANGUAGE="E" POSITION="0005" KEYFLAG="X" ROLLNAME="GJAHR" ADMINFIELD="0" INTTYPE="N" INTLEN="000008" NOTNULL="X" DOMNAME="GJAHR" ROUTPUTLEN="000000" MEMORYID="GJR" LOGFLAG="X" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" CONVEXIT="GJAHR" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Fiscal Year" REPTEXT="Year" SCRTEXT_S="Fiscal Yr" SCRTEXT_M="Fiscal Year" SCRTEXT_L="Fiscal Year" DOMNAME3L="GJAHR" DEPTH="00" COMPTYPE="E" DEFFDNAME="FISC_YEAR" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="STGRD" DDLANGUAGE="E" POSITION="0006" ROLLNAME="STGRD" ADMINFIELD="0" INTTYPE="C" INTLEN="000004" DOMNAME="STGRD" ROUTPUTLEN="000000" MEMORYID="FSG" LOGFLAG="X" HEADLEN="09" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000002" OUTPUTLEN="000002" DECIMALS="000000" ENTITYTAB="T041C" MASK="  CHARE" MASKLEN="0000" DDTEXT="Reason for Reversal or Inverse Posting" REPTEXT="Rev.Reas." SCRTEXT_S="Rev. Reas." SCRTEXT_M="Reversal Reason" SCRTEXT_L="Reversal Reason" DOMNAME3L="STGRD" DEPTH="00" COMPTYPE="E" DEFFDNAME="REASON_REV" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="BUDAT" DDLANGUAGE="E" POSITION="0007" ROLLNAME="BUDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Posting Date in the Document" REPTEXT="Pstng Date" SCRTEXT_S="Pstng Date" SCRTEXT_M="Posting Date" SCRTEXT_L="Posting Date" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="PSTNG_DATE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="MONAT" DDLANGUAGE="E" POSITION="0008" ROLLNAME="MONAT" ADMINFIELD="0" INTTYPE="N" INTLEN="000004" DOMNAME="MONAT" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="00" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000002" OUTPUTLEN="000002" DECIMALS="000000" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Fiscal period" SCRTEXT_S="Period" SCRTEXT_M="Period" SCRTEXT_L="Posting period" DOMNAME3L="MONAT" DEPTH="00" COMPTYPE="E" DEFFDNAME="FIS_PERIOD" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="VATDATE" DDLANGUAGE="E" POSITION="0009" ROLLNAME="VATDATE" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="20" SCRLEN1="10" SCRLEN2="20" SCRLEN3="20" DTELMASTER="E" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Tax Reporting Date" REPTEXT="Tax Reporting Date" SCRTEXT_S="TxRptgDte" SCRTEXT_M="Tax Reporting Date" SCRTEXT_L="Tax Reporting Date" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="VOIDR" DDLANGUAGE="E" POSITION="0010" ROLLNAME="VOIDR" ADMINFIELD="0" INTTYPE="N" INTLEN="000004" DOMNAME="VOIDR" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000002" OUTPUTLEN="000002" DECIMALS="000000" ENTITYTAB="TVOID" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Check void reason code" REPTEXT="Check void reason code" SCRTEXT_S="Reason" SCRTEXT_M="Void reason" SCRTEXT_L="Void reason code" DOMNAME3L="VOIDR" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="ERDAT" DDLANGUAGE="E" POSITION="0011" ROLLNAME="ERDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="05" SCRLEN2="13" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Record Created On" REPTEXT="Created On" SCRTEXT_S="On" SCRTEXT_M="Created On" SCRTEXT_L="Created On" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="CR_ON" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="ERTIM" DDLANGUAGE="E" POSITION="0012" ROLLNAME="ERZET" ADMINFIELD="0" INTTYPE="T" INTLEN="000012" DOMNAME="UZEIT" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="TIMS" LENG="000006" OUTPUTLEN="000008" DECIMALS="000000" MASK="  TIMSE" MASKLEN="0000" DDTEXT="Entry time" REPTEXT="Time" SCRTEXT_S="Time" SCRTEXT_M="Time" SCRTEXT_L="Time" DOMNAME3L="UZEIT" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="REC_TIME" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT002" FIELDNAME="ERNAM" DDLANGUAGE="E" POSITION="0013" ROLLNAME="ERNAM" ADMINFIELD="0" INTTYPE="C" INTLEN="000024" DOMNAME="USNAM" ROUTPUTLEN="000000" HEADLEN="12" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000012" OUTPUTLEN="000012" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name of Person Responsible for Creating the Object" REPTEXT="Created By" SCRTEXT_S="Created" SCRTEXT_M="Created By" SCRTEXT_L="Created By" DOMNAME3L="USNAM" DEPTH="00" COMPTYPE="E" DEFFDNAME="CREATED_BY" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+ <DTEL ROLLNAME="ZFIDE001" DDLANGUAGE="E" DOMNAME="CHAR12" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="10" SCRLEN3="28" DDTEXT="Request No Reversal Document" REPTEXT="Request No" SCRTEXT_S="Request No" SCRTEXT_M="Request No" SCRTEXT_L="Request No Reversal Document" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000012" DECIMALS="000000" OUTPUTLEN="000012" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="a">
+   <DD04V ROLLNAME="ZFIDE001" DDLANGUAGE="a" DOMNAME="CHAR12" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="10" SCRLEN3="28" DDTEXT="Request No Reversal Document" REPTEXT="Request No" SCRTEXT_S="Request No" SCRTEXT_M="Request No" SCRTEXT_L="Request No Reversal Document" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000012" DECIMALS="000000" OUTPUTLEN="000012" REFKIND="D"/>
+  </DDLANGUAGE>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZFIDE001" DDLANGUAGE="E" DOMNAME="CHAR12" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="10" SCRLEN3="28" DDTEXT="Request No Reversal Document" REPTEXT="Request No" SCRTEXT_S="Request No" SCRTEXT_M="Request No" SCRTEXT_L="Request No Reversal Document" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000012" DECIMALS="000000" OUTPUTLEN="000012" REFKIND="D"/>
+  </DDLANGUAGE>
+  <DDLANGUAGE LANGU="듁">
+   <DD04V ROLLNAME="ZFIDE001" DDLANGUAGE="듁" DOMNAME="CHAR12" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="10" SCRLEN3="28" DDTEXT="Request No Reversal Document" REPTEXT="Request No" SCRTEXT_S="Request No" SCRTEXT_M="Request No" SCRTEXT_L="Request No Reversal Document" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000012" DECIMALS="000000" OUTPUTLEN="000012" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <TABL TABNAME="ZFIDT001" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Reset Cleared Items Approval Data" AUTHCLASS="00" CONTFLAG="A" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l TABNAME="ZFIDT001" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N" ROWORCOLST="C"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="BUKRS" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="BUKRS" ADMINFIELD="0" INTTYPE="C" INTLEN="000008" NOTNULL="X" DOMNAME="BUKRS" ROUTPUTLEN="000000" MEMORYID="BUK" LOGFLAG="X" HEADLEN="04" SCRLEN1="06" SCRLEN2="15" SCRLEN3="15" DTELMASTER="D" DATATYPE="CHAR" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" ENTITYTAB="T001" MASK="  CHARE" MASKLEN="0000" DDTEXT="Company Code" REPTEXT="CoCd" SCRTEXT_S="CoCode" SCRTEXT_M="Company Code" SCRTEXT_L="Company Code" DOMNAME3L="BUKRS" SHLPORIGIN="D" SHLPNAME="C_T001" SHLPFIELD="BUKRS" DEPTH="00" COMPTYPE="E" DEFFDNAME="COMP_CODE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="AUGBL" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="AUGBL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="BELNR" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="00" SCRLEN2="12" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Document Number of the Clearing Document" REPTEXT="Clrng doc." SCRTEXT_M="Clrng doc." SCRTEXT_L="Clearing Document" DOMNAME3L="BELNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="CLR_DOC_NO" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="AUGGJ" DDLANGUAGE="E" POSITION="0004" KEYFLAG="X" ROLLNAME="AUGGJ" ADMINFIELD="0" INTTYPE="N" INTLEN="000008" NOTNULL="X" DOMNAME="GJAHR" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" CONVEXIT="GJAHR" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Fiscal Year of Clearing Document" REPTEXT="Year" SCRTEXT_S="Fisc. Year" SCRTEXT_M="Clrg Fiscal Yr" SCRTEXT_L="Clearing Fiscal Year" DOMNAME3L="GJAHR" DEPTH="00" COMPTYPE="E" DEFFDNAME="CLR_DOC_YEAR" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="ERDAT" DDLANGUAGE="E" POSITION="0005" ROLLNAME="ERDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="05" SCRLEN2="13" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Record Created On" REPTEXT="Created On" SCRTEXT_S="On" SCRTEXT_M="Created On" SCRTEXT_L="Created On" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="CR_ON" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="ERZET" DDLANGUAGE="E" POSITION="0006" ROLLNAME="ERZET" ADMINFIELD="0" INTTYPE="T" INTLEN="000012" DOMNAME="UZEIT" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="TIMS" LENG="000006" OUTPUTLEN="000008" DECIMALS="000000" MASK="  TIMSE" MASKLEN="0000" DDTEXT="Entry time" REPTEXT="Time" SCRTEXT_S="Time" SCRTEXT_M="Time" SCRTEXT_L="Time" DOMNAME3L="UZEIT" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="REC_TIME" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT001" FIELDNAME="ERNAM" DDLANGUAGE="E" POSITION="0007" ROLLNAME="ERNAM" ADMINFIELD="0" INTTYPE="C" INTLEN="000024" DOMNAME="USNAM" ROUTPUTLEN="000000" HEADLEN="12" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000012" OUTPUTLEN="000012" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name of Person Responsible for Creating the Object" REPTEXT="Created By" SCRTEXT_S="Created" SCRTEXT_M="Created By" SCRTEXT_L="Created By" DOMNAME3L="USNAM" DEPTH="00" COMPTYPE="E" DEFFDNAME="CREATED_BY" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+ <TABL TABNAME="ZFIDT003" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Request Cancel Invoice Document" AUTHCLASS="00" MAINFLAG="X" CONTFLAG="A" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l TABNAME="ZFIDT003" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N" ROWORCOLST="C"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="BELNR" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="RE_BELNR" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="BELNR" ROUTPUTLEN="000000" MEMORYID="RBN" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Document Number of an Invoice Document" REPTEXT="Doc. No." SCRTEXT_S="Doc. No." SCRTEXT_M="Inv. Doc. No." SCRTEXT_L="Invoice Document No." DOMNAME3L="BELNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="INV_DOC_NO" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="GJAHR" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="GJAHR" ADMINFIELD="0" INTTYPE="N" INTLEN="000008" NOTNULL="X" DOMNAME="GJAHR" ROUTPUTLEN="000000" MEMORYID="GJR" LOGFLAG="X" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" CONVEXIT="GJAHR" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Fiscal Year" REPTEXT="Year" SCRTEXT_S="Fiscal Yr" SCRTEXT_M="Fiscal Year" SCRTEXT_L="Fiscal Year" DOMNAME3L="GJAHR" DEPTH="00" COMPTYPE="E" DEFFDNAME="FISC_YEAR" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="STGRD" DDLANGUAGE="E" POSITION="0004" ROLLNAME="STGRD" ADMINFIELD="0" INTTYPE="C" INTLEN="000004" DOMNAME="STGRD" ROUTPUTLEN="000000" MEMORYID="FSG" LOGFLAG="X" HEADLEN="09" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000002" OUTPUTLEN="000002" DECIMALS="000000" ENTITYTAB="T041C" MASK="  CHARE" MASKLEN="0000" DDTEXT="Reason for Reversal or Inverse Posting" REPTEXT="Rev.Reas." SCRTEXT_S="Rev. Reas." SCRTEXT_M="Reversal Reason" SCRTEXT_L="Reversal Reason" DOMNAME3L="STGRD" DEPTH="00" COMPTYPE="E" DEFFDNAME="REASON_REV" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="BUDAT" DDLANGUAGE="E" POSITION="0005" ROLLNAME="BUDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Posting Date in the Document" REPTEXT="Pstng Date" SCRTEXT_S="Pstng Date" SCRTEXT_M="Posting Date" SCRTEXT_L="Posting Date" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="PSTNG_DATE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="BLDAT" DDLANGUAGE="E" POSITION="0006" ROLLNAME="BLDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Document Date in Document" REPTEXT="Doc. Date" SCRTEXT_S="Doc. Date" SCRTEXT_M="Document Date" SCRTEXT_L="Document Date" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="DOC_DATE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="ERDAT" DDLANGUAGE="E" POSITION="0007" ROLLNAME="ERDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="05" SCRLEN2="13" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Record Created On" REPTEXT="Created On" SCRTEXT_S="On" SCRTEXT_M="Created On" SCRTEXT_L="Created On" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="CR_ON" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="ERTIM" DDLANGUAGE="E" POSITION="0008" ROLLNAME="ERZET" ADMINFIELD="0" INTTYPE="T" INTLEN="000012" DOMNAME="UZEIT" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="TIMS" LENG="000006" OUTPUTLEN="000008" DECIMALS="000000" MASK="  TIMSE" MASKLEN="0000" DDTEXT="Entry time" REPTEXT="Time" SCRTEXT_S="Time" SCRTEXT_M="Time" SCRTEXT_L="Time" DOMNAME3L="UZEIT" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="REC_TIME" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="ERNAM" DDLANGUAGE="E" POSITION="0009" ROLLNAME="ERNAM" ADMINFIELD="0" INTTYPE="C" INTLEN="000024" DOMNAME="USNAM" ROUTPUTLEN="000000" HEADLEN="12" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000012" OUTPUTLEN="000012" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name of Person Responsible for Creating the Object" REPTEXT="Created By" SCRTEXT_S="Created" SCRTEXT_M="Created By" SCRTEXT_L="Created By" DOMNAME3L="USNAM" DEPTH="00" COMPTYPE="E" DEFFDNAME="CREATED_BY" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT003" FIELDNAME="TEST_MODE" DDLANGUAGE="E" POSITION="0010" ROLLNAME="/AIF/IFTESTRUN" ADMINFIELD="0" INTTYPE="C" INTLEN="000002" DOMNAME="/AIF/IFTESTRUN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="10" SCRLEN2="20" SCRLEN3="40" DTELMASTER="D" DATATYPE="CHAR" LENG="000001" OUTPUTLEN="000001" DECIMALS="000000" VALEXI="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Test Mode" REPTEXT="Test Mode" SCRTEXT_S="Test Mode" SCRTEXT_M="Test Mode" SCRTEXT_L="Test Mode" DOMNAME3L="/AIF/IFTESTRUN" SHLPORIGIN="F" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+ <TABL TABNAME="ZFIDT004" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Request Payment Proposal" AUTHCLASS="00" CONTFLAG="A" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l TABNAME="ZFIDT004" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N" ROWORCOLST="C"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="BUKRS" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="BUKRS" ADMINFIELD="0" INTTYPE="C" INTLEN="000008" NOTNULL="X" DOMNAME="BUKRS" ROUTPUTLEN="000000" MEMORYID="BUK" LOGFLAG="X" HEADLEN="04" SCRLEN1="06" SCRLEN2="15" SCRLEN3="15" DTELMASTER="D" DATATYPE="CHAR" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" ENTITYTAB="T001" MASK="  CHARE" MASKLEN="0000" DDTEXT="Company Code" REPTEXT="CoCd" SCRTEXT_S="CoCode" SCRTEXT_M="Company Code" SCRTEXT_L="Company Code" DOMNAME3L="BUKRS" SHLPORIGIN="D" SHLPNAME="C_T001" SHLPFIELD="BUKRS" DEPTH="00" COMPTYPE="E" DEFFDNAME="COMP_CODE" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="BELNR" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="BELNR_D" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="BELNR" ROUTPUTLEN="000000" MEMORYID="BLN" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Document Number of an Accounting Document" REPTEXT="DocumentNo" SCRTEXT_S="DocumentNo" SCRTEXT_M="Document Number" SCRTEXT_L="Document Number" DOMNAME3L="BELNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="AC_DOC_NO" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="GJAHR" DDLANGUAGE="E" POSITION="0004" KEYFLAG="X" ROLLNAME="GJAHR" ADMINFIELD="0" INTTYPE="N" INTLEN="000008" NOTNULL="X" DOMNAME="GJAHR" ROUTPUTLEN="000000" MEMORYID="GJR" LOGFLAG="X" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" CONVEXIT="GJAHR" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Fiscal Year" REPTEXT="Year" SCRTEXT_S="Fiscal Yr" SCRTEXT_M="Fiscal Year" SCRTEXT_L="Fiscal Year" DOMNAME3L="GJAHR" DEPTH="00" COMPTYPE="E" DEFFDNAME="FISC_YEAR" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="ERDAT" DDLANGUAGE="E" POSITION="0005" ROLLNAME="ERDAT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATUM" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="05" SCRLEN2="13" SCRLEN3="20" DTELMASTER="D" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Record Created On" REPTEXT="Created On" SCRTEXT_S="On" SCRTEXT_M="Created On" SCRTEXT_L="Created On" DOMNAME3L="DATUM" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="CR_ON" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="ERZET" DDLANGUAGE="E" POSITION="0006" ROLLNAME="ERZET" ADMINFIELD="0" INTTYPE="T" INTLEN="000012" DOMNAME="UZEIT" ROUTPUTLEN="000000" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="TIMS" LENG="000006" OUTPUTLEN="000008" DECIMALS="000000" MASK="  TIMSE" MASKLEN="0000" DDTEXT="Entry time" REPTEXT="Time" SCRTEXT_S="Time" SCRTEXT_M="Time" SCRTEXT_L="Time" DOMNAME3L="UZEIT" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" DEFFDNAME="REC_TIME" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZFIDT004" FIELDNAME="ERNAM" DDLANGUAGE="E" POSITION="0007" ROLLNAME="ERNAM" ADMINFIELD="0" INTTYPE="C" INTLEN="000024" DOMNAME="USNAM" ROUTPUTLEN="000000" HEADLEN="12" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000012" OUTPUTLEN="000012" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name of Person Responsible for Creating the Object" REPTEXT="Created By" SCRTEXT_S="Created" SCRTEXT_M="Created By" SCRTEXT_L="Created By" DOMNAME3L="USNAM" DEPTH="00" COMPTYPE="E" DEFFDNAME="CREATED_BY" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+</nugget>
