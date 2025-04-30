@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="FM_SEND_EMAIL">
+ <FUGR AREA="ZFGMAIL" SPRAS="E" AREAT="Function Send Email">
+  <functionGroupDocumentation/>
+  <mainprogram NAME="SAPLZFGMAIL" VARCL="X" DBAPL="S" DBNA="D$" SUBC="F" APPL="S" RMAND="400" RLOAD="E" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+   <textPool/>
+   <source>*******************************************************************
+*   System-defined Include-files.                                 *
+*******************************************************************
+  INCLUDE LZFGMAILTOP.                       &quot; Global Declarations
+  INCLUDE LZFGMAILUXX.                       &quot; Function Modules
+
+*******************************************************************
+*   User-defined Include-files (if necessary).                    *
+*******************************************************************
+* INCLUDE LZFGMAILF...                       &quot; Subroutines
+* INCLUDE LZFGMAILO...                       &quot; PBO-Modules
+* INCLUDE LZFGMAILI...                       &quot; PAI-Modules
+* INCLUDE LZFGMAILE...                       &quot; Events
+* INCLUDE LZFGMAILP...                       &quot; Local class implement.
+* INCLUDE LZFGMAILT99.                       &quot; ABAP Unit tests</source>
+  </mainprogram>
+  <includeprograms>
+   <include NAME="LZFGMAILTOP" VARCL="X" DBAPL="S" DBNA="D$" SUBC="I" APPL="S" RMAND="400" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+    <include_source/>
+   </include>
+   <include NAME="LZFGMAILTOP" VARCL="X" DBAPL="S" DBNA="D$" SUBC="I" APPL="S" RMAND="400" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+    <include_source>FUNCTION-POOL ZFGMAIL.                      &quot;MESSAGE-ID ..
+
+* INCLUDE LZFGMAILD...                       &quot; Local class definition</include_source>
+   </include>
+  </includeprograms>
+  <functionmodules>
+   <functionmodule NAME="ZFM_SEND_EMAIL" STEXT="Send Email">
+    <importing PARAMETER="I_MAIL_SUBJECT" REFERENCE="X" TYP="SO_OBJ_DES"/>
+    <importing PARAMETER="I_ATTACHMENT_SUBJECT" OPTIONAL="X" REFERENCE="X" TYP="SOOD-OBJDES"/>
+    <importing PARAMETER="LT_MAIL_CONTENT" OPTIONAL="X" REFERENCE="X" TYP="SOLI_TAB"/>
+    <importing PARAMETER="I_MAIL_SUBJECT2" OPTIONAL="X" REFERENCE="X" TYP="STRING"/>
+    <exporting PARAMETER="E_STATUS" REFERENCE="X"/>
+    <exporting PARAMETER="E_SENT_TO_ALL" REFERENCE="X" TYP="OS_BOOLEAN"/>
+    <tables PARAMETER="LT_OTF" DBSTRUCT="ITCOO" OPTIONAL="X"/>
+    <tables PARAMETER="LT_MAILTO" DBSTRUCT="ZSMAIL_TO"/>
+    <tables PARAMETER="LT_EXCEL" OPTIONAL="X"/>
+    <documentation PARAMETER="I_MAIL_SUBJECT" KIND="P" STEXT="Short description of contents" INDEX=" 001"/>
+    <documentation PARAMETER="I_ATTACHMENT_SUBJECT" KIND="P" STEXT="Short description of contents" INDEX=" 002"/>
+    <documentation PARAMETER="LT_MAIL_CONTENT" KIND="P" STEXT="Objcont and Objhead as Table Type" INDEX=" 003"/>
+    <documentation PARAMETER="I_MAIL_SUBJECT2" KIND="P" INDEX=" 004"/>
+    <documentation PARAMETER="E_STATUS" KIND="P" INDEX=" 005"/>
+    <documentation PARAMETER="E_SENT_TO_ALL" KIND="P" STEXT="Boolean" INDEX=" 006"/>
+    <documentation PARAMETER="LT_OTF" KIND="P" STEXT="OTF Structure" INDEX=" 007"/>
+    <documentation PARAMETER="LT_MAILTO" KIND="P" STEXT="Mail To" INDEX=" 008"/>
+    <documentation PARAMETER="LT_EXCEL" KIND="P" INDEX=" 009"/>
+    <fm_source_new>DATA:
+*    lo_document                 TYPE REF TO cl_document_bcs,
+    lo_attachment_type          TYPE soodk-objtp,
+    lo_attachment_subject       TYPE sood-objdes,
+    lv_attachment_subject       TYPE sood-objdes,
+    lo_attachment_size          TYPE sood-objlen,
+    li_attachment_size          TYPE i,
+    lo_att_content_text         TYPE soli_tab,
+    cl_gbt_multirelated_service TYPE REF TO cl_gbt_multirelated_service,
+    cl_bcs                      TYPE REF TO cl_bcs,
+    cl_bcs_exception            TYPE REF TO cx_bcs,
+    gv_text                     TYPE bcsy_text,
+    lo_document                 TYPE REF TO cl_document_bcs,
+    lo_sender                   TYPE REF TO if_sender_bcs,
+    lo_recipient                TYPE REF TO cl_cam_address_bcs.
+
+  DATA:
+    lt_lines    TYPE TABLE OF tline WITH HEADER LINE,
+    content_in  TYPE TABLE OF tline WITH HEADER LINE,
+    content_out TYPE TABLE OF solisti1 WITH HEADER LINE.
+
+  TRY.
+
+      IF cl_gbt_multirelated_service IS INITIAL.
+        CREATE OBJECT cl_gbt_multirelated_service.
+      ENDIF.
+
+      CALL METHOD cl_gbt_multirelated_service-&gt;set_main_html
+        EXPORTING
+          content     = lt_mail_content
+*         filename    = &apos;sapwebform.htm&apos;
+          description = &apos;Regarding Automatic Email by SAP S/4HANA&apos;.
+
+
+
+      &quot;Set Attachment
+      IF lt_otf[] IS NOT INITIAL.
+*        CALL FUNCTION &apos;CONVERT_OTF&apos;
+*          EXPORTING
+*            format                = &apos;PDF&apos;
+*          TABLES
+*            otf                   = lt_otf[]
+*            lines                 = lt_lines[]
+*          EXCEPTIONS
+*            err_max_linewidth     = 1
+*            err_format            = 2
+*            err_conv_not_possible = 3
+*            err_bad_otf           = 4
+*            OTHERS                = 5.
+*
+*        REFRESH: content_in, content_out.
+*        content_in[] = lt_lines[].
+*
+*        CALL FUNCTION &apos;SX_TABLE_LINE_WIDTH_CHANGE&apos;
+*          EXPORTING
+*            line_width_dst              = &apos;255&apos;
+*          TABLES
+*            content_in                  = content_in[]
+*            content_out                 = content_out[]
+*          EXCEPTIONS
+*            err_line_width_src_too_long = 1
+*            err_line_width_dst_too_long = 2
+*            err_conv_failed             = 3
+*            OTHERS                      = 4.
+*
+*        IF sy-subrc &lt;&gt; 0.
+*          MESSAGE ID sy-msgid
+*          TYPE sy-msgty NUMBER sy-msgno
+*          WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+*          EXIT.
+*        ENDIF.
+*
+*        lo_document = cl_document_bcs=&gt;create_from_multirelated( i_subject          = i_mail_subject
+*                                                           i_multirel_service = cl_gbt_multirelated_service ).
+*
+*        lo_attachment_type      = &apos;PDF&apos;.
+*        lo_attachment_subject   = i_attachment_subject.
+*        li_attachment_size      = lines( lo_att_content_text ).
+*        lo_attachment_size      = li_attachment_size * 255.
+*        lo_att_content_text[]   = content_out[].
+**
+*        lo_document-&gt;add_attachment(
+*          i_attachment_type      = lo_attachment_type
+*          i_attachment_subject   = lo_attachment_subject
+*          i_attachment_size      = lo_attachment_size
+*          i_att_content_text     = lo_att_content_text
+*        ).
+      ELSE.
+        IF lt_excel[] IS NOT INITIAL.
+          FIELD-SYMBOLS &lt;fs&gt; TYPE any.
+          DATA lr TYPE REF TO data.
+
+          CREATE DATA lr LIKE LINE OF lt_excel[].
+
+          ASSIGN lr-&gt;* TO &lt;fs&gt;.
+
+          FIELD-SYMBOLS: &lt;itab&gt;    TYPE table,
+                         &lt;wa_itab&gt;.
+
+          DATA: lr_data    TYPE REF TO data.
+          GET REFERENCE OF lt_excel[] INTO lr_data.
+
+          ASSIGN lr_data-&gt;* TO &lt;itab&gt;.
+
+
+          DATA(lv_xstring) = NEW zcl_itab_to_excel( )-&gt;itab_to_xstring( lr_data ).
+
+          DATA(lt_body) = VALUE bcsy_text(
+                ( line = &apos;Dear Recipient,&apos; ) ( )
+                ( line = &apos;Please review excel file&apos; ) ( )
+                ( line = &apos;Thank You&apos; )
+                ).
+
+
+*          SET UP document object
+*          DATA(lo_document)
+          lo_document  = cl_document_bcs=&gt;create_document(
+                i_type = &apos;RAW&apos;
+                i_text = lt_body
+                i_subject = i_mail_subject ).
+
+          lo_attachment_type      = &apos;xls&apos;.
+          lo_attachment_subject   = i_mail_subject.
+          li_attachment_size      = CONV #( xstrlen( lv_xstring ) ).
+          lo_attachment_size      = li_attachment_size * 255.
+          lo_att_content_text[]   = content_out[].
+
+          DATA lv_filename TYPE char50.
+          CLEAR lv_filename.
+          lv_filename = |{ i_mail_subject }.xlsx|.
+          lo_document-&gt;add_attachment(
+            i_attachment_type      = lo_attachment_type
+            i_attachment_subject   = lo_attachment_subject
+            i_attachment_size      = lo_attachment_size
+            i_att_content_text     = lo_att_content_text
+*            i_attachment_header    = VALUE #( ( line = &apos;OverDueInvoice.xlsx&apos; ) )
+            i_attachment_header    = VALUE #( ( line = lv_filename ) )
+            i_att_content_hex      = cl_bcs_convert=&gt;xstring_to_solix( lv_xstring )
+          ).
+        ENDIF.
+      ENDIF.
+
+      IF i_mail_subject = &apos;-&apos;.
+        lo_document = cl_document_bcs=&gt;create_from_multirelated(
+          i_subject          = space
+          i_multirel_service = cl_gbt_multirelated_service
+        ).
+      ELSE.
+        lo_document = cl_document_bcs=&gt;create_from_multirelated(
+          i_subject          = i_mail_subject
+          i_multirel_service = cl_gbt_multirelated_service
+        ).
+      ENDIF.
+
+      IF lt_otf[] IS NOT INITIAL.
+        CALL FUNCTION &apos;CONVERT_OTF&apos;
+          EXPORTING
+            format                = &apos;PDF&apos;
+          TABLES
+            otf                   = lt_otf[]
+            lines                 = lt_lines[]
+          EXCEPTIONS
+            err_max_linewidth     = 1
+            err_format            = 2
+            err_conv_not_possible = 3
+            err_bad_otf           = 4
+            OTHERS                = 5.
+
+        REFRESH: content_in, content_out.
+        content_in[] = lt_lines[].
+
+        CALL FUNCTION &apos;SX_TABLE_LINE_WIDTH_CHANGE&apos;
+          EXPORTING
+            line_width_dst              = &apos;255&apos;
+          TABLES
+            content_in                  = content_in[]
+            content_out                 = content_out[]
+          EXCEPTIONS
+            err_line_width_src_too_long = 1
+            err_line_width_dst_too_long = 2
+            err_conv_failed             = 3
+            OTHERS                      = 4.
+
+        IF sy-subrc &lt;&gt; 0.
+          MESSAGE ID sy-msgid
+          TYPE sy-msgty NUMBER sy-msgno
+          WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+          EXIT.
+        ENDIF.
+
+        lo_attachment_type      = &apos;PDF&apos;.
+        lo_attachment_subject   = i_attachment_subject.
+        li_attachment_size      = lines( lo_att_content_text ).
+        lo_attachment_size      = li_attachment_size * 255.
+        lo_att_content_text[]   = content_out[].
+*
+        lo_document-&gt;add_attachment(
+        i_attachment_type      = lo_attachment_type
+        i_attachment_subject   = lo_attachment_subject
+        i_attachment_size      = lo_attachment_size
+        i_att_content_text     = lo_att_content_text
+        ).
+      ENDIF.
+
+      &quot;Add document to send request
+      cl_bcs = cl_bcs=&gt;create_persistent( ).
+
+      IF cl_bcs IS BOUND.
+*      cl_bcs-&gt;set_message_subject
+        cl_bcs-&gt;set_message_subject(
+        EXPORTING
+          ip_subject = CONV string( i_mail_subject2 ) ).
+      ENDIF.
+
+      cl_bcs-&gt;set_document( lo_document ).
+
+      &quot;Set Mail Sender
+      lo_sender = cl_sapuser_bcs=&gt;create( sy-uname ).
+      cl_bcs-&gt;set_sender( lo_sender ).
+
+      &quot;Set Mail Recipient
+      LOOP AT lt_mailto ASSIGNING FIELD-SYMBOL(&lt;fs_mail_to&gt;).
+        lo_recipient = cl_cam_address_bcs=&gt;create_internet_address( i_address_string = &lt;fs_mail_to&gt;-email_address ).
+*        lo_recipient = cl_cam_address_bcs=&gt;create_internet_address( i_address_string = &apos;No-Reply&apos; ).
+        CASE &lt;fs_mail_to&gt;-recipient_type.
+          WHEN &apos;TO&apos;.
+            cl_bcs-&gt;add_recipient( i_recipient = lo_recipient i_express = &apos;X&apos; ).
+          WHEN &apos;CC&apos;.
+            cl_bcs-&gt;add_recipient( i_recipient = lo_recipient i_express = &apos;X&apos; i_copy = &apos;X&apos; ).
+          WHEN &apos;BCC&apos;.
+            cl_bcs-&gt;add_recipient( i_recipient = lo_recipient i_express = &apos;X&apos; i_blind_copy = &apos;X&apos; ).
+        ENDCASE.
+      ENDLOOP.
+
+      CALL METHOD cl_bcs-&gt;send(
+        EXPORTING
+          i_with_error_screen = &apos;X&apos;
+        RECEIVING
+          result              = e_sent_to_all ).
+      IF e_sent_to_all = &apos;X&apos;.
+        COMMIT WORK.
+        e_status = &apos;Email sent!&apos;.
+      ENDIF.
+    CATCH cx_bcs INTO cl_bcs_exception.
+      CONCATENATE &apos;Error!&apos; &apos;Error type:&apos; cl_bcs_exception-&gt;error_type INTO e_status SEPARATED BY space.
+  ENDTRY.</fm_source_new>
+    <functionModuleDocumentation/>
+   </functionmodule>
+  </functionmodules>
+ </FUGR>
+ <TABL TABNAME="ZSMAIL_TO" DDLANGUAGE="E" TABCLASS="INTTAB" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" DDTEXT="Mail To" AUTHCLASS="00" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l AS4VERS="0000" SCHFELDANZ="000"/>
+  <dd03p TABNAME="ZSMAIL_TO" FIELDNAME="EMAIL_ADDRESS" DDLANGUAGE="E" POSITION="0001" ROLLNAME="AD_SMTPADR" ADMINFIELD="0" INTTYPE="C" INTLEN="000482" DOMNAME="AD_SMTPADR" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="55" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000241" OUTPUTLEN="000241" DECIMALS="000000" LOWERCASE="X" CONVEXIT="SXIDN" MASK="  CHARE" MASKLEN="0000" DDTEXT="E-Mail Address" REPTEXT="E-Mail Address" SCRTEXT_S="E-Mail" SCRTEXT_M="E-Mail Address" SCRTEXT_L="E-Mail Address" DOMMASTER="D" DOMNAME3L="AD_SMTPADR" DEPTH="00" COMPTYPE="E" DEFFDNAME="E_MAIL" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZSMAIL_TO" FIELDNAME="RECIPIENT_TYPE" DDLANGUAGE="E" POSITION="0002" ROLLNAME="CHAR10" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="CHAR10" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Character Field with Length 10" DOMNAME3L="CHAR10" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+</nugget>
