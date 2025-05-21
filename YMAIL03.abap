@@ -39,7 +39,7 @@ DATA ls_mail_content  TYPE  soli.
 DATA: bin_file TYPE string .
 
 PARAMETERS fname TYPE localfile.
-PARAMETERS proot TYPE zchar50 DEFAULT '/usr/sap/imip/attachment/'.
+PARAMETERS proot TYPE zchar50 DEFAULT '/usr/sap/attachment/'.
 
 ** Selection screen value request
 AT SELECTION-SCREEN ON VALUE-REQUEST FOR fname.
@@ -122,7 +122,7 @@ FORM send_email.
 
   REFRESH lt_mailto.
   ls_mailto-recipient_type = 'TO'.
-  ls_mailto-email_address  = 'husnulm15@gmail.com'.
+  ls_mailto-email_address  = 'testmail@gmail.com'.
   APPEND ls_mailto TO lt_mailto.
 
   REFRESH lt_mail_content.
@@ -130,7 +130,7 @@ FORM send_email.
   ls_mail_content-line = 'Testing Email'.
   APPEND ls_mail_content TO lt_mail_content.
 
-  i_mail_sender = 'husnul@imip.co.id'.
+  i_mail_sender = 'sender@mail.co.id'.
   i_mail_sender_name = 'SAP S4 Hana Mail System'.
 
   CALL FUNCTION 'YFM_SEND_EMAIL'
