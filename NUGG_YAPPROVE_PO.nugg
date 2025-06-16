@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="YAPPROVE_PO">
+ <CLAS CLSNAME="YAPPROVE_PO" VERSION="1" LANGU="E" DESCRIPT="Submit RFQ Item Text" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk" REFCLSNAME="CL_REST_RESOURCE">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>*&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <inheritance CLSNAME="YAPPROVE_PO" REFCLSNAME="CL_REST_RESOURCE" VERSION="1" STATE="1">
+   <redefinition CLSNAME="YAPPROVE_PO" REFCLSNAME="CL_REST_RESOURCE" VERSION="1" MTDNAME="IF_REST_RESOURCE~GET" EXPOSURE="2"/>
+   <redefinition CLSNAME="YAPPROVE_PO" REFCLSNAME="CL_REST_RESOURCE" VERSION="1" MTDNAME="IF_REST_RESOURCE~POST" EXPOSURE="2"/>
+  </inheritance>
+  <interfaceMethod CLSNAME="YAPPROVE_PO" CPDNAME="IF_REST_RESOURCE~GET">
+   <source>METHOD if_rest_resource~get.
+
+
+    TYPES:
+      BEGIN OF ty_response,
+        response_code    TYPE char5,
+        response_message TYPE string,
+        approval_code    TYPE string,
+        approval_remark  TYPE string,
+      END OF ty_response.
+
+    DATA ls_params    TYPE zsva_callback. &quot;Parameter API
+    DATA lt_params    TYPE TABLE OF zsva_callback.
+    DATA ls_va TYPE ztfi001.
+
+    DATA ls_response TYPE ty_response.
+
+    DATA ls_data TYPE zst_va_callback.
+
+    DATA(lo_entity)   = mo_request-&gt;get_entity( ).
+    DATA(lo_header_fields)   = mo_request-&gt;get_header_fields( ).
+    DATA(lo_query_params)    = mo_request-&gt;get_uri_query_parameters( ).
+*    GET_URI_QUERY_PARAMETERS
+    DATA(lo_response) = mo_response-&gt;create_entity( ).
+    DATA(lv_data)     = lo_entity-&gt;get_string_data( ).
+
+    DATA : res_msg    TYPE string,
+           res_status TYPE string,
+           res_rows   TYPE string,
+           lv_param   TYPE string,
+           lv_result  TYPE string,
+           lv_messge  TYPE string,
+           lv_notes   TYPE string,
+           lv_rows    TYPE i.
+
+
+    CLEAR ls_data.
+    /ui2/cl_json=&gt;deserialize(
+      EXPORTING
+        json             = lv_data                 &quot; JSON STRING
+      CHANGING
+        data             = ls_data &quot;ls_params               &quot; DATA TO SERIALIZE
+    ).
+
+    READ TABLE lo_query_params ASSIGNING FIELD-SYMBOL(&lt;fs_po&gt;)
+      WITH KEY name = &apos;ponumber&apos;.
+    IF sy-subrc = 0.
+      ls_response-response_code    = &apos;200&apos;.
+      ls_response-response_message = &lt;fs_po&gt;-value.
+    ENDIF.
+
+    READ TABLE lo_query_params ASSIGNING &lt;fs_po&gt;
+      WITH KEY name = &apos;appcode&apos;.
+    IF sy-subrc = 0.
+      ls_response-approval_code = &lt;fs_po&gt;-value.
+    ENDIF.
+
+    READ TABLE lo_query_params ASSIGNING &lt;fs_po&gt;
+      WITH KEY name = &apos;remark&apos;.
+    IF sy-subrc = 0.
+      ls_response-approval_remark = &lt;fs_po&gt;-value.
+      REPLACE ALL OCCURRENCES OF &apos;%20&apos; IN ls_response-approval_remark WITH &apos; &apos;.
+    ENDIF.
+
+*    IF ls_data IS INITIAL.
+*      ls_response-response_code    = &apos;400&apos;.
+*      ls_response-response_message = &apos;Parameters is empty&apos;.
+*    ELSE.
+*
+*      CLEAR ls_params.
+*      READ TABLE ls_data-data INTO ls_params INDEX 1.
+*
+*      CLEAR ls_va.
+*      SELECT SINGLE * FROM ztfi001
+*        INTO ls_va
+*          WHERE vbeln = ls_params-invoiceno.
+*
+*      IF ls_va IS INITIAL.
+*        ls_response-response_code = &apos;400&apos;.
+*        ls_response-response_message  = &apos;Data not found!&apos;.
+*      ELSE.
+*
+*        DATA(paid_time) = ls_params-paymentdate+11.
+*        CONDENSE paid_time.
+*        ls_va-vastatus  = ls_params-paymentstatus.
+*        ls_va-paid_date = |{ ls_params-paymentdate(4) }{ ls_params-paymentdate+5(2) }{ ls_params-paymentdate+8(2) }|.
+*        REPLACE ALL OCCURRENCES OF &apos;:&apos; IN paid_time WITH &apos;&apos;.
+*        ls_va-paid_time = paid_time.
+*        UPDATE ztfi001
+*          SET vastatus  = ls_va-vastatus
+*              paid_date = ls_va-paid_date
+*              paid_time = ls_va-paid_time
+*          WHERE vbeln = ls_va-vbeln AND vanumber = ls_params-virtualaccountno.
+*
+*        COMMIT WORK.
+*        ls_response-response_code = &apos;200&apos;.
+*        ls_response-response_message = &apos;Success!&apos;.
+*
+*        CLEAR paid_time.
+*      ENDIF.
+*    ENDIF.
+
+    lv_result = /ui2/cl_json=&gt;serialize( data = ls_response compress = abap_true pretty_name = /ui2/cl_json=&gt;pretty_mode-camel_case ).
+
+*    CONCATENATE &apos;{&quot;Status&quot;:&quot;&apos; res_status &apos;&quot;, &quot;Message&quot;:&quot;&apos; res_msg &apos;&quot;}&apos; INTO lv_result.
+
+    lo_response-&gt;set_string_data( iv_data = lv_result ).
+    lo_response-&gt;set_header_field(
+    EXPORTING
+      iv_name  = &apos;CONTENT-TYPE&apos;                 &quot; HEADER NAME
+      iv_value = &apos;APPLICATION/JSON&apos;             &quot; HEADER VALUE
+      ).
+  ENDMETHOD.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="YAPPROVE_PO" CPDNAME="IF_REST_RESOURCE~POST">
+   <source>METHOD IF_REST_RESOURCE~POST.
+
+    TYPES:
+      BEGIN OF ty_response,
+        response_Code    TYPE char5,
+        response_Message TYPE string,
+      END OF ty_response.
+
+    DATA ls_params    TYPE zsva_callback. &quot;Parameter API
+    DATA lt_params    TYPE TABLE OF zsva_callback.
+    DATA ls_va TYPE ztfi001.
+
+    DATA ls_response TYPE ty_response.
+
+    DATA ls_data TYPE zst_va_callback.
+
+    DATA(lo_entity)   = mo_request-&gt;get_entity( ).
+    DATA(lo_response) = mo_response-&gt;create_entity( ).
+    DATA(lv_data)     = lo_entity-&gt;get_string_data( ).
+
+    DATA : res_msg    TYPE string,
+           res_status TYPE string,
+           res_rows   TYPE string,
+           lv_param   TYPE string,
+           lv_result  TYPE string,
+           lv_messge  TYPE string,
+           lv_notes   TYPE string,
+           lv_rows    TYPE i.
+
+
+    CLEAR ls_data.
+    /ui2/cl_json=&gt;deserialize(
+    EXPORTING
+      json             = lv_data                 &quot; JSON STRING
+    CHANGING
+    data             = ls_data &quot;ls_params               &quot; DATA TO SERIALIZE
+          ).
+
+    IF ls_data IS INITIAL.
+      ls_response-response_code    = &apos;400&apos;.
+      ls_response-response_message = &apos;Parameters is empty&apos;.
+    ELSE.
+
+      CLEAR ls_params.
+      READ TABLE ls_data-data INTO ls_params INDEX 1.
+
+      CLEAR ls_va.
+      SELECT SINGLE * FROM ztfi001
+      INTO ls_va
+      WHERE vbeln = ls_params-invoiceno.
+
+      IF ls_va IS INITIAL.
+        ls_response-response_code = &apos;400&apos;.
+        ls_response-response_message  = &apos;Data not found!&apos;.
+      ELSE.
+
+        DATA(paid_time) = ls_params-paymentdate+11.
+        CONDENSE paid_time.
+        ls_va-vastatus  = ls_params-paymentstatus.
+        ls_va-paid_date = |{ ls_params-paymentdate(4) }{ ls_params-paymentdate+5(2) }{ ls_params-paymentdate+8(2) }|.
+        REPLACE ALL OCCURRENCES OF &apos;:&apos; IN paid_time WITH &apos;&apos;.
+        ls_va-paid_time = paid_time.
+        UPDATE ztfi001
+        SET vastatus  = ls_va-vastatus
+        paid_date = ls_va-paid_date
+        paid_time = ls_va-paid_time
+        WHERE vbeln = ls_va-vbeln AND vanumber = ls_params-virtualaccountno.
+
+        COMMIT WORK.
+        ls_response-response_code = &apos;200&apos;.
+        ls_response-response_message = &apos;Success!&apos;.
+
+        CLEAR paid_time.
+      ENDIF.
+    ENDIF.
+
+    lv_result = /ui2/cl_json=&gt;serialize( data = ls_response compress = abap_true pretty_name = /ui2/cl_json=&gt;pretty_mode-camel_case ).
+
+*    CONCATENATE &apos;{&quot;Status&quot;:&quot;&apos; res_status &apos;&quot;, &quot;Message&quot;:&quot;&apos; res_msg &apos;&quot;}&apos; INTO lv_result.
+
+    lo_response-&gt;set_string_data( iv_data = lv_result ).
+    lo_response-&gt;set_header_field(
+    EXPORTING
+      iv_name  = &apos;CONTENT-TYPE&apos;                 &quot; HEADER NAME
+      iv_value = &apos;APPLICATION/JSON&apos;             &quot; HEADER VALUE
+      ).
+
+  ENDMETHOD.</source>
+  </interfaceMethod>
+ </CLAS>
+</nugget>
