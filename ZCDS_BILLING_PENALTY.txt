@@ -1,0 +1,18 @@
+@AbapCatalog.sqlViewName: 'ZVSD002'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Billing Penalti / Denda'
+define view ZCDS_BILLING_PENALTY as select from vbrk as a 
+inner join zsdt014 as b on a.vbeln = b.zpenbil
+inner join kna1 as c on a.kunag = c.kunnr
+{
+    key a.vbeln,
+    key b.zsrcbil,
+        a.fkart,
+        a.fkdat,
+        a.aedat,
+        a.kunag,
+        c.name1,
+        a.fksto
+}

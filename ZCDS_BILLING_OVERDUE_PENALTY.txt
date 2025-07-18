@@ -1,0 +1,98 @@
+@AbapCatalog.sqlViewName: 'ZVSD001'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Billing Overdue Penalty Calculation'
+define view ZCDS_BILLING_OVERDUE_PENALTY as select from vbrk as a 
+inner join vbrp as dtl on a.vbeln = dtl.vbeln
+inner join kna1 as b on a.kunag = b.kunnr
+inner join bsid as bs on a.vbeln = bs.vbeln and 
+           a.belnr = bs.belnr and a.gjahr = bs.gjahr and a.bukrs = bs.bukrs //and
+           //bs.buzei = right(dtl.posnr, 3)
+inner join t052 as c on a.zterm = c.zterm
+//Tambahan Join KNVV - Refer Tiket #25070871
+inner join knvv on a.kunag = knvv.kunnr and a.vkorg = knvv.vkorg and 
+                   a.vtweg = knvv.vtweg and a.spart = knvv.spart and knvv.kvgr1 = 'SHC'
+left outer join bseg as d on a.vbeln = d.vbeln and d.bschl = '01' and d.koart = 'D'
+left outer join ZCDS_BILLING_PENALTY as f on a.vbeln = f.zsrcbil and f.fksto = ''
+{
+    key a.kunag,
+    key b.name1,
+    key b.sortl,
+    key a.vbeln,
+    key dtl.posnr,
+    a.waerk,
+    a.fkart,
+    a.zterm,
+    c.ztag1,
+    a.fkdat,
+    a.zbill_rcv_date,
+    a.clrst,
+    a.knumv,    
+    dtl.matnr,
+    dtl.arktx,
+    a.vkorg,
+    a.vtweg,
+    a.spart,
+    bs.blart,
+    bs.budat,
+    bs.wrbtr,
+    bs.dmbtr,
+    bs.waers,
+    bs.fcsl,
+    bs.rfccur,
+    bs.zuonr,
+    d.augbl,
+    d.augdt,
+    a.fksto,
+    a.vbtyp,
+    f.vbeln as bil_penalty
+}
+
+union 
+
+select from vbrk as a 
+inner join vbrp as dtl on a.vbeln = dtl.vbeln
+inner join kna1 as b on a.kunag = b.kunnr
+inner join bsad as bs on a.vbeln = bs.vbeln and 
+           a.belnr = bs.belnr and a.gjahr = bs.gjahr and a.bukrs = bs.bukrs //and
+           //bs.buzei = right(dtl.posnr, 3)
+inner join t052 as c on a.zterm = c.zterm
+//Tambahan Join KNVV - Refer Tiket #25070871
+inner join knvv on a.kunag = knvv.kunnr and a.vkorg = knvv.vkorg and 
+                   a.vtweg = knvv.vtweg and a.spart = knvv.spart and knvv.kvgr1 = 'SHC'
+left outer join bseg as d on a.vbeln = d.vbeln and d.bschl = '01' and d.koart = 'D'
+left outer join ZCDS_BILLING_PENALTY as f on a.vbeln = f.zsrcbil and f.fksto = ''
+{
+    key a.kunag,
+    key b.name1,
+    key b.sortl,
+    key a.vbeln,
+    key dtl.posnr,
+    a.waerk,
+    a.fkart,
+    a.zterm,
+    c.ztag1,
+    a.fkdat,
+    a.zbill_rcv_date,
+    a.clrst,
+    a.knumv,    
+    dtl.matnr,
+    dtl.arktx,
+    a.vkorg,
+    a.vtweg,
+    a.spart,
+    bs.blart,
+    bs.budat,
+    bs.wrbtr,
+    bs.dmbtr,
+    bs.waers,
+    bs.fcsl,
+    bs.rfccur,
+    bs.zuonr,
+    d.augbl,
+    d.augdt,
+    a.fksto,
+    a.vbtyp,
+    f.vbeln as bil_penalty
+}

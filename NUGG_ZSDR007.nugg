@@ -1,0 +1,1219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="ZSDR007">
+ <PROG NAME="ZSDR007" VARCL="X" SUBC="1" RMAND="400" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="I" KEY="001" ENTRY="Organizational Data" LENGTH="29 "/>
+    <textElement ID="I" KEY="002" ENTRY="Sales Document" LENGTH="24 "/>
+    <textElement ID="I" KEY="003" ENTRY="Document to be Selected" LENGTH="46 "/>
+    <textElement ID="I" KEY="901" ENTRY="Billing Clearing Completed" LENGTH="52 "/>
+    <textElement ID="I" KEY="907" ENTRY="Billing Clearing Not Complete" LENGTH="58 "/>
+    <textElement ID="R" ENTRY="Report Perhitungan Denda Overdue Customer" LENGTH="41 "/>
+    <textElement ID="S" KEY="S_FKART" ENTRY="D       ." LENGTH="9 "/>
+    <textElement ID="S" KEY="S_IRDAT" ENTRY="D       ." LENGTH="9 "/>
+    <textElement ID="S" KEY="S_KUNAG" ENTRY="D       ." LENGTH="9 "/>
+    <textElement ID="S" KEY="S_SPART" ENTRY="D       ." LENGTH="9 "/>
+    <textElement ID="S" KEY="S_VKORG" ENTRY="D       ." LENGTH="9 "/>
+    <textElement ID="S" KEY="S_VTWEG" ENTRY="D       ." LENGTH="9 "/>
+   </language>
+  </textPool>
+  <pfstatus>
+   <pfstatus_sta CODE="ZPFSTAT" MODAL="D" ACTCODE="000001" PFKCODE="000001" BUTCODE="0001" INT_NOTE="Standard for General List Output in Fullscreen Grid"/>
+   <pfstatus_fun CODE="%ML" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Folder" PATH="F"/>
+   <pfstatus_fun CODE="%PC" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_EXPORT" ICON_ID="@49@" FUN_TEXT="Local File..." PATH="L"/>
+   <pfstatus_fun CODE="%SC" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SEARCH" ICON_ID="@13@" FUN_TEXT="Find" PATH="N"/>
+   <pfstatus_fun CODE="%SC+" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SEARCH_NEXT" ICON_ID="@4E@" FUN_TEXT="Find Next" PATH="W"/>
+   <pfstatus_fun CODE="%SL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_MAIL" ICON_ID="@1S@" FUN_TEXT="Mail Recipient" PATH="M"/>
+   <pfstatus_fun CODE="&amp;ABC" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_ABC" ICON_ID="@DL@" FUN_TEXT="ABC Analysis" PATH="A"/>
+   <pfstatus_fun CODE="&amp;ALL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SELECT_ALL" ICON_ID="@4B@" FUN_TEXT="Select All" PATH="S"/>
+   <pfstatus_fun CODE="&amp;AQW" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_WORD_PROCESSING" ICON_ID="@DK@" FUN_TEXT="Word Processing..." PATH="W"/>
+   <pfstatus_fun CODE="&amp;AUF" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Define Totals Drilldown..." PATH="S"/>
+   <pfstatus_fun CODE="&amp;AVE" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Saving..." PATH="S"/>
+   <pfstatus_fun CODE="&amp;AVE" TEXTNO="002" TEXT_TYPE="S" TEXT_NAME="ICON_ALV_VARIANT_SAVE" ICON_ID="@DN@" FUN_TEXT="Save Layout..."/>
+   <pfstatus_fun CODE="&amp;AVR" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Mean Value" PATH="M"/>
+   <pfstatus_fun CODE="&amp;CDF" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Unfreeze Columns" PATH="U"/>
+   <pfstatus_fun CODE="&amp;CFI" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Freeze to Column" PATH="F"/>
+   <pfstatus_fun CODE="&amp;COUNT" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Count" PATH="C"/>
+   <pfstatus_fun CODE="&amp;DATA_SAVE" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SYSTEM_SAVE" ICON_ID="@2L@" FUN_TEXT="Save"/>
+   <pfstatus_fun CODE="&amp;EB9" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_TABLE_SETTINGS" ICON_ID="@36@" FUN_TEXT="Call Up Report..." PATH="B"/>
+   <pfstatus_fun CODE="&amp;ELP" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SYSTEM_HELP" ICON_ID="@35@" FUN_TEXT="Help"/>
+   <pfstatus_fun CODE="&amp;ERW" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Manage..." PATH="M"/>
+   <pfstatus_fun CODE="&amp;ETA" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SELECT_DETAIL" ICON_ID="@16@" FUN_TEXT="Details"/>
+   <pfstatus_fun CODE="&amp;F03" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Back" PATH="B"/>
+   <pfstatus_fun CODE="&amp;F12" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_CANCEL" ICON_ID="@0W@" FUN_TEXT="Cancel" PATH="A"/>
+   <pfstatus_fun CODE="&amp;F15" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Exit" PATH="X"/>
+   <pfstatus_fun CODE="&amp;F4" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Possible Entries"/>
+   <pfstatus_fun CODE="&amp;GRAPH" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_GRAPHICS" ICON_ID="@0N@" FUN_TEXT="Graphic" PATH="G"/>
+   <pfstatus_fun CODE="&amp;IC1" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SELECT_DETAIL" ICON_ID="@16@" FUN_TEXT="Choose"/>
+   <pfstatus_fun CODE="&amp;ILD" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_FILTER_UNDO" ICON_ID="@GD@" FUN_TEXT="Delete Filter" PATH="L"/>
+   <pfstatus_fun CODE="&amp;ILT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_FILTER" ICON_ID="@4G@" FUN_TEXT="Set Filter" PATH="F"/>
+   <pfstatus_fun CODE="&amp;INFO" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_INFORMATION" ICON_ID="@0S@" FUN_TEXT="Information"/>
+   <pfstatus_fun CODE="&amp;MAX" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Maximum" PATH="A"/>
+   <pfstatus_fun CODE="&amp;MIN" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Minimum" PATH="I"/>
+   <pfstatus_fun CODE="&amp;OAD" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Choose..." PATH="H"/>
+   <pfstatus_fun CODE="&amp;OAD" TEXTNO="002" TEXT_TYPE="S" TEXT_NAME="ICON_ALV_VARIANT_CHOOSE" ICON_ID="@DM@" FUN_TEXT="Select Layout..."/>
+   <pfstatus_fun CODE="&amp;ODN" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SORT_DOWN" ICON_ID="@3F@" FUN_TEXT="Sort in Descending Order" PATH="O"/>
+   <pfstatus_fun CODE="&amp;OL0" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_ALV_VARIANTS" ICON_ID="@LZ@" FUN_TEXT="Change Layout..."/>
+   <pfstatus_fun CODE="&amp;OLX" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_VARIANTS" ICON_ID="@0R@" FUN_TEXT="Change..." PATH="C"/>
+   <pfstatus_fun CODE="&amp;OPT" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Optimize Width" PATH="P"/>
+   <pfstatus_fun CODE="&amp;OUP" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SORT_UP" ICON_ID="@3E@" FUN_TEXT="Sort in Ascending Order" PATH="I"/>
+   <pfstatus_fun CODE="&amp;PRNT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_PRINT" ICON_ID="@0X@" FUN_TEXT="Print" ICON_TEXT="Print Summary PR"/>
+   <pfstatus_fun CODE="&amp;REFRESH" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_REFRESH" ICON_ID="@42@" FUN_TEXT="Refresh"/>
+   <pfstatus_fun CODE="&amp;RNT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_PRINT" ICON_ID="@0X@" FUN_TEXT="Print" PATH="P"/>
+   <pfstatus_fun CODE="&amp;RNT_PREV" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_LAYOUT_CONTROL" ICON_ID="@3G@" FUN_TEXT="Print Preview" PATH="R"/>
+   <pfstatus_fun CODE="&amp;SAL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_DESELECT_ALL" ICON_ID="@4D@" FUN_TEXT="Deselect All" PATH="D"/>
+   <pfstatus_fun CODE="&amp;SUM" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_INTERMEDIATE_SUM" ICON_ID="@5V@" FUN_TEXT="Subtotals..." PATH="T"/>
+   <pfstatus_fun CODE="&amp;UMC" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SUM" ICON_ID="@3Z@" FUN_TEXT="Total" PATH="T"/>
+   <pfstatus_fun CODE="&amp;VCRYSTAL" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Crystal Reports" PATH="C"/>
+   <pfstatus_fun CODE="&amp;VEXCEL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_XLS" ICON_ID="@J2@" FUN_TEXT="Microsoft Excel" PATH="M"/>
+   <pfstatus_fun CODE="&amp;VGRID" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="SAP List Viewer" PATH="S"/>
+   <pfstatus_fun CODE="&amp;VLOTUS" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Lotus 1-2-3" PATH="L"/>
+   <pfstatus_fun CODE="&amp;XXL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_XXL" ICON_ID="@DJ@" FUN_TEXT="Spreadsheet..." PATH="A"/>
+   <pfstatus_fun CODE="&amp;ZBILL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_GENERATE" ICON_ID="@39@" FUN_TEXT="Generate Billing" ICON_TEXT="Generate Billing"/>
+   <pfstatus_men CODE="000001" NO="01" REF_TYPE="F" REF_CODE="&amp;RNT_PREV" REF_NO="001"/>
+   <pfstatus_men CODE="000001" NO="02" REF_TYPE="F" REF_CODE="&amp;RNT" REF_NO="001"/>
+   <pfstatus_men CODE="000001" NO="03" REF_TYPE="S"/>
+   <pfstatus_men CODE="000001" NO="04" REF_TYPE="M" REF_CODE="000002"/>
+   <pfstatus_men CODE="000001" NO="05" REF_TYPE="M" REF_CODE="000003"/>
+   <pfstatus_men CODE="000001" NO="06" REF_TYPE="S"/>
+   <pfstatus_men CODE="000001" NO="07" REF_TYPE="F" REF_CODE="&amp;F15" REF_NO="001"/>
+   <pfstatus_men CODE="000002" NO="01" REF_TYPE="F" REF_CODE="&amp;AQW" REF_NO="001"/>
+   <pfstatus_men CODE="000002" NO="02" REF_TYPE="F" REF_CODE="&amp;XXL" REF_NO="001"/>
+   <pfstatus_men CODE="000002" NO="03" REF_TYPE="F" REF_CODE="%PC" REF_NO="001"/>
+   <pfstatus_men CODE="000003" NO="01" REF_TYPE="F" REF_CODE="%SL" REF_NO="001"/>
+   <pfstatus_men CODE="000003" NO="02" REF_TYPE="F" REF_CODE="%ML" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="01" REF_TYPE="F" REF_CODE="&amp;ALL" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="02" REF_TYPE="F" REF_CODE="&amp;SAL" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="03" REF_TYPE="S"/>
+   <pfstatus_men CODE="000004" NO="04" REF_TYPE="F" REF_CODE="&amp;ILT" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="05" REF_TYPE="F" REF_CODE="&amp;ILD" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="06" REF_TYPE="S"/>
+   <pfstatus_men CODE="000004" NO="07" REF_TYPE="F" REF_CODE="&amp;OUP" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="08" REF_TYPE="F" REF_CODE="&amp;ODN" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="09" REF_TYPE="S"/>
+   <pfstatus_men CODE="000004" NO="10" REF_TYPE="M" REF_CODE="000005"/>
+   <pfstatus_men CODE="000004" NO="11" REF_TYPE="F" REF_CODE="&amp;SUM" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="12" REF_TYPE="S"/>
+   <pfstatus_men CODE="000004" NO="13" REF_TYPE="F" REF_CODE="%SC" REF_NO="001"/>
+   <pfstatus_men CODE="000004" NO="14" REF_TYPE="S"/>
+   <pfstatus_men CODE="000004" NO="15" REF_TYPE="F" REF_CODE="&amp;F12" REF_NO="001"/>
+   <pfstatus_men CODE="000005" NO="01" REF_TYPE="F" REF_CODE="&amp;UMC" REF_NO="001"/>
+   <pfstatus_men CODE="000005" NO="02" REF_TYPE="F" REF_CODE="&amp;AVR" REF_NO="001"/>
+   <pfstatus_men CODE="000005" NO="03" REF_TYPE="F" REF_CODE="&amp;MIN" REF_NO="001"/>
+   <pfstatus_men CODE="000005" NO="04" REF_TYPE="F" REF_CODE="&amp;MAX" REF_NO="001"/>
+   <pfstatus_men CODE="000005" NO="05" REF_TYPE="F" REF_CODE="&amp;COUNT" REF_NO="001"/>
+   <pfstatus_men CODE="000006" NO="01" REF_TYPE="F" REF_CODE="&amp;ABC" REF_NO="001"/>
+   <pfstatus_men CODE="000006" NO="02" REF_TYPE="S"/>
+   <pfstatus_men CODE="000006" NO="03" REF_TYPE="F" REF_CODE="&amp;F03" REF_NO="001"/>
+   <pfstatus_men CODE="000007" NO="01" REF_TYPE="F" REF_CODE="&amp;VGRID" REF_NO="001"/>
+   <pfstatus_men CODE="000007" NO="02" REF_TYPE="F" REF_CODE="&amp;VEXCEL" REF_NO="001"/>
+   <pfstatus_men CODE="000007" NO="03" REF_TYPE="F" REF_CODE="&amp;VLOTUS" REF_NO="001"/>
+   <pfstatus_men CODE="000007" NO="04" REF_TYPE="F" REF_CODE="&amp;VCRYSTAL" REF_NO="001"/>
+   <pfstatus_men CODE="000007" NO="05" REF_TYPE="S"/>
+   <pfstatus_men CODE="000007" NO="06" REF_TYPE="F" REF_CODE="&amp;GRAPH" REF_NO="001"/>
+   <pfstatus_men CODE="000008" NO="01" REF_TYPE="M" REF_CODE="000009"/>
+   <pfstatus_men CODE="000008" NO="02" REF_TYPE="M" REF_CODE="000010"/>
+   <pfstatus_men CODE="000008" NO="03" REF_TYPE="F" REF_CODE="&amp;AUF" REF_NO="001"/>
+   <pfstatus_men CODE="000009" NO="01" REF_TYPE="F" REF_CODE="&amp;OLX" REF_NO="001"/>
+   <pfstatus_men CODE="000009" NO="02" REF_TYPE="F" REF_CODE="&amp;OAD" REF_NO="001"/>
+   <pfstatus_men CODE="000009" NO="03" REF_TYPE="S"/>
+   <pfstatus_men CODE="000009" NO="04" REF_TYPE="F" REF_CODE="&amp;AVE" REF_NO="001"/>
+   <pfstatus_men CODE="000009" NO="05" REF_TYPE="S"/>
+   <pfstatus_men CODE="000009" NO="06" REF_TYPE="F" REF_CODE="&amp;ERW" REF_NO="001"/>
+   <pfstatus_men CODE="000010" NO="01" REF_TYPE="F" REF_CODE="&amp;OPT" REF_NO="001"/>
+   <pfstatus_men CODE="000010" NO="02" REF_TYPE="S"/>
+   <pfstatus_men CODE="000010" NO="03" REF_TYPE="F" REF_CODE="&amp;CFI" REF_NO="001"/>
+   <pfstatus_men CODE="000010" NO="04" REF_TYPE="F" REF_CODE="&amp;CDF" REF_NO="001"/>
+   <pfstatus_mtx CODE="000001" TEXT_TYPE="S" TEXT="List" PATH="L" INT_NOTE="STANDARD_FULLSCREEN List"/>
+   <pfstatus_mtx CODE="000002" TEXT_TYPE="S" TEXT="Export" PATH="E" INT_NOTE="STANDARD Save"/>
+   <pfstatus_mtx CODE="000003" TEXT_TYPE="S" TEXT="Send To" PATH="S"/>
+   <pfstatus_mtx CODE="000004" TEXT_TYPE="S" TEXT="Edit" PATH="E" INT_NOTE="STANDARD"/>
+   <pfstatus_mtx CODE="000005" TEXT_TYPE="S" TEXT="Calculate" PATH="C"/>
+   <pfstatus_mtx CODE="000006" TEXT_TYPE="S" TEXT="Goto" PATH="G" INT_NOTE="STANDARD"/>
+   <pfstatus_mtx CODE="000007" TEXT_TYPE="S" TEXT="Views" PATH="I"/>
+   <pfstatus_mtx CODE="000008" TEXT_TYPE="S" TEXT="Settings" PATH="S" INT_NOTE="STANDARD_FULLSCREEN"/>
+   <pfstatus_mtx CODE="000009" TEXT_TYPE="S" TEXT="Layout" PATH="A" INT_NOTE="Sub STANDARD"/>
+   <pfstatus_mtx CODE="000010" TEXT_TYPE="S" TEXT="Columns" PATH="C"/>
+   <pfstatus_act CODE="000001" NO="01" MENUCODE="000001"/>
+   <pfstatus_act CODE="000001" NO="02" MENUCODE="000004"/>
+   <pfstatus_act CODE="000001" NO="03" MENUCODE="000006"/>
+   <pfstatus_act CODE="000001" NO="04" MENUCODE="000007"/>
+   <pfstatus_act CODE="000001" NO="05" MENUCODE="000008"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="01" PFNO="39"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="02" PFNO="37"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="03" PFNO="08"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="04" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="05" PFNO="05"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="06" PFNO="06"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="07" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="08" PFNO="28"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="09" PFNO="40"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="10" PFNO="29"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="11" PFNO="38"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="12" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="13" PFNO="30"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="14" PFNO="42"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="15" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="16" PFNO="46"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="17" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="18" PFNO="43"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="19" PFNO="44"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="20" PFNO="45"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="21" PFNO="31"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="22" PFNO="25"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="23" PFNO="47"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="24" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="25" PFNO="32"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="26" PFNO="33"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="27" PFNO="34"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="28" PFNO="S"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="29" PFNO="36"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="30" PFNO="20"/>
+   <pfstatus_pfk CODE="000001" PFNO="01" FUNCODE="&amp;ELP" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="02" FUNCODE="&amp;IC1" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="03" FUNCODE="&amp;F03" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="04" FUNCODE="&amp;F4" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="05" FUNCODE="&amp;ALL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="06" FUNCODE="&amp;SAL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="08" FUNCODE="&amp;REFRESH" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="11" FUNCODE="&amp;DATA_SAVE" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="12" FUNCODE="&amp;F12" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="15" FUNCODE="&amp;F15" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="19" FUNCODE="&amp;PRNT" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="20" FUNCODE="&amp;ZBILL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="25" FUNCODE="&amp;ABC" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="28" FUNCODE="&amp;OUP" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="29" FUNCODE="&amp;ILT" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="30" FUNCODE="&amp;UMC" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="31" FUNCODE="%SL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="32" FUNCODE="&amp;OL0" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="33" FUNCODE="&amp;OAD" FUNNO="002"/>
+   <pfstatus_pfk CODE="000001" PFNO="34" FUNCODE="&amp;AVE" FUNNO="002"/>
+   <pfstatus_pfk CODE="000001" PFNO="36" FUNCODE="&amp;INFO" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="37" FUNCODE="&amp;EB9" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="38" FUNCODE="&amp;ILD" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="39" FUNCODE="&amp;ETA" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="40" FUNCODE="&amp;ODN" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="41" FUNCODE="&amp;VGRID" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="42" FUNCODE="&amp;SUM" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="43" FUNCODE="&amp;VEXCEL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="44" FUNCODE="&amp;AQW" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="45" FUNCODE="%PC" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="46" FUNCODE="&amp;RNT_PREV" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="47" FUNCODE="&amp;GRAPH" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="48" FUNCODE="&amp;VCRYSTAL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="71" FUNCODE="%SC" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="84" FUNCODE="%SC+" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="86" FUNCODE="&amp;RNT" FUNNO="001"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%CH"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%ML"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%PC"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%SC"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%SC+"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="%SL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ABC"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ALL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;AQW"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;AUF"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;AVE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;AVR"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;BS"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;BS+"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;BS-"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CDF"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CFI"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;COUNT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRB"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRBATCH"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRDESIG"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRR"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRTEMPL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;CRYSTAL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;DATA_SAVE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;DAU"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;DOF"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;DON"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;EB3"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;EB9"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ELP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ERW"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ETA"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;F03"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;F12"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;F15"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;F4"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;GRAPH"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;IC1"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ILD"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ILT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;INFO"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;KOM"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;LFO"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;LIS"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;MAX"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;MIN"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;NFO"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;NTE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OAD"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ODN"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OL0"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OLX"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OMP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OPT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;OUP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;PRNT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;REFRESH"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;RNT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;RNT_PREV"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;SAL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;SAVE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;SUM"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;UMC"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;URL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;VCRYSTAL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;VEXCEL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;VGRID"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;VLOTUS"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;XML"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;XPA"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;XXL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="&amp;ZBILL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BAC1"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BACK"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BEB1"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BEB2"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BEB3"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BEB9"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="BEBN"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="COL0"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="COLX"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="DETA"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="DRUK"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="DSAL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="ENTE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="EXIT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="EXPA"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="FILD"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="FILT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="GLIS"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="HELP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="INFO"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="KOMP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="P+"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="P++"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="P-"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="P--"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PF09"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PF13"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PIC1"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PICK"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PRI"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PRIN"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="PRNT"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="RW"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SALL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SAUF"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SAVE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SCRB"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SCRE"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SCRL"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SCRR"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SKOM"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SODN"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SOUP"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="SUMC"/>
+   <pfstatus_set STATUS="ZPFSTAT" FUNCTION="ZSUM"/>
+   <pfstatus_doc OBJ_TYPE="A" OBJ_CODE="000001" MODAL="D" INT_NOTE="Standard Interface              STANDARD_FULLSCREEN"/>
+   <pfstatus_doc OBJ_TYPE="P" OBJ_CODE="000001" MODAL="D" NORM="X" INT_NOTE="Standard Maximum Interaction STANDARD_FULLSCREEN"/>
+   <pfstatus_doc OBJ_TYPE="B" OBJ_CODE="000001" SUB_CODE="0001" INT_NOTE="STANDARD_FULLSCREEN"/>
+  </pfstatus>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report ZSDR007
+*&amp;---------------------------------------------------------------------*
+*&amp; Title              : Report Perhitungan Denda Overdue Customer
+*&amp; Created By         : Husnul-M
+*&amp; Created On         : 28.11.2024
+*&amp;---------------------------------------------------------------------*
+REPORT zsdr007.
+
+INCLUDE ZSDR007_top.
+INCLUDE ZSDR007_sel.
+INCLUDE ZSDR007_f01.
+INCLUDE ZSDR007_f02.
+INCLUDE ZSDR007_f03. &quot;Generate Billing Denda
+
+START-OF-SELECTION.
+  PERFORM get_data.
+  IF lt_data IS NOT INITIAL.
+    PERFORM display_alv.
+  ELSE.
+    MESSAGE &apos;Data not found&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+  ENDIF.</source>
+ </PROG>
+ <PROG NAME="ZSDR007_TOP" VARCL="X" SUBC="I" RMAND="400" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSDR007_TOP" LENGTH="19 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Include          ZSDR007_TOP
+*&amp;---------------------------------------------------------------------*
+TABLES: vbrk.
+
+DATA:
+  lt_data TYPE TABLE OF zds_sdr007,
+  ls_data TYPE zds_sdr007,
+  zzmatnr TYPE matnr18,
+  zzkunnr TYPE kunnr,
+  zzclrst TYPE vbrk-clrst.
+
+DATA:
+  lt_fieldcat TYPE slis_t_fieldcat_alv,
+  ls_fieldcat TYPE slis_fieldcat_alv,
+  is_layout   TYPE slis_layout_alv,
+  ls_settings TYPE  lvc_s_glay,
+  lt_sort     TYPE slis_t_sortinfo_alv,
+  ls_sort     TYPE slis_sortinfo_alv,
+  wa_top      TYPE slis_listheader,
+  it_top      TYPE slis_t_listheader,
+  gt_variant  TYPE disvariant,
+  i_events    TYPE slis_t_event,
+  s_events    LIKE LINE OF i_events,
+  month2(3)   TYPE c.
+
+DATA:
+  layout   TYPE lvc_s_layo,
+  o_grid   TYPE REF TO cl_gui_alv_grid,
+  ls_style TYPE lvc_s_styl,
+  lt_style TYPE TABLE OF lvc_s_styl.
+
+DATA:
+  creatordatain	TYPE bapicreatordata,
+  testrun	      TYPE bapivbrktestrun-testrun,
+  posting       TYPE  posting_type_ct.
+
+DATA:
+  lt_billingdatain   TYPE TABLE OF bapivbrk,
+  ls_billingdatain   TYPE bapivbrk,
+  lt_conditiondatain TYPE TABLE OF bapikomv,
+  ls_conditiondatain TYPE bapikomv,
+  lt_ccarddatain     TYPE TABLE OF bapiccard_vf,
+  lt_textdatain      TYPE TABLE OF bapikomfktx,
+  ls_textdatain      TYPE bapikomfktx,
+  lt_errors          TYPE TABLE OF bapivbrkerrors,
+  lt_return          TYPE TABLE OF bapiret1,
+  lt_success         TYPE TABLE OF bapivbrksuccess,
+  lt_extensionin     TYPE TABLE OF bapiparex,
+  lt_partnerdatain   TYPE TABLE OF bapivbrkparnr,
+  lt_nfmetallitms    TYPE TABLE OF /nfm/bapidocitm.
+
+DATA:
+  lv_matnr_penalty TYPE matnr18,
+  ls_zsdt014       TYPE zsdt014.
+
+
+RANGES:
+  ex_matnr FOR zzmatnr,
+  ex_kunnr FOR zzkunnr,
+  ex_clrst FOR zzclrst.</source>
+ </PROG>
+ <PROG NAME="ZSDR007_SEL" VARCL="X" SUBC="I" RMAND="400" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSDR007_SEL" LENGTH="19 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Include          ZSDR007_SEL
+*&amp;---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-001.
+  SELECT-OPTIONS:
+  s_vkorg FOR vbrk-vkorg OBLIGATORY,
+  s_vtweg FOR vbrk-vtweg,
+  s_spart FOR vbrk-spart.
+SELECTION-SCREEN END OF BLOCK b1.
+
+SELECTION-SCREEN BEGIN OF BLOCK b2 WITH FRAME TITLE TEXT-002.
+  SELECT-OPTIONS:
+  s_fkart FOR vbrk-fkart,
+  s_kunag FOR vbrk-kunag,
+  s_irdat FOR vbrk-zbill_rcv_date OBLIGATORY.
+SELECTION-SCREEN END OF BLOCK b2.
+
+SELECTION-SCREEN BEGIN OF BLOCK b3 WITH FRAME TITLE TEXT-003.
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT (31) TEXT-907. &quot;1
+    PARAMETERS : p_ck1 AS CHECKBOX USER-COMMAND eck DEFAULT &apos;X&apos;.
+  SELECTION-SCREEN END OF LINE.
+
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT (31) TEXT-901. &quot;1
+    PARAMETERS : p_ck2 AS CHECKBOX USER-COMMAND eck.
+  SELECTION-SCREEN END OF LINE.
+SELECTION-SCREEN END OF BLOCK b3.</source>
+ </PROG>
+ <PROG NAME="ZSDR007_F01" VARCL="X" SUBC="I" RMAND="400" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSDR007_F01" LENGTH="19 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Include          ZSDR007_F01
+*&amp;---------------------------------------------------------------------*
+FORM get_data.
+  &quot;Collect Material Code Based on Mapping
+  REFRESH: ex_matnr, ex_kunnr.
+  SELECT * FROM tvarvc INTO @DATA(ls_tvarv)
+    WHERE name = &apos;ZSD_MAT_ZSDR007&apos;.
+    CLEAR : ex_matnr, ex_kunnr, zzmatnr, zzkunnr.
+    zzmatnr = |{ ls_tvarv-low ALPHA = IN }|.
+    ex_matnr-sign   = &apos;I&apos;.
+    ex_matnr-option = &apos;EQ&apos;.
+    ex_matnr-low    = zzmatnr.
+    APPEND ex_matnr TO ex_matnr[].
+
+    CLEAR ls_tvarv.
+  ENDSELECT.
+
+  IF ex_matnr[] IS INITIAL.
+    MESSAGE &apos;Material belum dimaintain di Object ZSD_MAT_ZSDR007&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+    STOP.
+    EXIT.
+  ENDIF.
+  REFRESH ex_clrst[].
+  IF p_ck1 = &apos;X&apos; AND p_ck2 = &apos;X&apos;.
+    REFRESH ex_clrst[].
+  ELSE.
+    IF p_ck1 = &apos;X&apos; AND p_ck2 = &apos;&apos;.
+      CLEAR ex_clrst.
+      ex_clrst-sign   = &apos;I&apos;.
+      ex_clrst-option = &apos;NE&apos;.
+      ex_clrst-low    = &apos;C&apos;.
+      APPEND ex_clrst TO ex_clrst[].
+    ELSEIF p_ck1 = &apos;&apos; AND p_ck2 = &apos;X&apos;.
+      CLEAR ex_clrst.
+      ex_clrst-sign   = &apos;I&apos;.
+      ex_clrst-option = &apos;EQ&apos;.
+      ex_clrst-low    = &apos;C&apos;.
+      APPEND ex_clrst TO ex_clrst[].
+    ENDIF.
+  ENDIF.
+
+  SORT ex_matnr BY low.
+  DELETE ADJACENT DUPLICATES FROM ex_matnr COMPARING low.
+
+  DATA lv_matnr_penalty TYPE matnr18.
+  SELECT SINGLE low FROM tvarvc
+    INTO lv_matnr_penalty
+      WHERE name = &apos;ZSD_MAT_ZSDR007_DENDA&apos;.
+
+  lv_matnr_penalty = |{ lv_matnr_penalty ALPHA = IN }|.
+
+  SELECT SINGLE maktx FROM makt
+     INTO @DATA(lv_maktx2)
+        WHERE matnr = @lv_matnr_penalty AND spras = @sy-langu.
+
+  DATA lv_prcnt TYPE menge_d.
+  DATA lv_overd TYPE i.
+  CLEAR lv_prcnt.
+  lv_prcnt = 2 / 100.
+
+  REFRESH lt_data.
+  SELECT * FROM zcds_billing_overdue_penalty
+    INTO TABLE @DATA(lt_billing)
+      WHERE
+        vkorg IN @s_vkorg  AND
+        vtweg IN @s_vtweg  AND
+        spart IN @s_spart  AND
+        fkart IN @s_fkart  AND
+        kunag IN @s_kunag  AND
+        matnr IN @ex_matnr AND
+        clrst IN @ex_clrst AND
+        fksto = &apos;&apos; AND
+        vbtyp = &apos;M&apos; AND
+        zbill_rcv_date IN @s_irdat. &quot;AND
+*        kunag IN @ex_kunnr.
+
+  IF lt_billing IS NOT INITIAL.
+    SELECT knumv, kposn, stunr, kschl, krech, koaid,
+           kvsl1, kbetr, waers, kwert, waerk
+      FROM prcd_elements
+        INTO TABLE @DATA(lt_cond)
+      FOR ALL ENTRIES IN @lt_billing
+        WHERE knumv = @lt_billing-knumv AND
+              kbetr &lt;&gt; 0 AND koaid = &apos;B&apos; AND
+              kvsl1 = &apos;ERL&apos;.
+
+    SORT lt_cond BY knumv.
+
+    LOOP AT lt_billing ASSIGNING FIELD-SYMBOL(&lt;fs_billing&gt;).
+      CLEAR ls_data.
+      ls_data-kunnr = &lt;fs_billing&gt;-kunag.
+      ls_data-kname = &lt;fs_billing&gt;-name1.
+      ls_data-sortl = &lt;fs_billing&gt;-sortl.
+      ls_data-vbeln = &lt;fs_billing&gt;-vbeln.
+      ls_data-irdat = &lt;fs_billing&gt;-zbill_rcv_date.
+      ls_data-posnr = &lt;fs_billing&gt;-posnr.
+      ls_data-matnr = &lt;fs_billing&gt;-matnr.
+      ls_data-maktx = &lt;fs_billing&gt;-arktx.
+      ls_data-waers = &lt;fs_billing&gt;-waerk.
+      ls_data-clrst = &lt;fs_billing&gt;-clrst.
+      ls_data-augbl = &lt;fs_billing&gt;-augbl.
+      ls_data-zpenbil = &lt;fs_billing&gt;-bil_penalty.
+
+      READ TABLE lt_cond WITH KEY knumv = &lt;fs_billing&gt;-knumv TRANSPORTING NO FIELDS.
+      IF sy-subrc = 0.
+        LOOP AT lt_cond ASSIGNING FIELD-SYMBOL(&lt;fs_cond&gt;)
+          WHERE knumv = &lt;fs_billing&gt;-knumv AND kposn = &lt;fs_billing&gt;-posnr.
+          ls_data-dppinv = ls_data-dppinv + &lt;fs_cond&gt;-kbetr.
+        ENDLOOP.
+        ls_data-dppinv = ls_data-dppinv / 100.
+      ENDIF.
+
+      IF &lt;fs_billing&gt;-clrst = &apos;C&apos;.
+        ls_data-dtcnt = &lt;fs_billing&gt;-augdt.
+      ELSE.
+        ls_data-dtcnt = sy-datum.
+      ENDIF.
+
+      ls_data-zktop = |{ &lt;fs_billing&gt;-zterm } - ( { &lt;fs_billing&gt;-ztag1 ALPHA = OUT } Hari )|.
+      ls_data-duedt = ls_data-irdat + &lt;fs_billing&gt;-ztag1.
+
+*      ls_data-overdue = sy-datum - ls_data-duedt.
+      ls_data-overdue = ls_data-dtcnt - ls_data-duedt.
+      IF ls_data-overdue &lt; 0.
+        CLEAR ls_data-overdue.
+      ELSE.
+        CLEAR lv_overd.
+        lv_overd = &lt;fs_billing&gt;-ztag1.
+        ls_data-pnlty = ls_data-overdue / lv_overd * lv_prcnt * ls_data-dppinv.
+      ENDIF.
+
+      PERFORM read_text USING &apos;ZB01&apos; ls_data-vbeln &apos;VBBK&apos; CHANGING ls_data-ivref.
+      PERFORM read_text USING &apos;ZB00&apos; ls_data-vbeln &apos;VBBK&apos; CHANGING ls_data-ivrmk.
+
+*      break sap_husnul.
+      IF ls_data-zpenbil IS NOT INITIAL.
+        PERFORM read_text USING &apos;ZB01&apos; ls_data-zpenbil &apos;VBBK&apos; CHANGING ls_data-zinvnum.
+        PERFORM read_text USING &apos;ZB00&apos; ls_data-zpenbil &apos;VBBK&apos; CHANGING ls_data-zinvrem.
+        ls_data-matnr2 = lv_matnr_penalty.
+        ls_data-maktx2 = lv_maktx2.
+
+        CLEAR ls_data-field_style.
+        CLEAR ls_style.
+        ls_style-fieldname = &apos;ZINVNUM&apos;.
+        ls_style-style     = cl_gui_alv_grid=&gt;mc_style_disabled.
+        ls_style-style2 = space.
+        ls_style-style3 = space.
+        ls_style-style4 = space.
+        INSERT ls_style INTO TABLE ls_data-field_style.
+
+        CLEAR ls_style.
+        ls_style-fieldname = &apos;ZINVREM&apos;.
+        ls_style-style     = cl_gui_alv_grid=&gt;mc_style_disabled.
+        ls_style-style2 = space.
+        ls_style-style3 = space.
+        ls_style-style4 = space.
+        INSERT ls_style INTO TABLE ls_data-field_style.
+      ELSE.
+        CLEAR ls_data-field_style.
+        CLEAR ls_style.
+        ls_style-fieldname = &apos;ZINVNUM&apos;.
+        ls_style-style     = cl_gui_alv_grid=&gt;mc_style_enabled.
+        ls_style-style2 = space.
+        ls_style-style3 = space.
+        ls_style-style4 = space.
+        INSERT ls_style INTO TABLE ls_data-field_style.
+
+        CLEAR ls_style.
+        ls_style-fieldname = &apos;ZINVREM&apos;.
+        ls_style-style     = cl_gui_alv_grid=&gt;mc_style_enabled.
+        ls_style-style2 = space.
+        ls_style-style3 = space.
+        ls_style-style4 = space.
+        INSERT ls_style INTO TABLE ls_data-field_style.
+      ENDIF.
+
+      APPEND ls_data TO lt_data.
+    ENDLOOP.
+
+    SORT lt_data BY kunnr vbeln.
+  ENDIF.
+ENDFORM.
+
+FORM read_text USING p_id p_name p_obj CHANGING ex_text.
+  DATA:
+    lt_lines    TYPE TABLE OF tline,
+    ls_lines    LIKE LINE OF lt_lines,
+
+    lv_id       LIKE  thead-tdid,
+    lv_language LIKE  thead-tdspras,
+    lv_name     LIKE  thead-tdname,
+    lv_object   LIKE  thead-tdobject.
+
+  REFRESH lt_lines.
+  CLEAR : lv_id, lv_language, lv_name, lv_object.
+  lv_id       = p_id.
+  lv_language = sy-langu.
+  lv_name     = p_name.
+  lv_object   = p_obj.
+
+  CALL FUNCTION &apos;READ_TEXT&apos;
+    EXPORTING
+      id                      = lv_id
+      language                = lv_language
+      name                    = lv_name
+      object                  = lv_object
+    TABLES
+      lines                   = lt_lines
+    EXCEPTIONS
+      id                      = 1
+      language                = 2
+      name                    = 3
+      not_found               = 4
+      object                  = 5
+      reference_check         = 6
+      wrong_access_to_archive = 7
+      OTHERS                  = 8.
+  CLEAR ls_lines.
+*  READ TABLE lt_lines INTO ls_lines INDEX 1.
+*  ex_text = ls_lines-tdline.
+  LOOP AT lt_lines INTO ls_lines.
+    IF ex_text IS INITIAL.
+      ex_text = ls_lines-tdline.
+    ELSE.
+      ex_text = |{ ex_text }{ ls_lines-tdline }|.
+    ENDIF.
+    CLEAR ls_lines.
+  ENDLOOP.
+
+
+ENDFORM.</source>
+ </PROG>
+ <PROG NAME="ZSDR007_F02" VARCL="X" SUBC="I" RMAND="400" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSDR007_F02" LENGTH="19 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Include          ZSDR007_F02
+*&amp;---------------------------------------------------------------------*
+FORM set_fieldcat.
+  REFRESH lt_fieldcat.
+  CALL FUNCTION &apos;REUSE_ALV_FIELDCATALOG_MERGE&apos;
+    EXPORTING
+      i_program_name         = sy-repid
+      i_structure_name       = &apos;ZDS_SDR007&apos;
+    CHANGING
+      ct_fieldcat            = lt_fieldcat
+    EXCEPTIONS
+      inconsistent_interface = 1
+      program_error          = 2
+      OTHERS                 = 3.
+
+
+  DELETE lt_fieldcat WHERE fieldname = &apos;FIELD_STYLE&apos;.
+
+  LOOP AT lt_fieldcat ASSIGNING FIELD-SYMBOL(&lt;fs_fcat&gt;).
+    CASE &lt;fs_fcat&gt;-fieldname.
+      WHEN &apos;ZINVNUM&apos; OR &apos;ZINVREM&apos;.
+        &lt;fs_fcat&gt;-edit = &apos;X&apos;.
+      WHEN &apos;ZPENBIL&apos; OR &apos;VBELN&apos;.
+        &lt;fs_fcat&gt;-hotspot = &apos;X&apos;.
+    ENDCASE.
+  ENDLOOP.
+ENDFORM.
+
+FORM display_alv.
+  PERFORM set_fieldcat.
+
+  is_layout-colwidth_optimize = &apos;X&apos;.
+
+  REFRESH i_events.
+  CLEAR s_events.
+  s_events-name = &apos;DATA_CHANGED&apos;.
+  s_events-form = &apos;DATA_CHANGED&apos;.
+  APPEND s_events TO i_events.
+
+  CALL FUNCTION &apos;REUSE_ALV_GRID_DISPLAY&apos;
+    EXPORTING
+*      i_grid_settings          = ls_settings
+      i_callback_program       = sy-repid
+*     i_structure_name         = &apos;ZSRMM008&apos;
+*     i_callback_top_of_page   = &apos;TOP_OF_PAGE&apos;
+      i_callback_pf_status_set = &apos;SET_PF_STATUS&apos;
+      i_callback_user_command  = &apos;USER_COMMAND&apos;
+      is_layout                = is_layout
+      it_fieldcat              = lt_fieldcat
+      i_save                   = &apos;A&apos;
+*     it_excluding             = it_menu
+      it_events                = i_events
+      is_variant               = gt_variant
+    TABLES
+      t_outtab                 = lt_data.
+ENDFORM.
+
+FORM set_cell_style. &quot;USING header TYPE REF TO cl_dd_document.
+  DATA: ls_text  TYPE sdydo_text_element,
+        meth(20) TYPE c VALUE &apos;SET_FRONTEND_LAYOUT&apos;.
+
+  IF o_grid IS INITIAL.
+    CALL FUNCTION &apos;GET_GLOBALS_FROM_SLVC_FULLSCR&apos;
+      IMPORTING
+        e_grid = o_grid.
+
+    layout-stylefname = &apos;FIELD_STYLE&apos;.
+    layout-no_toolbar = &apos;X&apos;.
+    CALL METHOD o_grid-&gt;(meth)
+      EXPORTING
+        is_layout = layout.
+
+    CALL METHOD o_grid-&gt;refresh_table_display.
+
+  ENDIF.
+
+ENDFORM.
+
+FORM set_pf_status USING rt_extab TYPE slis_t_extab.        &quot;#EC CALLED
+  DESCRIBE TABLE rt_extab. &quot;Avoid Extended Check Warning
+  SET PF-STATUS &apos;ZPFSTAT&apos;.
+
+  PERFORM set_cell_style.
+ENDFORM. &quot;Set_pf_status
+
+FORM fill_eventstab TABLES p_eventstab STRUCTURE s_events.
+  CALL FUNCTION &apos;REUSE_ALV_EVENTS_GET&apos;
+    EXPORTING
+      i_list_type     = 0
+    IMPORTING
+      et_events       = p_eventstab[]
+    EXCEPTIONS
+      list_type_wrong = 1
+      OTHERS          = 2.
+ENDFORM.
+
+FORM user_command USING r_ucomm LIKE sy-ucomm
+      rs_selfield TYPE slis_selfield.
+
+  DATA : lw_final TYPE zds_sdr007,
+         ref_grid TYPE REF TO cl_gui_alv_grid.
+
+
+  &quot;TO capture the remark IN the final internal TABLE gt_final “
+  CALL FUNCTION &apos;GET_GLOBALS_FROM_SLVC_FULLSCR&apos;
+    IMPORTING
+      e_grid = ref_grid.
+
+  IF ref_grid IS NOT INITIAL.
+    CALL METHOD ref_grid-&gt;check_changed_data( ).
+  ENDIF.
+
+  CASE r_ucomm.
+    WHEN &apos;&amp;IC1&apos;.
+      CLEAR ls_data.
+      READ TABLE lt_data INTO ls_data INDEX rs_selfield-tabindex.
+      CASE rs_selfield-fieldname.
+        WHEN &apos;VBELN&apos;.
+          IF ls_data-vbeln IS NOT INITIAL.
+            SET PARAMETER ID &apos;VF&apos; FIELD ls_data-vbeln.
+            CALL TRANSACTION &apos;VF03&apos; AND SKIP FIRST SCREEN.
+          ENDIF.
+
+        WHEN &apos;ZPENBIL&apos;.
+          IF ls_data-zpenbil IS NOT INITIAL.
+            SET PARAMETER ID &apos;VF&apos; FIELD ls_data-zpenbil.
+            CALL TRANSACTION &apos;VF03&apos; AND SKIP FIRST SCREEN.
+          ENDIF.
+      ENDCASE.
+    WHEN &apos;&amp;ZBILL&apos;.
+      DATA is_err TYPE char1.
+      CLEAR is_err.
+      &quot;Validasi
+      LOOP AT lt_data INTO ls_data
+      WHERE zpenbil IS INITIAL AND clrst = &apos;C&apos; AND pnlty &gt; 0.
+        IF ls_data-zinvnum IS INITIAL OR ls_data-zinvrem IS INITIAL.
+          IF ls_data-zinvnum IS INITIAL.
+            ls_data-zsnote = &apos;Please fill Invoice Reff&apos;.
+          ENDIF.
+
+          IF ls_data-zinvrem IS INITIAL.
+            ls_data-zsnote = &apos;Please fill Invoice Remark&apos;.
+          ENDIF.
+
+          MODIFY lt_data FROM ls_data
+          TRANSPORTING zsnote
+          WHERE vbeln = ls_data-vbeln.
+
+          is_err = &apos;X&apos;.
+        ENDIF.
+
+        CLEAR ls_data.
+      ENDLOOP.
+
+      IF is_err IS INITIAL.
+        DATA : ld_answer TYPE string.
+        CLEAR ld_answer.
+        CALL FUNCTION &apos;POPUP_CONTINUE_YES_NO&apos;
+          EXPORTING
+            textline1 = &apos;Continue to Generate Billing Document?&apos;
+            textline2 = &apos;Yes / No?!&apos;
+            titel     = &apos;Generate Billing Confirmation&apos;
+          IMPORTING
+            answer    = ld_answer.
+        IF ld_answer = &apos;J&apos;.
+          DATA(xdata) = lt_data.
+          DELETE xdata WHERE clrst   &lt;&gt; &apos;C&apos;.
+          DELETE xdata WHERE zpenbil IS NOT INITIAL.
+          DELETE xdata WHERE pnlty   IS INITIAL.
+
+          IF xdata IS NOT INITIAL.
+            IF is_err IS INITIAL.
+              PERFORM generate_billing.
+            ENDIF.
+
+            rs_selfield-refresh = abap_true.
+          ELSE.
+            MESSAGE &apos;No data processed&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+          ENDIF.
+          REFRESH xdata.
+        ENDIF.
+      ELSE.
+        MESSAGE &apos;Please check mandatory input!&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+        rs_selfield-refresh = abap_true.
+      ENDIF.
+
+  ENDCASE.
+ENDFORM.
+
+FORM data_changed ##called
+     USING lrc_i_dc TYPE REF TO cl_alv_changed_data_protocol.
+
+*  BREAK sap_husnul.
+
+  DATA: &quot;TODO: Change the type of ITAB
+    lit_alv_new TYPE STANDARD TABLE OF zds_sdr007.
+
+  ASSIGN lrc_i_dc-&gt;mp_mod_rows-&gt;* TO FIELD-SYMBOL(&lt;fs_rows&gt;).
+  IF sy-subrc = 0.
+    lit_alv_new[] = &lt;fs_rows&gt;.
+
+    READ TABLE lit_alv_new INTO DATA(ls_alv_data) INDEX 1.
+    IF ls_alv_data-zpenbil IS INITIAL AND ls_alv_data-clrst = &apos;C&apos;.
+      IF ls_alv_data-zinvnum IS INITIAL.
+        MESSAGE &apos;Please fiil invoice reff&apos; TYPE &apos;E&apos;.
+      ELSEIF ls_alv_data-zinvrem IS INITIAL.
+        MESSAGE &apos;Please fiil invoice remark&apos; TYPE &apos;E&apos;.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+ENDFORM.</source>
+ </PROG>
+ <PROG NAME="ZSDR007_F03" VARCL="X" SUBC="I" RMAND="400" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSDR007_F03" LENGTH="19 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Include          ZSDR007_F03
+*&amp;---------------------------------------------------------------------*
+
+FORM generate_billing.
+  CLEAR ls_data.
+
+  LOOP AT lt_data INTO ls_data
+  WHERE zpenbil IS INITIAL AND clrst = &apos;C&apos; AND pnlty &gt; 0.
+
+    PERFORM call_bapi.
+
+    CLEAR ls_data.
+  ENDLOOP.
+
+  MESSAGE &apos;Billing document creation process is complete, please check Note for details&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;S&apos;.
+ENDFORM.
+
+FORM call_bapi.
+  CLEAR: creatordatain, lv_matnr_penalty.
+
+  SELECT SINGLE low FROM tvarvc
+    INTO lv_matnr_penalty
+      WHERE name = &apos;ZSD_MAT_ZSDR007_DENDA&apos;.
+
+  lv_matnr_penalty = |{ lv_matnr_penalty ALPHA = IN }|.
+
+  SELECT SINGLE * FROM vbrk
+    INTO @DATA(ls_vbrk)
+        WHERE vbeln = @ls_data-vbeln.
+
+  REFRESH lt_billingdatain.
+  CLEAR ls_billingdatain.
+  ls_billingdatain-salesorg   = ls_vbrk-vkorg.
+  ls_billingdatain-distr_chan = ls_vbrk-vtweg.
+  ls_billingdatain-division   = ls_vbrk-spart.
+  CALL FUNCTION &apos;CONVERSION_EXIT_AUART_INPUT&apos;
+    EXPORTING
+      input  = &apos;OR&apos;
+    IMPORTING
+      output = ls_billingdatain-doc_type.
+*  ls_billingdatain-doc_type   = &apos;OR&apos;.
+  ls_billingdatain-ordbilltyp = &apos;ZIEB&apos;.
+  ls_billingdatain-bill_date  = sy-datum.
+  ls_billingdatain-sold_to    = ls_data-kunnr.
+  ls_billingdatain-item_categ = &apos;ZIEB&apos;.
+  SELECT SINGLE ktgrm
+    FROM mvke INTO ls_billingdatain-acctasgnmt
+      WHERE matnr = lv_matnr_penalty.
+  ls_billingdatain-price_date = sy-datum.
+  SELECT SINGLE werks FROM vbrp
+    INTO ls_billingdatain-plant
+      WHERE vbeln = ls_data-vbeln.
+  ls_billingdatain-bill_to    = ls_data-kunnr.
+  ls_billingdatain-payer      = ls_data-kunnr.
+  ls_billingdatain-ship_to    = ls_data-kunnr.
+  ls_billingdatain-ref_doc    = ls_data-vbeln.
+  ls_billingdatain-material   = lv_matnr_penalty.
+  ls_billingdatain-req_qty    = 1.
+  ls_billingdatain-currency   = ls_data-waers.
+  ls_billingdatain-ref_item   = &apos;000001&apos;.
+
+  SELECT SINGLE prctr FROM marc
+    INTO ls_billingdatain-profit_ctr
+      WHERE matnr = lv_matnr_penalty AND werks = ls_billingdatain-plant.
+  ls_billingdatain-itm_number = &apos;000001&apos;.
+
+  SELECT SINGLE zterm FROM knvv
+    INTO ls_billingdatain-payment_terms
+      WHERE kunnr = ls_data-kunnr.
+  APPEND ls_billingdatain TO lt_billingdatain.
+
+  REFRESH lt_conditiondatain.
+  CLEAR ls_conditiondatain.
+  ls_conditiondatain-data_index = 1.
+  ls_conditiondatain-cond_type  = &apos;ZPRT&apos;.
+  ls_conditiondatain-cond_value = ls_data-pnlty.
+  ls_conditiondatain-cond_curr  = ls_data-waers.
+  ls_conditiondatain-cond_p_unt = 1.
+  APPEND ls_conditiondatain TO lt_conditiondatain.
+
+  REFRESH lt_textdatain.
+  CLEAR ls_textdatain.
+  ls_textdatain-applobject = &apos;VBBK&apos;.
+  ls_textdatain-text_id    = &apos;ZB01&apos;.
+  ls_textdatain-langu      = sy-langu.
+  ls_textdatain-text_line  = ls_data-zinvnum.
+  APPEND ls_textdatain TO lt_textdatain.
+
+  CLEAR ls_textdatain.
+  ls_textdatain-applobject = &apos;VBBK&apos;.
+  ls_textdatain-text_id    = &apos;ZB00&apos;.
+  ls_textdatain-langu      = sy-langu.
+  ls_textdatain-text_line  = ls_data-zinvrem.
+  APPEND ls_textdatain TO lt_textdatain.
+
+
+  CALL FUNCTION &apos;BAPI_BILLINGDOC_CREATEMULTIPLE&apos;
+    EXPORTING
+      creatordatain   = creatordatain
+      testrun         = testrun
+      posting         = posting
+    TABLES
+      billingdatain   = lt_billingdatain
+      conditiondatain = lt_conditiondatain
+*     CCARDDATAIN     =
+*     textdatain      = lt_textdatain
+*     ERRORS          =
+      return          = lt_return
+      success         = lt_success
+*     EXTENSIONIN     =
+*     PARTNERDATAIN   =
+*     NFMETALLITMS    =
+    .
+
+  READ TABLE lt_success INTO DATA(ls_result) INDEX 1.
+  IF ls_result-bill_doc IS NOT INITIAL.
+    ls_data-zpenbil = ls_result-bill_doc.
+    ls_data-zsnote  = |Billing Denda Berhasil dibuat dengan nomor { ls_result-bill_doc }|.
+
+    CLEAR ls_zsdt014.
+*    ls_zsdt014-zsrcbil = ls_data-vbeln.
+*    ls_zsdt014-zpenbil = ls_result-bill_doc.
+    INSERT INTO zsdt014 VALUES @( VALUE #( mandt = sy-mandt zsrcbil = ls_data-vbeln zpenbil =  ls_result-bill_doc ) ).
+*    MODIFY zsdt014 FROM ls_zsdt014.
+    COMMIT WORK.
+
+*    break sap_husnul.
+    PERFORM create_text USING &apos;ZB01&apos; ls_result-bill_doc &apos;VBBK&apos; ls_data-zinvnum. &quot;Long Text Invoice Number
+    PERFORM create_text USING &apos;ZB00&apos; ls_result-bill_doc &apos;VBBK&apos; ls_data-zinvrem. &quot;Long Text Remark
+  ELSE.
+    READ TABLE lt_return INTO DATA(ls_return) INDEX 1.
+    ls_data-zsnote  = |{ ls_return-message } { ls_return-message_v1 }|.
+  ENDIF.
+
+  ls_data-matnr2 = lv_matnr_penalty.
+  SELECT SINGLE maktx FROM makt
+    INTO ls_data-maktx2
+      WHERE matnr = lv_matnr_penalty AND spras = sy-langu.
+  MODIFY lt_data FROM ls_data
+    TRANSPORTING zpenbil zsnote matnr2 maktx2
+      WHERE vbeln = ls_data-vbeln.
+
+ENDFORM.
+
+FORM create_text USING p_id p_name p_obj p_text.
+
+  DATA:
+    fid       TYPE thead-tdid,
+    flanguage TYPE thead-tdspras,
+    fname	    TYPE thead-tdname,
+    fobject	  TYPE thead-tdobject,
+    lt_flines	TYPE TABLE OF tline,
+    ls_flines	TYPE tline.
+
+  REFRESH lt_flines.
+  CLEAR: fid, fname, fobject.
+  fid     = p_id.
+  fname   = p_name.
+  fobject = p_obj.
+  flanguage = sy-langu.
+
+  CLEAR ls_flines.
+  ls_flines-tdformat = &apos;*&apos;.
+  ls_flines-tdline   = p_text.
+  APPEND ls_flines TO lt_flines.
+
+  CALL FUNCTION &apos;CREATE_TEXT&apos;
+    EXPORTING
+      fid       = fid
+      flanguage = flanguage
+      fname     = fname
+      fobject   = fobject
+    TABLES
+      flines    = lt_flines
+    EXCEPTIONS
+      no_init   = 1
+      no_save   = 2
+      OTHERS    = 3.
+
+  IF sy-subrc = 0.
+    CALL FUNCTION &apos;BAPI_TRANSACTION_COMMIT&apos;
+      EXPORTING
+        wait = &apos;X&apos;.
+  ENDIF.
+ENDFORM.</source>
+ </PROG>
+ <TABL TABNAME="ZDS_SDR007" DDLANGUAGE="E" TABCLASS="INTTAB" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" DDTEXT="Structure Report Perhitungan Denda" AUTHCLASS="00" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l AS4VERS="0000" SCHFELDANZ="000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="KUNNR" DDLANGUAGE="E" POSITION="0001" ROLLNAME="KUNNR" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="KUNNR" ROUTPUTLEN="000000" MEMORYID="KUN" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" ENTITYTAB="KNA1" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Customer Number" REPTEXT="Customer" SCRTEXT_S="Customer" SCRTEXT_M="Customer" SCRTEXT_L="Customer" DOMNAME3L="KUNNR" SHLPORIGIN="D" SHLPNAME="C_KUNNR" SHLPFIELD="KUNNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="CUSTOMER" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="KNAME" DDLANGUAGE="E" POSITION="0002" ROLLNAME="ZKNAM" ADMINFIELD="0" INTTYPE="C" INTLEN="000100" DOMNAME="ZCHAR50" ROUTPUTLEN="000000" HEADLEN="50" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000050" OUTPUTLEN="000050" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Customer Name" REPTEXT="Customer Name" SCRTEXT_M="Customer Name" SCRTEXT_L="Customer Name" DOMNAME3L="ZCHAR50" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="SORTL" DDLANGUAGE="E" POSITION="0003" ROLLNAME="SORTL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="CHAR10" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="12" SCRLEN3="18" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Sort field" REPTEXT="SearchTerm" SCRTEXT_S="SearchTerm" SCRTEXT_M="Search term" SCRTEXT_L="Search term" DOMNAME3L="CHAR10" DEPTH="00" COMPTYPE="E" DEFFDNAME="SORT_FLD" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="VBELN" DDLANGUAGE="E" POSITION="0004" ROLLNAME="VBELN_VF" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="VBELN" ROUTPUTLEN="000000" MEMORYID="VF" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Billing Document" REPTEXT="Bill. Doc." SCRTEXT_S="Bill. Doc." SCRTEXT_M="Billing Doc." SCRTEXT_L="Billing Document" DOMNAME3L="VBELN" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="ZKTOP" DDLANGUAGE="E" POSITION="0005" ROLLNAME="ZKTOP" ADMINFIELD="0" INTTYPE="C" INTLEN="000100" DOMNAME="ZCHAR50" ROUTPUTLEN="000000" HEADLEN="50" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000050" OUTPUTLEN="000050" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="TOP (Day)" REPTEXT="TOP (Day)" SCRTEXT_M="TOP (Day)" SCRTEXT_L="TOP (Day)" DOMNAME3L="ZCHAR50" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="IRDAT" DDLANGUAGE="E" POSITION="0006" ROLLNAME="ZINV_DATE" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATS" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Invoice Receive Date" REPTEXT="Invoice Receive Date" SCRTEXT_M="Invoice Receive Date" SCRTEXT_L="Invoice Receive Date" DOMMASTER="D" DOMNAME3L="DATS" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="DUEDT" DDLANGUAGE="E" POSITION="0007" ROLLNAME="ZDUEDT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATS" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Tanggal Jatuh Tempo" REPTEXT="Tanggal Jatuh Tempo" SCRTEXT_M="Tanggal Jatuh Tempo" SCRTEXT_L="Tanggal Jatuh Tempo" DOMMASTER="D" DOMNAME3L="DATS" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="DPPINV" DDLANGUAGE="E" POSITION="0008" ROLLNAME="ZDPINV" ADMINFIELD="0" INTTYPE="P" INTLEN="000012" REFTABLE="ZDS_SDR007" REFFIELD="WAERS" DOMNAME="AFLE13D2O16N_TO_23D2O30N" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CURR" LENG="000023" OUTPUTLEN="000030" DECIMALS="000002" CONVEXIT="AU132" MASK="  CURRE" MASKLEN="0000" DDTEXT="DPP Invoice" REPTEXT="DPP Invoice" SCRTEXT_M="DPP Invoice" SCRTEXT_L="DPP Invoice" DOMNAME3L="AFLE13D2O16N_TO_23D2O30N" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="DTCNT" DDLANGUAGE="E" POSITION="0009" ROLLNAME="ZDTCNT" ADMINFIELD="0" INTTYPE="D" INTLEN="000016" DOMNAME="DATS" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="40" DTELMASTER="E" DATATYPE="DATS" LENG="000008" OUTPUTLEN="000010" DECIMALS="000000" MASK="  DATSE" MASKLEN="0000" DDTEXT="Tanggal Perhitungan Denda" SCRTEXT_L="Tanggal Perhitungan Denda" DOMMASTER="D" DOMNAME3L="DATS" SHLPORIGIN="T" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="OVERDUE" DDLANGUAGE="E" POSITION="0010" ROLLNAME="ZOVERDUE_DAYS" ADMINFIELD="0" INTTYPE="X" INTLEN="000004" DOMNAME="INT4" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="INT4" LENG="000010" OUTPUTLEN="000011" DECIMALS="000000" SIGNFLAG="X" MASK="  INT4E" MASKLEN="0000" DDTEXT="Lama Overdue" SCRTEXT_M="Lama Overdue" SCRTEXT_L="Lama Overdue" DOMNAME3L="INT4" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="PNLTY" DDLANGUAGE="E" POSITION="0011" ROLLNAME="ZPNLTY" ADMINFIELD="0" INTTYPE="P" INTLEN="000012" REFTABLE="ZDS_SDR007" REFFIELD="WAERS" DOMNAME="AFLE13D2O16N_TO_23D2O30N" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CURR" LENG="000023" OUTPUTLEN="000030" DECIMALS="000002" CONVEXIT="AU132" MASK="  CURRE" MASKLEN="0000" DDTEXT="Total Denda" REPTEXT="Total Denda" SCRTEXT_M="Total Denda" SCRTEXT_L="Total Denda" DOMNAME3L="AFLE13D2O16N_TO_23D2O30N" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="POSNR" DDLANGUAGE="E" POSITION="0012" ROLLNAME="POSNR_VF" ADMINFIELD="0" INTTYPE="N" INTLEN="000012" DOMNAME="POSNR" ROUTPUTLEN="000000" HEADLEN="06" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="E" DATATYPE="NUMC" LENG="000006" OUTPUTLEN="000006" DECIMALS="000000" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Billing Item" REPTEXT="Item" SCRTEXT_S="Item" SCRTEXT_M="Item" SCRTEXT_L="Item" DOMNAME3L="POSNR" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="MATNR" DDLANGUAGE="E" POSITION="0013" ROLLNAME="MATNR" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="MATNR" ROUTPUTLEN="000000" MEMORYID="MAT" LOGFLAG="X" HEADLEN="18" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" ENTITYTAB="MARA" CONVEXIT="MATN1" MASK="  CHARE" MASKLEN="0000" DDTEXT="Material Number" REPTEXT="Material" SCRTEXT_S="Material" SCRTEXT_M="Material" SCRTEXT_L="Material" DOMNAME3L="MATNR" SHLPORIGIN="D" SHLPNAME="S_MAT1" SHLPFIELD="MATNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="MATERIAL" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="MAKTX" DDLANGUAGE="E" POSITION="0014" ROLLNAME="MAKTX" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="TEXT40" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="40" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Material Description" REPTEXT="Material Description" SCRTEXT_S="Descr." SCRTEXT_M="Description" SCRTEXT_L="Material Description" DOMNAME3L="TEXT40" DEPTH="00" COMPTYPE="E" DEFFDNAME="MATL_DESC" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="WAERS" DDLANGUAGE="E" POSITION="0015" ROLLNAME="WAERS" ADMINFIELD="0" INTTYPE="C" INTLEN="000010" DOMNAME="WAERS" ROUTPUTLEN="000000" MEMORYID="FWS" LOGFLAG="X" HEADLEN="05" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CUKY" LENG="000005" OUTPUTLEN="000005" DECIMALS="000000" ENTITYTAB="TCURC" MASK="  CUKYE" MASKLEN="0000" DDTEXT="Currency Key" REPTEXT="Crcy" SCRTEXT_S="Currency" SCRTEXT_M="Currency" SCRTEXT_L="Currency" DOMNAME3L="WAERS" DEPTH="00" COMPTYPE="E" DEFFDNAME="CURRENCY" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="IVREF" DDLANGUAGE="E" POSITION="0016" ROLLNAME="ZIVREF" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="11" SCRLEN3="11" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Invoice Ref" SCRTEXT_M="Invoice Ref" SCRTEXT_L="Invoice Ref" DOMNAME3L="ZCHAR40" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="IVRMK" DDLANGUAGE="E" POSITION="0017" ROLLNAME="ZIVRMK" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="14" SCRLEN1="00" SCRLEN2="14" SCRLEN3="14" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" DOMNAME3L="ZCHAR40" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="CLRST" DDLANGUAGE="E" POSITION="0018" ROLLNAME="CLRST" ADMINFIELD="0" INTTYPE="C" INTLEN="000002" DOMNAME="CLRST" ROUTPUTLEN="000000" HEADLEN="15" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="E" DATATYPE="CHAR" LENG="000001" OUTPUTLEN="000001" DECIMALS="000000" VALEXI="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Clearing Status of Billing Document" REPTEXT="Clearing Status" SCRTEXT_S="ClearStatu" SCRTEXT_M="Clearing Status" SCRTEXT_L="Clearing Status" DOMNAME3L="CLRST" SHLPORIGIN="F" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="AUGBL" DDLANGUAGE="E" POSITION="0019" ROLLNAME="AUGBL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="BELNR" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="10" SCRLEN1="00" SCRLEN2="12" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Document Number of the Clearing Document" REPTEXT="Clrng doc." SCRTEXT_M="Clrng doc." SCRTEXT_L="Clearing Document" DOMNAME3L="BELNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="CLR_DOC_NO" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="MATNR2" DDLANGUAGE="E" POSITION="0020" ROLLNAME="ZMATNR" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="MATNR" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" ENTITYTAB="MARA" CONVEXIT="MATN1" MASK="  CHARE" MASKLEN="0000" DDTEXT="Material Denda" REPTEXT="Material Denda" SCRTEXT_M="Material Denda" SCRTEXT_L="Material Denda" DOMNAME3L="MATNR" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="MAKTX2" DDLANGUAGE="E" POSITION="0021" ROLLNAME="MAKTX" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="TEXT40" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="40" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Material Description" REPTEXT="Material Description" SCRTEXT_S="Descr." SCRTEXT_M="Description" SCRTEXT_L="Material Description" DOMNAME3L="TEXT40" DEPTH="00" COMPTYPE="E" DEFFDNAME="MATL_DESC" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="ZPENBIL" DDLANGUAGE="E" POSITION="0022" ROLLNAME="ZPENBIL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" DOMNAME="VBELN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Billing Denda / Penalty" REPTEXT="Billing Denda / Penalty" SCRTEXT_M="Billing Denda" SCRTEXT_L="Billing Denda / Penalty" DOMNAME3L="VBELN" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="ZINVNUM" DDLANGUAGE="E" POSITION="0023" ROLLNAME="ZINVNUM" ADMINFIELD="0" INTTYPE="C" INTLEN="000060" DOMNAME="ZCHAR30" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000030" OUTPUTLEN="000030" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Invoice Number" REPTEXT="Invoice Number" SCRTEXT_M="Invoice Number" SCRTEXT_L="Invoice Number" DOMNAME3L="ZCHAR30" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="ZINVREM" DDLANGUAGE="E" POSITION="0024" ROLLNAME="ZINVREM" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" DOMNAME3L="ZCHAR40" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="ZSNOTE" DDLANGUAGE="E" POSITION="0025" ROLLNAME="ZZSNOTE" ADMINFIELD="0" INTTYPE="C" INTLEN="000160" DOMNAME="ZCHAR80" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="10" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000080" OUTPUTLEN="000080" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Note" SCRTEXT_S="Note" SCRTEXT_M="Note" SCRTEXT_L="Note" DOMNAME3L="ZCHAR80" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZDS_SDR007" FIELDNAME="FIELD_STYLE" DDLANGUAGE="E" POSITION="0026" ROLLNAME="LVC_T_STYL" ADMINFIELD="0" INTLEN="000000" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DATATYPE="TTYP" LENG="000000" OUTPUTLEN="000000" DECIMALS="000000" MASK="  TTYPL" MASKLEN="0000" DDTEXT="ALV Control: Style Table for Cells" DEPTH="00" COMPTYPE="L" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+ <DTEL ROLLNAME="ZINV_DATE" DDLANGUAGE="E" DOMNAME="DATS" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Receive Date" REPTEXT="Invoice Receive Date" SCRTEXT_M="Invoice Receive Date" SCRTEXT_L="Invoice Receive Date" AUTHCLASS="00" DTELMASTER="E" DATATYPE="DATS" LENG="000008" DECIMALS="000000" OUTPUTLEN="000010" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZINV_DATE" DDLANGUAGE="E" DOMNAME="DATS" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Receive Date" REPTEXT="Invoice Receive Date" SCRTEXT_M="Invoice Receive Date" SCRTEXT_L="Invoice Receive Date" AUTHCLASS="00" DTELMASTER="E" DATATYPE="DATS" LENG="000008" DECIMALS="000000" OUTPUTLEN="000010" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZOVERDUE_DAYS" DDLANGUAGE="E" DOMNAME="INT4" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Lama Overdue" SCRTEXT_M="Lama Overdue" SCRTEXT_L="Lama Overdue" AUTHCLASS="00" DTELMASTER="E" DATATYPE="INT4" LENG="000010" DECIMALS="000000" OUTPUTLEN="000011" SIGNFLAG="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZOVERDUE_DAYS" DDLANGUAGE="E" DOMNAME="INT4" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Lama Overdue" SCRTEXT_M="Lama Overdue" SCRTEXT_L="Lama Overdue" AUTHCLASS="00" DTELMASTER="E" DATATYPE="INT4" LENG="000010" DECIMALS="000000" OUTPUTLEN="000011" SIGNFLAG="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZPNLTY" DDLANGUAGE="E" DOMNAME="AFLE13D2O16N_TO_23D2O30N" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Total Denda" REPTEXT="Total Denda" SCRTEXT_M="Total Denda" SCRTEXT_L="Total Denda" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CURR" LENG="000023" DECIMALS="000002" OUTPUTLEN="000030" CONVEXIT="AU132" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZPNLTY" DDLANGUAGE="E" DOMNAME="AFLE13D2O16N_TO_23D2O30N" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Total Denda" REPTEXT="Total Denda" SCRTEXT_M="Total Denda" SCRTEXT_L="Total Denda" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CURR" LENG="000023" DECIMALS="000002" OUTPUTLEN="000030" CONVEXIT="AU132" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZIVREF" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="11" SCRLEN3="11" DDTEXT="Invoice Ref" SCRTEXT_M="Invoice Ref" SCRTEXT_L="Invoice Ref" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZIVREF" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="11" SCRLEN3="11" DDTEXT="Invoice Ref" SCRTEXT_M="Invoice Ref" SCRTEXT_L="Invoice Ref" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZIVRMK" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="14" SCRLEN1="00" SCRLEN2="14" SCRLEN3="14" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZIVRMK" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="14" SCRLEN1="00" SCRLEN2="14" SCRLEN3="14" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZMATNR" DDLANGUAGE="E" DOMNAME="MATNR" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Material Denda" REPTEXT="Material Denda" SCRTEXT_M="Material Denda" SCRTEXT_L="Material Denda" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" CONVEXIT="MATN1" ENTITYTAB="MARA" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZMATNR" DDLANGUAGE="E" DOMNAME="MATNR" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Material Denda" REPTEXT="Material Denda" SCRTEXT_M="Material Denda" SCRTEXT_L="Material Denda" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" CONVEXIT="MATN1" ENTITYTAB="MARA" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZPENBIL" DDLANGUAGE="E" DOMNAME="VBELN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Billing Denda / Penalty" REPTEXT="Billing Denda / Penalty" SCRTEXT_M="Billing Denda" SCRTEXT_L="Billing Denda / Penalty" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" DECIMALS="000000" OUTPUTLEN="000010" CONVEXIT="ALPHA" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZPENBIL" DDLANGUAGE="E" DOMNAME="VBELN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Billing Denda / Penalty" REPTEXT="Billing Denda / Penalty" SCRTEXT_M="Billing Denda" SCRTEXT_L="Billing Denda / Penalty" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" DECIMALS="000000" OUTPUTLEN="000010" CONVEXIT="ALPHA" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZINVNUM" DDLANGUAGE="E" DOMNAME="ZCHAR30" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Number" REPTEXT="Invoice Number" SCRTEXT_M="Invoice Number" SCRTEXT_L="Invoice Number" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000030" DECIMALS="000000" OUTPUTLEN="000030" LOWERCASE="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZINVNUM" DDLANGUAGE="E" DOMNAME="ZCHAR30" ROUTPUTLEN="000000" HEADLEN="30" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Number" REPTEXT="Invoice Number" SCRTEXT_M="Invoice Number" SCRTEXT_L="Invoice Number" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000030" DECIMALS="000000" OUTPUTLEN="000030" LOWERCASE="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZINVREM" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZINVREM" DDLANGUAGE="E" DOMNAME="ZCHAR40" ROUTPUTLEN="000000" HEADLEN="40" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DDTEXT="Invoice Remark" REPTEXT="Invoice Remark" SCRTEXT_M="Invoice Remark" SCRTEXT_L="Invoice Remark" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000040" DECIMALS="000000" OUTPUTLEN="000040" LOWERCASE="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DOMA DOMNAME="ZCHAR40" MultiLanguageSupport="X">
+  <DDLANGUAGE LANGU="E">
+   <DD01V DOMNAME="ZCHAR40" DDLANGUAGE="E" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASKLEN="0000" DDTEXT="Char40" AUTHCLASS="00" OUTPUTSTYLE="00"/>
+  </DDLANGUAGE>
+ </DOMA>
+ <DOMA DOMNAME="ZCHAR30" MultiLanguageSupport="X">
+  <DDLANGUAGE LANGU="E">
+   <DD01V DOMNAME="ZCHAR30" DDLANGUAGE="E" DATATYPE="CHAR" LENG="000030" OUTPUTLEN="000030" DECIMALS="000000" LOWERCASE="X" MASKLEN="0000" DDTEXT="Char 30" AUTHCLASS="00" OUTPUTSTYLE="00"/>
+  </DDLANGUAGE>
+ </DOMA>
+ <DOMA DOMNAME="ZCHAR80" MultiLanguageSupport="X">
+  <DDLANGUAGE LANGU="E">
+   <DD01V DOMNAME="ZCHAR80" DDLANGUAGE="E" DATATYPE="CHAR" LENG="000080" OUTPUTLEN="000080" DECIMALS="000000" LOWERCASE="X" MASKLEN="0000" DDTEXT="CHAR80" AUTHCLASS="00" OUTPUTSTYLE="00"/>
+  </DDLANGUAGE>
+ </DOMA>
+ <DTEL ROLLNAME="ZZSNOTE" DDLANGUAGE="E" DOMNAME="ZCHAR80" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="10" SCRLEN2="20" SCRLEN3="40" DDTEXT="Note" SCRTEXT_S="Note" SCRTEXT_M="Note" SCRTEXT_L="Note" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000080" DECIMALS="000000" OUTPUTLEN="000080" LOWERCASE="X" REFKIND="D" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZZSNOTE" DDLANGUAGE="E" DOMNAME="ZCHAR80" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="10" SCRLEN2="20" SCRLEN3="40" DDTEXT="Note" SCRTEXT_S="Note" SCRTEXT_M="Note" SCRTEXT_L="Note" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000080" DECIMALS="000000" OUTPUTLEN="000080" LOWERCASE="X" REFKIND="D"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <TABL TABNAME="ZSDT014" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Billing Document Links - Billing Penalty &amp; Original Billing" AUTHCLASS="00" MAINFLAG="X" CONTFLAG="A" PROZPUFF="000" EXCLASS="1" QUOTA_MAX_FIELDS="00000" QUOTA_MAX_BYTES="0000000" QUOTA_SHARE_PARTNER="000" QUOTA_SHARE_CUSTOMER="000">
+  <dd09l TABNAME="ZSDT014" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" PROTOKOLL="X" BUFALLOW="N" ROWORCOLST="C"/>
+  <dd03p TABNAME="ZSDT014" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZSDT014" FIELDNAME="ZSRCBIL" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="ZSRCBIL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="VBELN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Billing Original" REPTEXT="Billing Original" SCRTEXT_M="Billing Original" SCRTEXT_L="Billing Original" DOMNAME3L="VBELN" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+  <dd03p TABNAME="ZSDT014" FIELDNAME="ZPENBIL" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="ZPENBIL" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="VBELN" ROUTPUTLEN="000000" HEADLEN="55" SCRLEN1="00" SCRLEN2="20" SCRLEN3="40" DTELMASTER="E" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Billing Denda / Penalty" REPTEXT="Billing Denda / Penalty" SCRTEXT_M="Billing Denda" SCRTEXT_L="Billing Denda / Penalty" DOMNAME3L="VBELN" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00" SRS_ID="0000000000"/>
+ </TABL>
+</nugget>
